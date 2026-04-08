@@ -116,11 +116,29 @@ body {
 .value-card .evidence-label { font-size: 11px; font-weight: 800; color: var(--text-sub); margin-bottom: 6px; letter-spacing: 0.5px; }
 
 /* ===== Profile ===== */
-.profile-section { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; border: 2px solid var(--border); }
-.profile-section h3 { font-size: 17px; font-weight: 800; margin-bottom: 14px; }
-.work-style-tag { display: inline-block; padding: 8px 16px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 800; margin: 0 6px 8px 0; }
-.profile-evidence { background: var(--primary-light); border-radius: var(--radius-sm); padding: 14px; margin-top: 10px; font-size: 13px; line-height: 1.7; color: var(--text-mid); }
-.profile-evidence strong { color: var(--text); }
+.profile-hero { text-align: center; padding: 24px 0 16px; }
+.profile-hero-title { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+.profile-hero-sub { font-size: 13px; color: var(--text-sub); }
+.profile-type-cards { margin-bottom: 20px; }
+.profile-type-card { border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; }
+.ptc-header { padding: 16px; color: #fff; display: flex; align-items: center; gap: 12px; position: relative; overflow: hidden; }
+.ptc-header::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.ptc-rank { font-size: 12px; font-weight: 800; opacity: 0.8; position: absolute; top: 10px; right: 14px; }
+.ptc-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ptc-icon i { width: 22px; height: 22px; color: #fff; }
+.ptc-name { font-size: 18px; font-weight: 900; }
+.ptc-body { padding: 14px 16px; background: var(--card); border: 2px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); }
+.ptc-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 8px; }
+.ptc-subtype { font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: var(--radius-pill); display: inline-block; margin-bottom: 8px; }
+.ptc-evidence { font-size: 12px; color: var(--text-sub); line-height: 1.5; background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; }
+.ptc-evidence strong { color: var(--text); font-weight: 700; }
+.profile-section { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 2px solid var(--border); }
+.profile-section-title { font-size: 14px; font-weight: 800; margin-bottom: 10px; color: var(--text); }
+.profile-stats { display: flex; gap: 10px; margin-bottom: 14px; }
+.profile-stat { flex: 1; background: var(--card); border: 2px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
+.profile-stat-num { font-size: 28px; font-weight: 900; color: var(--primary); line-height: 1; }
+.profile-stat-label { font-size: 11px; color: var(--text-sub); margin-top: 4px; font-weight: 700; }
+.work-style-tag { display: inline-block; padding: 8px 14px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 800; margin: 0 6px 8px 0; background: var(--primary-light); color: var(--primary); }
 
 /* ===== Booth cards (all companies / challenge) ===== */
 .booth-card { background: var(--card); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; transition: all 0.3s; border: 2px solid var(--border); }
@@ -363,14 +381,7 @@ body {
 
   <!-- Profile -->
   <div class="screen" id="screenProfile">
-    <div class="section-title">マイプロフィール</div>
-    <div class="profile-section"><h3>あなたの行動の特徴</h3><div id="profileValues"></div><div id="profileEvidences"></div></div>
-    <div class="profile-section"><h3>あなたに合う働き方</h3><div id="profileWorkStyles"></div></div>
-    <button class="btn btn-accent" onclick="goToBooth()" style="margin:16px 0 0;">おすすめを見る</button>
-    <div style="margin-top:32px;border-top:1px solid var(--border);padding-top:20px;">
-      <button class="btn btn-outline" onclick="restartIndustry()" style="font-size:14px;padding:14px;">業種選択をやり直す</button>
-      <button class="btn btn-outline" onclick="restartAnalysis()" style="font-size:14px;padding:14px;color:var(--danger);border-color:var(--danger);">自己分析をやり直す</button>
-    </div>
+    <div id="profileContainer"></div>
   </div>
 
   <!-- Booth -->
@@ -1052,33 +1063,86 @@ function showValueCards() {
 function renderProfileContent() {
   if (topBranches.length === 0) return;
 
-  var valHtml='';
-  topBranches.forEach(function(key){ var b=BRANCHES[key]; valHtml+='<span class="work-style-tag">'+branchIcon(b.icon)+b.label+'</span>'; });
-  document.getElementById('profileValues').innerHTML=valHtml;
+  var colors = [
+    { bg: 'linear-gradient(135deg, #0D9488, #14b8a6)', light: 'var(--teal-light)', accent: 'var(--teal)' },
+    { bg: 'linear-gradient(135deg, #2563eb, #30b6fe)', light: 'var(--blue-light)', accent: 'var(--blue)' },
+    { bg: 'linear-gradient(135deg, #ea580c, #fdb12e)', light: 'var(--orange-light)', accent: 'var(--orange)' }
+  ];
 
-  var evHtml='';
-  topBranches.forEach(function(key,idx){
-    var b=BRANCHES[key], evidences=getEvidenceForBranch(key);
-    if(evidences.length>0){
-      evHtml+='<div class="profile-evidence"><strong>'+branchIcon(b.icon)+b.label+'</strong>の根拠：';
-      evidences.slice(0,2).forEach(function(e,i){ if(i>0)evHtml+='、'; evHtml+='「'+e.combined+'」'; });
-      if(idx===0 && subtypeText) evHtml+='<br>→ <strong>'+subtypeText+'</strong>';
-      evHtml+='</div>';
+  var html = '';
+
+  // ヒーロー
+  html += '<div class="profile-hero">';
+  html += '<div class="profile-hero-title">マイプロフィール</div>';
+  html += '</div>';
+
+  // 進捗（いく予定 / 訪問済み）
+  var plannedCount = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length;
+  var visitedCount = getVisitedCount();
+  html += '<div class="profile-stats">';
+  html += '<div class="profile-stat"><div class="profile-stat-num">'+plannedCount+'</div><div class="profile-stat-label">いく予定</div></div>';
+  html += '<div class="profile-stat"><div class="profile-stat-num">'+visitedCount+'</div><div class="profile-stat-label">訪問済み</div></div>';
+  html += '</div>';
+
+  // タイプカード（タイプ結果と同じグラデ形式）
+  html += '<div class="profile-type-cards">';
+  topBranches.forEach(function(key, idx) {
+    var b = BRANCHES[key];
+    var c = colors[idx] || colors[0];
+    var evidences = getEvidenceForBranch(key);
+
+    html += '<div class="profile-type-card">';
+    html += '<div class="ptc-header" style="background:'+c.bg+';">';
+    html += '<div class="ptc-rank">#'+(idx+1)+'</div>';
+    html += '<div class="ptc-icon"><i data-lucide="'+b.icon+'"></i></div>';
+    html += '<div class="ptc-name">'+b.label+'</div>';
+    html += '</div>';
+    html += '<div class="ptc-body">';
+    html += '<div class="ptc-desc">'+b.desc+'</div>';
+    if (idx === 0 && subtypeText) {
+      html += '<div class="ptc-subtype" style="background:'+c.light+';color:'+c.accent+';">'+subtypeText+'</div>';
     }
+    if (evidences.length > 0) {
+      html += '<div class="ptc-evidence"><strong>あなたの行動：</strong>';
+      evidences.slice(0,2).forEach(function(e, i) {
+        if (i > 0) html += '、';
+        html += '「'+e.combined+'」';
+      });
+      html += '</div>';
+    }
+    html += '</div></div>';
   });
-  document.getElementById('profileEvidences').innerHTML=evHtml;
+  html += '</div>';
 
-  var wsHtml='';
-  topBranches.forEach(function(key){ if(WORKSTYLE_MAP[key]) WORKSTYLE_MAP[key].forEach(function(ws){ wsHtml+='<span class="work-style-tag">'+ws+'</span>'; }); });
-  if(LOCAL_FLAG) wsHtml+='<span class="work-style-tag">地元密着</span>';
-  document.getElementById('profileWorkStyles').innerHTML=wsHtml;
+  // 働き方の特徴
+  html += '<div class="profile-section">';
+  html += '<div class="profile-section-title">あなたに合う働き方</div>';
+  topBranches.forEach(function(key) {
+    if (WORKSTYLE_MAP[key]) WORKSTYLE_MAP[key].forEach(function(ws) {
+      html += '<span class="work-style-tag">'+ws+'</span>';
+    });
+  });
+  if (LOCAL_FLAG) html += '<span class="work-style-tag"><i data-lucide="map-pin" style="width:12px;height:12px;vertical-align:-2px;margin-right:2px;"></i>地元密着</span>';
+  html += '</div>';
+
+  // ナビゲーション
+  html += '<button class="btn btn-accent" onclick="goToBooth()" style="margin-bottom:12px;">おすすめを見る</button>';
+
+  // やり直し
+  html += '<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">';
+  html += '<button class="btn btn-outline" onclick="restartIndustry()" style="font-size:14px;padding:14px;">業種選択をやり直す</button>';
+  html += '<button class="btn btn-outline" onclick="restartAnalysis()" style="font-size:14px;padding:14px;color:var(--danger);border-color:var(--danger);">自己分析をやり直す</button>';
+  html += '</div>';
+
+  document.getElementById('profileContainer').innerHTML = html;
 }
 
 function goToProfile() {
   calculateAllCompanies();
   renderProfileContent();
-  hideAllScreens(); showScreen('screenProfile');
-  showTabs();
+  hideAllScreens();
+  document.getElementById('topTabs').classList.add('hidden');
+  showScreen('screenProfile');
 }
 
 // ===== 業種選択 =====
@@ -1125,8 +1189,10 @@ function calculateAllCompanies() {
 }
 
 function goToBooth() {
-  hideAllScreens(); showScreen('screenBooth');
-  setActiveNav('navBooth');
+  hideAllScreens();
+  showTabs();
+  showScreen('screenBooth');
+  setActiveTab('booth');
   renderBoothList();
 }
 
@@ -1466,11 +1532,14 @@ function toggleBooth(id){ document.getElementById('booth_'+id).classList.toggle(
 var lastTab = 'booth';
 function switchTab(tab){
   hideAllScreens();
-  if(tab==='profile'){ renderProfileContent(); showScreen('screenProfile'); }
-  else if(tab==='booth'){ showScreen('screenBooth'); renderBoothList(); lastTab='booth'; }
-  else if(tab==='map'){ showScreen('screenMap'); renderBoothMap(); lastTab='map'; }
-  else if(tab==='all'){ showScreen('screenAllCompanies'); renderAllCompanies(); lastTab='all'; }
-  if(tab!=='profile') setActiveTab(tab);
+  if(tab==='profile'){ renderProfileContent(); document.getElementById('topTabs').classList.add('hidden'); showScreen('screenProfile'); }
+  else {
+    showTabs();
+    if(tab==='booth'){ showScreen('screenBooth'); renderBoothList(); lastTab='booth'; }
+    else if(tab==='map'){ showScreen('screenMap'); renderBoothMap(); lastTab='map'; }
+    else if(tab==='all'){ showScreen('screenAllCompanies'); renderAllCompanies(); lastTab='all'; }
+    setActiveTab(tab);
+  }
 }
 function setActiveTab(tab){
   document.querySelectorAll('.tab-item').forEach(function(el){el.classList.remove('active');});
