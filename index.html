@@ -9,8 +9,8 @@
   --primary: #0D9488;
   --primary-light: #ccfbf1;
   --primary-dark: #0f766e;
-  --accent: #f361ac;
-  --accent-light: #fef0f7;
+  --accent: #f59e0b;
+  --accent-light: #fef3c7;
   --teal: #5cdccf;
   --teal-light: #e8faf8;
   --blue: #30b6fe;
@@ -41,11 +41,11 @@ body {
   font-size: 16px;
 }
 .app { width: 100%; max-width: 430px; min-height: 100vh; background: var(--bg); position: relative; overflow-x: hidden; }
-.header { background: linear-gradient(135deg, #0D9488, #30b6fe); color: #fff; padding: 18px 20px; position: sticky; top: 0; z-index: 100; }
-.header h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
-.header .subtitle { font-size: 12px; opacity: 0.7; margin-top: 3px; }
+.header { background: var(--bg); color: var(--text); padding: 14px 20px; position: sticky; top: 0; z-index: 100; }
+.header h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: var(--primary); }
+.header .subtitle { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
 /* ===== Progress ===== */
-.progress-wrap { background: rgba(255,255,255,0.2); height: 6px; border-radius: 3px; margin-top: 12px; overflow: hidden; }
+.progress-wrap { background: var(--border); height: 6px; border-radius: 3px; margin-top: 12px; overflow: hidden; }
 .progress-bar { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s ease; }
 
 /* ===== Screens ===== */
@@ -72,7 +72,7 @@ body {
 .btn:active::after { background: rgba(255,255,255,0.2); }
 .btn:active { transform: scale(0.97); }
 .btn-primary { background: linear-gradient(135deg, var(--primary), #30b6fe); color: #fff; }
-.btn-accent { background: linear-gradient(135deg, var(--accent), #ff7eb3); color: #fff; }
+.btn-accent { background: linear-gradient(135deg, var(--accent), #fdb12e); color: #fff; }
 .btn-outline { background: var(--card); color: var(--primary); border: 2.5px solid var(--primary); }
 .btn-outline:active { background: var(--primary-light); }
 .btn + .btn { margin-top: 12px; }
@@ -150,12 +150,12 @@ body {
 .vt-3 { background: var(--orange); }
 
 /* ===== Visit / Challenge ===== */
-.visit-goal { background: linear-gradient(135deg, var(--primary), #30b6fe); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; text-align: center; color: #fff; }
-.visit-goal .goal-text { font-size: 17px; font-weight: 800; margin-bottom: 12px; }
-.visit-progress-bar { background: rgba(255,255,255,0.2); height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+.visit-goal { background: var(--primary-light); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; text-align: center; }
+.visit-goal .goal-text { font-size: 17px; font-weight: 800; margin-bottom: 12px; color: var(--text); }
+.visit-progress-bar { background: var(--border); height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
 .visit-progress-fill { height: 100%; background: var(--teal); border-radius: 6px; transition: width 0.4s ease; }
-.visit-progress-text { font-size: 14px; opacity: 0.9; font-weight: 600; }
-.visit-progress-text strong { color: #fff; font-size: 16px; }
+.visit-progress-text { font-size: 14px; color: var(--text-sub); font-weight: 600; }
+.visit-progress-text strong { color: var(--primary); font-size: 16px; }
 .visit-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; border: 2px solid var(--border); transition: border-color 0.2s; }
 .visit-card.visited { border-color: var(--teal); }
 .visit-header { display: flex; align-items: center; gap: 12px; }
@@ -169,16 +169,16 @@ body {
 .visit-memo:focus { outline: none; border-color: var(--teal); }
 
 /* ===== Profile icon ===== */
-.profile-icon { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; border: 2px solid rgba(255,255,255,0.3); }
-.profile-icon:active { background: rgba(255,255,255,0.3); transform: scale(0.9); }
-.profile-icon svg { width: 22px; height: 22px; fill: #fff; }
+.profile-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+.profile-icon:active { opacity: 0.7; transform: scale(0.9); }
+.profile-icon svg { width: 22px; height: 22px; fill: var(--primary); }
 .profile-icon.hidden { display: none; }
 
 /* ===== Top tabs ===== */
-.top-tabs { display: flex; background: #fff; position: sticky; top: 0; z-index: 99; padding: 0 4px; border-bottom: 2px solid var(--border); }
+.top-tabs { display: flex; background: var(--bg); position: sticky; top: 49px; z-index: 99; padding: 0 4px; border-bottom: 1px solid var(--border); }
 .top-tabs.hidden { display: none; }
-.tab-item { flex: 1; padding: 14px 4px 12px; text-align: center; cursor: pointer; font-size: 12px; font-weight: 800; color: var(--text-sub); border: none; background: none; font-family: inherit; border-bottom: 3px solid transparent; transition: all 0.2s; }
-.tab-item.active { color: var(--primary); border-bottom-color: var(--accent); }
+.tab-item { flex: 1; padding: 12px 4px 10px; text-align: center; cursor: pointer; font-size: 12px; font-weight: 800; color: var(--text-sub); border: none; background: none; font-family: inherit; border-bottom: 3px solid transparent; transition: all 0.2s; }
+.tab-item.active { color: var(--primary); border-bottom-color: var(--primary); }
 .tab-item svg, .tab-item i { width: 15px; height: 15px; vertical-align: -3px; margin-right: 3px; }
 
 /* ===== Horizontal scroll / Summary cards ===== */
@@ -224,14 +224,16 @@ body {
 /* ===== Section titles ===== */
 .section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
 .section-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 20px; }
+.industry-section { margin-bottom: 24px; }
+.industry-section-label { font-size: 15px; font-weight: 800; color: var(--text); padding: 10px 0 4px; border-bottom: 2px solid var(--teal); margin-bottom: 4px; display: inline-block; }
 /* Booth map */
 .map-container { background: #1a1a2e; border-radius: var(--radius); padding: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .map-title { color: #e0e0e0; font-size: 11px; font-weight: 600; text-align: center; margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; }
 .map-legend { display: flex; gap: 14px; margin-bottom: 16px; font-size: 12px; font-weight: 600; justify-content: center; }
 .legend-item { display: flex; align-items: center; gap: 5px; color: var(--text-sub); }
 .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
-.legend-dot.planned { background: var(--accent); }
-.legend-dot.visited { background: var(--success); }
+.legend-dot.planned { background: var(--blue); }
+.legend-dot.visited { background: var(--teal); }
 .legend-dot.default { background: #334155; }
 .map-area { margin-bottom: 16px; position: relative; }
 .map-area-label { font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; padding-left: 2px; letter-spacing: 1px; }
@@ -241,16 +243,16 @@ body {
 .map-cell { width: 52px; min-height: 52px; border-radius: 6px; padding: 4px 2px; text-align: center; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 2px solid transparent; position: relative; }
 .map-cell.empty { visibility: hidden; }
 .map-cell.default { background: #1e293b; border-color: #334155; }
-.map-cell.planned { background: #134e4a; border-color: var(--teal); box-shadow: 0 0 8px rgba(93,220,207,0.3); }
-.map-cell.visited { background: #052e16; border-color: var(--success); box-shadow: 0 0 8px rgba(34,197,94,0.3); }
+.map-cell.planned { background: #172554; border-color: var(--blue); box-shadow: 0 0 8px rgba(48,182,254,0.3); }
+.map-cell.visited { background: #134e4a; border-color: var(--teal); box-shadow: 0 0 8px rgba(93,220,207,0.3); }
 .map-cell:active { transform: scale(0.92); }
 .map-cell .mc-num { font-size: 14px; font-weight: 800; }
 .map-cell.default .mc-num { color: #64748b; }
-.map-cell.planned .mc-num { color: var(--teal); }
-.map-cell.visited .mc-num { color: var(--success); }
+.map-cell.planned .mc-num { color: var(--blue); }
+.map-cell.visited .mc-num { color: var(--teal); }
 .map-cell .mc-name { font-size: 7px; line-height: 1.1; color: #94a3b8; word-break: break-all; max-height: 16px; overflow: hidden; }
-.map-cell.planned .mc-name { color: #99f6e4; font-weight: 700; }
-.map-cell.visited .mc-name { color: #bbf7d0; font-weight: 700; }
+.map-cell.planned .mc-name { color: #93c5fd; font-weight: 700; }
+.map-cell.visited .mc-name { color: #99f6e4; font-weight: 700; }
 .map-aisle { height: 8px; background: repeating-linear-gradient(90deg, transparent, transparent 8px, #334155 8px, #334155 10px); margin: 8px 0; border-radius: 2px; opacity: 0.5; }
 .map-entrance { text-align: center; color: #94a3b8; font-size: 10px; font-weight: 700; letter-spacing: 2px; margin-top: 8px; padding: 6px; border-top: 2px dashed #334155; }
 .section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
@@ -315,7 +317,7 @@ body {
   </div>
 
   <!-- Welcome -->
-  <div class="screen active" id="screenWelcome">
+  <div class="screen" id="screenWelcome">
     <div class="welcome-hero">
       <div class="icon"><i data-lucide="compass" style="width:56px;height:56px;"></i></div>
       <h2>自分を知って、<br>ブースを回ろう</h2>
@@ -582,7 +584,10 @@ async function bootApp() {
       renderQuestion(nextQ);
     }
   }
-  // else: 新規ユーザー → Welcome画面のまま
+  else {
+    // 新規ユーザー → Welcome画面を表示
+    showScreen('screenWelcome');
+  }
 }
 
 // ページ読み込み時に起動
@@ -839,7 +844,7 @@ var plannedCompanies = {};
 var visitStatus = {};
 var totalQuestions = 7;
 var allQuestions = [];
-var VISIT_GOAL = 15;
+var VISIT_GOAL = 10;
 
 function startWork() {
   allQuestions = EPISODE_1.concat(EPISODE_2);
@@ -1116,26 +1121,51 @@ function renderBoothList() {
   var selKeys = Object.keys(selectedIndustries);
   if (selKeys.length === 0) selKeys = getUniqueIndustries();
 
-  var html = '';
+  // 業種ごとにグルーピング
+  var groups = {};
   selKeys.forEach(function(ind) {
     var items = displayCompanies.filter(function(item){
       return item.company.industry === ind && !plannedCompanies[item.company.id];
     });
     items.sort(function(a,b){ return b.score - a.score; });
     var top5 = items.slice(0, 5);
-    if (top5.length === 0) return;
-
-    html += '<div class="industry-group open">';
-    html += '<div class="industry-group-header" onclick="toggleIndustryGroup(this.parentElement)">';
-    html += '<span>'+ind+'<span class="ig-count">（'+top5.length+'社）</span></span>';
-    html += '<span class="ig-arrow"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></span></div>';
-    html += '<div class="industry-group-body"><div class="hscroll-row">';
-    top5.forEach(function(item){ html += renderSummaryCard(item); });
-    html += '</div></div></div>';
+    if (top5.length > 0) groups[ind] = top5;
   });
 
-  if (!html) html = '<div style="text-align:center;padding:40px;color:var(--text-sub);">すべての企業を「いく予定」に追加しました！</div>';
+  var groupKeys = Object.keys(groups);
+
+  // フィルタチップ（アンカーリンク）
+  var html = '<div class="filter-row" id="boothFilterRow">';
+  groupKeys.forEach(function(ind, i) {
+    html += '<div class="filter-chip" onclick="scrollToIndustry('+i+')">'+ind+'（'+groups[ind].length+'）</div>';
+  });
+  html += '</div>';
+
+  // 業種ごとのセクション + 横スクロール
+  groupKeys.forEach(function(ind, i) {
+    html += '<div class="industry-section" id="ind_'+i+'">';
+    html += '<div class="industry-section-label">'+ind+'</div>';
+    html += '<div class="hscroll-row">';
+    groups[ind].forEach(function(item){ html += renderSummaryCard(item); });
+    html += '</div></div>';
+  });
+
+  if (groupKeys.length === 0) {
+    html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">すべての企業を「いく予定」に追加しました！</div>';
+  }
+
   document.getElementById('boothListContainer').innerHTML = html;
+}
+
+function scrollToIndustry(idx) {
+  var el = document.getElementById('ind_'+idx);
+  if (!el) return;
+  var headerH = document.querySelector('.header') ? document.querySelector('.header').offsetHeight : 0;
+  var tabsH = document.querySelector('.top-tabs:not(.hidden)') ? document.querySelector('.top-tabs:not(.hidden)').offsetHeight : 0;
+  var offset = headerH + tabsH + 16;
+  var rect = el.getBoundingClientRect();
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  window.scrollTo({ top: rect.top + scrollTop - offset, behavior: 'smooth' });
 }
 
 function getUniqueIndustries() {
