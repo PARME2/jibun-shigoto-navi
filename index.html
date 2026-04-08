@@ -255,6 +255,19 @@ body {
 .map-cell.visited .mc-name { color: #99f6e4; font-weight: 700; }
 .map-aisle { height: 8px; background: repeating-linear-gradient(90deg, transparent, transparent 8px, #334155 8px, #334155 10px); margin: 8px 0; border-radius: 2px; opacity: 0.5; }
 .map-entrance { text-align: center; color: #94a3b8; font-size: 10px; font-weight: 700; letter-spacing: 2px; margin-top: 8px; padding: 6px; border-top: 2px dashed #334155; }
+/* Map popup */
+.map-popup-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+.map-popup-overlay.active { display: flex; }
+.map-popup { background: var(--card); border-radius: var(--radius) var(--radius) 0 0; width: 100%; max-width: 430px; padding: 24px 20px 28px; animation: popupIn 0.25s ease; }
+@keyframes popupIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.map-popup-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.map-popup-booth { width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: #fff; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.map-popup-info { flex: 1; }
+.map-popup-name { font-size: 17px; font-weight: 800; line-height: 1.3; }
+.map-popup-work { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 2px; }
+.map-popup-pr { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 16px; }
+.map-popup-actions { display: flex; gap: 10px; }
+.map-popup-actions .btn { flex: 1; padding: 14px; font-size: 14px; }
 .section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
 .section-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 16px; }
 .fade-in { animation: fadeIn 0.3s ease; }
@@ -313,7 +326,6 @@ body {
     <button class="tab-item active" onclick="switchTab('booth')" id="navBooth"><i data-lucide="sparkles" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>おすすめ</button>
     <button class="tab-item" onclick="switchTab('map')" id="navMap"><i data-lucide="map" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>マップ</button>
     <button class="tab-item" onclick="switchTab('all')" id="navAll"><i data-lucide="building-2" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>全企業</button>
-    <button class="tab-item" onclick="switchTab('visit')" id="navVisit"><i data-lucide="check-circle" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>チャレンジ</button>
   </div>
 
   <!-- Welcome -->
@@ -376,11 +388,17 @@ body {
 
   <!-- Booth Map -->
   <div class="screen" id="screenMap">
+    <div id="mapGoalContainer"></div>
     <div class="map-legend">
       <span class="legend-item"><span class="legend-dot planned"></span>いく予定</span>
       <span class="legend-item"><span class="legend-dot visited"></span>訪問済</span>
     </div>
     <div id="boothMapContainer"></div>
+  </div>
+
+  <!-- Map Popup -->
+  <div class="map-popup-overlay" id="mapPopup" onclick="closeMapPopup(event)">
+    <div class="map-popup" id="mapPopupContent"></div>
   </div>
 
   <!-- Company Detail -->
@@ -390,10 +408,6 @@ body {
   </div>
 
   <!-- Visit -->
-  <div class="screen" id="screenVisit">
-    <div id="visitGoalContainer"></div>
-    <div id="visitListContainer"></div>
-  </div>
 </div>
 
 <script>
@@ -1364,7 +1378,7 @@ function showCompanyDetail(companyId) {
 
 function goBackFromDetail() {
   hideAllScreens();
-  var screenMap = {booth:'screenBooth', map:'screenMap', all:'screenAllCompanies', visit:'screenVisit'};
+  var screenMap = {booth:'screenBooth', map:'screenMap', all:'screenAllCompanies'};
   showScreen(screenMap[lastTab] || 'screenBooth');
 }
 
@@ -1456,12 +1470,11 @@ function switchTab(tab){
   else if(tab==='booth'){ showScreen('screenBooth'); renderBoothList(); lastTab='booth'; }
   else if(tab==='map'){ showScreen('screenMap'); renderBoothMap(); lastTab='map'; }
   else if(tab==='all'){ showScreen('screenAllCompanies'); renderAllCompanies(); lastTab='all'; }
-  else if(tab==='visit'){ showScreen('screenVisit'); renderVisitList(); lastTab='visit'; }
   if(tab!=='profile') setActiveTab(tab);
 }
 function setActiveTab(tab){
   document.querySelectorAll('.tab-item').forEach(function(el){el.classList.remove('active');});
-  var map = {booth:'navBooth', map:'navMap', all:'navAll', visit:'navVisit'};
+  var map = {booth:'navBooth', map:'navMap', all:'navAll'};
   var el = document.getElementById(map[tab]);
   if(el) el.classList.add('active');
 }
@@ -1471,6 +1484,20 @@ function showTabs(){
 }
 
 function renderBoothMap() {
+  // 進捗バー
+  var visitedCount = getVisitedCount();
+  var target = Math.max(VISIT_GOAL, Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length);
+  var pct = target > 0 ? Math.round((visitedCount / target) * 100) : 0;
+  if (pct > 100) pct = 100;
+  var goalHtml = '<div class="visit-goal">';
+  goalHtml += '<div class="goal-text"><i data-lucide="target" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> 目標：'+target+'社のブースを回ろう！</div>';
+  goalHtml += '<div class="visit-progress-text" style="margin-bottom:8px;"><strong>'+visitedCount+'</strong> / '+target+'社 訪問済';
+  if (visitedCount >= target) goalHtml += ' <i data-lucide="party-popper" style="width:16px;height:16px;vertical-align:-3px;"></i> 達成！';
+  goalHtml += '</div>';
+  goalHtml += '<div class="visit-progress-bar"><div class="visit-progress-fill" style="width:'+pct+'%"></div></div>';
+  goalHtml += '</div>';
+  document.getElementById('mapGoalContainer').innerHTML = goalHtml;
+
   // 会社をID→objectでルックアップ
   var byId = {};
   COMPANIES.forEach(function(c){ byId[c.id] = c; });
@@ -1483,7 +1510,7 @@ function renderBoothMap() {
     var state = isVisited ? 'visited' : isPlanned ? 'planned' : 'default';
     var shortName = c.name.replace(/株式会社|有限会社|（株）|㈱|株式|会社| |　/g, '').substring(0, 5);
     var showName = (isPlanned || isVisited);
-    return '<div class="map-cell '+state+'" onclick="showCompanyDetail('+c.id+')">'
+    return '<div class="map-cell '+state+'" onclick="mapCellTap('+c.id+')">'
       + '<div class="mc-num">'+c.id+'</div>'
       + (showName ? '<div class="mc-name">'+shortName+'</div>' : '')
       + '</div>';
@@ -1659,7 +1686,75 @@ function renderVisitList(){
 function toggleVisit(id){
   visitStatus[id] = !visitStatus[id];
   saveActualVisit(id, visitStatus[id], visitStatus[id+'_memo'] || '');
-  renderVisitList();
+}
+
+function mapCellTap(id) {
+  var c = COMPANIES.find(function(co){ return co.id === id; });
+  if (!c) return;
+  var isVisited = visitStatus[c.id];
+  var matchedValues = [];
+  topBranches.forEach(function(val){ if(c.valueTags.indexOf(val)!==-1) matchedValues.push(val); });
+  var connectionLine = '';
+  if (matchedValues.length > 0) {
+    connectionLine = c.matchTexts[matchedValues[0]] || c.pr;
+  }
+
+  var html = '';
+
+  // 画像
+  if (c.image) {
+    html += '<div style="width:100%;height:140px;border-radius:var(--radius-sm);overflow:hidden;margin-bottom:14px;position:relative;">';
+    html += '<img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;">';
+    html += '<span style="position:absolute;top:8px;left:8px;background:rgba(13,148,136,0.9);color:#fff;font-size:13px;font-weight:900;padding:4px 10px;border-radius:var(--radius-sm);backdrop-filter:blur(4px);">No.'+(c.booth||c.id)+'</span>';
+    html += '</div>';
+  }
+
+  // 企業名 + 仕事内容
+  html += '<div style="margin-bottom:12px;">';
+  html += '<div style="font-size:17px;font-weight:800;margin-bottom:4px;">'+c.name+'</div>';
+  if (c.work) html += '<div style="font-size:14px;font-weight:800;color:var(--primary);margin-bottom:6px;">'+c.work+'</div>';
+  html += '</div>';
+
+  // PR
+  if (c.pr) html += '<div style="font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:12px;">'+c.pr+'</div>';
+
+  // タグ
+  html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">';
+  html += '<span class="sc-tag sc-tag-industry">'+c.industry+'</span>';
+  if (matchedValues.length > 0) {
+    matchedValues.slice(0,2).forEach(function(val) {
+      var b = BRANCHES[val];
+      if (b) html += '<span class="sc-tag sc-tag-type">'+branchIcon(b.icon,10)+b.label+'</span>';
+    });
+  }
+  if (LOCAL_FLAG && c.localTag) html += '<span class="sc-tag sc-tag-local"><i data-lucide="map-pin" style="width:10px;height:10px;vertical-align:-1px;margin-right:1px;"></i> 地元</span>';
+  html += '</div>';
+
+  // ボタン（縦並び、同じ幅）
+  html += '<div style="display:flex;flex-direction:column;gap:10px;">';
+  if (isVisited) {
+    html += '<button class="btn btn-primary" style="opacity:0.7;" onclick="toggleMapVisit('+c.id+')"><i data-lucide="check" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i>訪問済み（タップで取消）</button>';
+  } else {
+    html += '<button class="btn btn-accent" onclick="toggleMapVisit('+c.id+')">訪問済みにする</button>';
+  }
+  html += '<button class="btn btn-outline" onclick="showCompanyDetail('+c.id+');closeMapPopup();">詳しく見る</button>';
+  html += '</div>';
+
+  document.getElementById('mapPopupContent').innerHTML = html;
+  document.getElementById('mapPopup').classList.add('active');
+  setTimeout(initIcons, 50);
+}
+
+function toggleMapVisit(id) {
+  visitStatus[id] = !visitStatus[id];
+  saveActualVisit(id, visitStatus[id], visitStatus[id+'_memo'] || '');
+  closeMapPopup();
+  renderBoothMap();
+}
+
+function closeMapPopup(e) {
+  if (e && e.target !== document.getElementById('mapPopup')) return;
+  document.getElementById('mapPopup').classList.remove('active');
 }
 function saveMemo(id,val){
   visitStatus[id+'_memo']=val;
