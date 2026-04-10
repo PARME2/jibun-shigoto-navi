@@ -139,6 +139,15 @@ body {
 .profile-stat-num { font-size: 28px; font-weight: 900; color: var(--primary); line-height: 1; }
 .profile-stat-label { font-size: 11px; color: var(--text-sub); margin-top: 4px; font-weight: 700; }
 .work-style-tag { display: inline-block; padding: 8px 14px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 800; margin: 0 6px 8px 0; background: var(--primary-light); color: var(--primary); }
+/* Visit Report */
+.report-summary { background: var(--primary-light); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; text-align: center; }
+.report-summary-num { font-size: 32px; font-weight: 900; color: var(--primary); line-height: 1; }
+.report-summary-label { font-size: 12px; color: var(--text-sub); font-weight: 700; margin-top: 4px; }
+.report-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+.report-card:active { transform: scale(0.98); }
+.report-row { display: flex; align-items: center; gap: 10px; }
+.report-name { font-size: 14px; font-weight: 700; flex: 1; }
+.report-memo { font-size: 12px; color: var(--text-mid); line-height: 1.5; margin-top: 6px; padding-left: 30px; }
 
 /* ===== Booth cards (all companies / challenge) ===== */
 .booth-card { background: var(--card); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; transition: all 0.3s; border: 2px solid var(--border); }
@@ -286,6 +295,16 @@ body {
 .map-popup-pr { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 16px; }
 .map-popup-actions { display: flex; gap: 10px; }
 .map-popup-actions .btn { flex: 1; padding: 14px; font-size: 14px; }
+/* Visit form */
+.visit-form-label { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+.interest-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.interest-btn { flex: 1; padding: 14px 8px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--card); cursor: pointer; transition: all 0.15s; text-align: center; font-family: inherit; }
+.interest-btn:active { transform: scale(0.95); }
+.interest-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+.interest-btn .ib-emoji { font-size: 24px; margin-bottom: 4px; }
+.interest-btn .ib-label { font-size: 11px; font-weight: 800; color: var(--text); }
+.visit-memo-input { width: 100%; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; resize: none; height: 70px; font-family: inherit; margin-bottom: 16px; }
+.visit-memo-input:focus { outline: none; border-color: var(--primary); }
 .section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
 .section-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 16px; }
 .fade-in { animation: fadeIn 0.3s ease; }
@@ -418,7 +437,11 @@ body {
     <div id="companyDetailContainer"></div>
   </div>
 
-  <!-- Visit -->
+  <!-- Visit Report -->
+  <div class="screen" id="screenVisitReport">
+    <button class="back-btn" onclick="goBackToProfile()"><i data-lucide="arrow-left" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i> 戻る</button>
+    <div id="visitReportContainer"></div>
+  </div>
 </div>
 
 <script>
@@ -495,13 +518,14 @@ async function removePlannedVisit(companyId) {
 }
 
 // 実訪問を保存
-async function saveActualVisit(companyId, visited, memo) {
+async function saveActualVisit(companyId, visited, memo, interest) {
   if (!currentUserId) return;
   if (visited) {
     await sb.from('actual_visits').upsert({
       user_id: currentUserId,
       company_id: companyId,
-      memo: memo || ''
+      memo: memo || '',
+      interest_level: interest || null
     }, { onConflict: 'user_id,company_id' });
   } else {
     await sb.from('actual_visits').delete()
@@ -569,6 +593,7 @@ async function restoreSession() {
     savedVisits.forEach(function(v) {
       visitStatus[v.company_id] = true;
       if (v.memo) visitStatus[v.company_id + '_memo'] = v.memo;
+      if (v.interest_level) visitStatus[v.company_id + '_interest'] = v.interest_level;
     });
   }
 
@@ -771,7 +796,7 @@ var DEEPDIVE = {
 // ===== 企業データ（60社）=====
 var COMPANIES = [
   { id:1, booth:'1', work:'建設機械を点検・整備する仕事', image:'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=200&fit=crop&q=80', name:'株式会社南陽レンテック', industry:'不動産・物品賃貸業', jobs:["整備職（建設機械）"], pr:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！', detail:'パワーショベルやブルドーザーなど、様々な工事現場で必要とされる建設機械のレンタルを通じて、大分県を中心とした北部九州の社会基盤の整備や生産活動に貢献しています。二十歳になったばかりの社員から整備歴30年を超えるベテランまで在籍しており、堅苦しい雰囲気はなく、各営業所が一つの家族のような雰囲気です。', atmosphere:'お客様に貸し出す前や返却された建設機械の点検や整備、修理が主な業務になります。新入社員の方は、研修や座学を通じて建設機械の種類や名称、仕組みの理解を深めつつ、まずは機械の洗車や清掃、点検など比較的簡単', valueTags:["craft", "growth"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！' },
-  { id:2, booth:'2', work:'自動車シートを製造する仕事', image:'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=400&h=200&fit=crop&q=80', name:'富双シート株式会社', industry:'製造業', jobs:["製造職"], pr:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！', detail:'弊社は、創業20年以上の自動車内装部品製造会社です。 主な事業内容は自動車シートの製造、その他内装部品の製造となります。', atmosphere:'大人気　地元スポーツチームの観戦チケット無料配布（抽選） 大分トリニータとソフトバンクホークスを応援しています☆', valueTags:["team", "craft", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！' },
+  { id:2, booth:'2', work:'自動車シートを製造する仕事', image:'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=400&h=200&fit=crop&q=80', name:'富双シート株式会社', industry:'製造業', jobs:["製造職"], pr:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！', detail:'弊社は、創業20年以上の自動車内装部品製造会社です。 主な事業内容は自動車シートの製造、その他内装部品の製造となります。', atmosphere:'大人気　地元スポーツチームの観戦チケット無料配布（抽選） 大分トリニータとソフトバンクホークスを応援しています', valueTags:["team", "craft", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！' },
   { id:3, booth:'3', work:'自動倉庫のラックを製作する仕事', image:'https://images.unsplash.com/photo-1567789884554-0b844b597180?w=400&h=200&fit=crop&q=80', name:'有限会社東栄工業所', industry:'製造業', jobs:["製造職"], pr:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！', detail:'立体自動倉庫の鋼製ラックを製作、国内全域に納入している会社です。 最新工場やロボット導入で生産性を高め、日本のマテリアルハンドリングを支える高品質なモノづくりを行っています。', atmosphere:'ラックの組立・溶接・塗装を基礎から習得し、設計、生産管理にも挑戦可能です。 最新設備やロボットを活用しながら、技術を段階的に身につけられる環境です。', valueTags:["craft", "analyze", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！' },
   { id:4, booth:'4', work:'道路や橋をつくる土木工事の仕事', image:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop&q=80', name:'株式会社 久保組', industry:'建設業', jobs:["土木技術者", "土木技術者", "土木ICTスタッフ"], pr:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。', detail:'青の洞門や競秀峰が名所の本耶馬渓町にあります。「地域と共に、人に貢献」を理念に、公共工事（道路、河川、橋、砂防など）だけでなく、地域の方々の声を聞き、困りごとを解消するために民間工事にも積極的に取り組んでいます。想定を超える災害が起きる時代、地域の方々の暮らしを守るため、日々技術を磨いています。', atmosphere:'入社1年目：見習い（工程や施工方法、専門用語などを実地で学ぶ）　2～3年：現場代理人（主任技術者の指示のもと施工管理を行う）　4～7年：主任技術者（資格を取得し、現場を管理する）　8年目～監理技術者（', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。' },
   { id:5, booth:'5', work:'自動車部品を運搬・保管する仕事', image:'https://images.unsplash.com/photo-1583912267550-d974311a9a6e?w=400&h=200&fit=crop&q=80', name:'名古屋東部陸運株式会社', industry:'運輸・郵便業', jobs:["技術職"], pr:'大分から地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。', detail:'大分営業所では、自動車関連物流を中心に地域の産業を支える物流業務を展開しています。工場から販売までをつなぐ重要な役割を担い、安全・確実な輸送と保管で社会を支えるインフラとして機能しています。若い社員も多く活躍しており、物流の専門知識と技術を身につけながら成長できる職場です。', atmosphere:'素直に学ぶ姿勢を大切にし、まじめに仕事に向き合いながら、新しいことにも前向きに挑戦できる人を求めています。仲間と協力しながら成長し、地域や社会を支える物流の仕事に取り組める方を歓迎します。', valueTags:["team", "growth"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'大分から地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。' },
@@ -1127,6 +1152,7 @@ function renderProfileContent() {
 
   // ナビゲーション
   html += '<button class="btn btn-accent" onclick="goToBooth()" style="margin-bottom:12px;">おすすめを見る</button>';
+  html += '<button class="btn btn-outline" onclick="showVisitReport()" style="margin-bottom:12px;"><i data-lucide="file-text" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i>訪問レポートを見る</button>';
 
   // やり直し
   html += '<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">';
@@ -1815,8 +1841,67 @@ function mapCellTap(id) {
 }
 
 function toggleMapVisit(id) {
-  visitStatus[id] = !visitStatus[id];
-  saveActualVisit(id, visitStatus[id], visitStatus[id+'_memo'] || '');
+  // 既に訪問済み → 取り消し
+  if (visitStatus[id]) {
+    visitStatus[id] = false;
+    saveActualVisit(id, false, '');
+    closeMapPopup();
+    renderBoothMap();
+    return;
+  }
+  // 未訪問 → フォーム表示
+  showVisitForm(id);
+}
+
+function showVisitForm(id) {
+  var c = COMPANIES.find(function(co){ return co.id === id; });
+  if (!c) return;
+
+  var html = '';
+  html += '<div style="font-size:18px;font-weight:800;margin-bottom:6px;">'+c.name+'</div>';
+  html += '<div style="font-size:13px;color:var(--text-sub);margin-bottom:18px;">訪問お疲れさま！どうだった？</div>';
+
+  // 興味度（三択）
+  html += '<div class="visit-form-label">興味を持った？</div>';
+  html += '<div class="interest-row">';
+  html += '<button class="interest-btn" data-interest="high" onclick="selectInterest(this,\'high\')"><i data-lucide="star" style="width:26px;height:26px;color:var(--teal);"></i><div class="ib-label">すごく</div></button>';
+  html += '<button class="interest-btn" data-interest="mid" onclick="selectInterest(this,\'mid\')"><i data-lucide="thumbs-up" style="width:26px;height:26px;color:var(--blue);"></i><div class="ib-label">まあまあ</div></button>';
+  html += '<button class="interest-btn" data-interest="low" onclick="selectInterest(this,\'low\')"><i data-lucide="minus-circle" style="width:26px;height:26px;color:var(--text-sub);"></i><div class="ib-label">あんまり</div></button>';
+  html += '</div>';
+
+  // 感想メモ
+  html += '<div class="visit-form-label">感想（任意）</div>';
+  html += '<textarea class="visit-memo-input" id="visitMemoInput" placeholder="例：雰囲気が良かった、もっと知りたい…"></textarea>';
+
+  // ボタン
+  html += '<div style="display:flex;flex-direction:column;gap:10px;">';
+  html += '<button class="btn btn-accent" id="visitSubmitBtn" onclick="submitVisit('+c.id+')" disabled style="opacity:0.5;">訪問済みにする</button>';
+  html += '<button class="btn btn-outline" onclick="closeMapPopup()">キャンセル</button>';
+  html += '</div>';
+
+  document.getElementById('mapPopupContent').innerHTML = html;
+  document.getElementById('mapPopup').classList.add('active');
+  setTimeout(initIcons, 50);
+}
+
+var _selectedInterest = '';
+function selectInterest(btn, level) {
+  _selectedInterest = level;
+  document.querySelectorAll('.interest-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  var submit = document.getElementById('visitSubmitBtn');
+  submit.disabled = false;
+  submit.style.opacity = '1';
+}
+
+function submitVisit(id) {
+  if (!_selectedInterest) return;
+  var memo = document.getElementById('visitMemoInput').value || '';
+  visitStatus[id] = true;
+  visitStatus[id+'_memo'] = memo;
+  visitStatus[id+'_interest'] = _selectedInterest;
+  saveActualVisit(id, true, memo, _selectedInterest);
+  _selectedInterest = '';
   closeMapPopup();
   renderBoothMap();
 }
@@ -1867,6 +1952,69 @@ function restartAnalysis() {
   document.getElementById('progressBar').style.width = '0%';
   showScreen('screenQuestions');
   renderQuestion(0);
+}
+
+// ===== Visit Report =====
+var INTEREST_CONF = {
+  high: { icon: 'star', label: 'すごく', color: 'var(--teal)' },
+  mid:  { icon: 'thumbs-up', label: 'まあまあ', color: 'var(--blue)' },
+  low:  { icon: 'minus-circle', label: 'あんまり', color: 'var(--text-sub)' }
+};
+
+function showVisitReport() {
+  var visitedIds = [];
+  COMPANIES.forEach(function(c){ if (visitStatus[c.id]) visitedIds.push(c.id); });
+
+  var counts = { high: 0, mid: 0, low: 0 };
+  visitedIds.forEach(function(id) {
+    var lv = visitStatus[id+'_interest'] || 'mid';
+    if (counts[lv] !== undefined) counts[lv]++;
+  });
+
+  var html = '<div class="section-title" style="margin-bottom:16px;">訪問レポート</div>';
+
+  // サマリ
+  html += '<div class="report-summary">';
+  html += '<div class="report-summary-num">'+visitedIds.length+'</div>';
+  html += '<div class="report-summary-label">社 訪問しました</div>';
+  html += '</div>';
+
+  if (visitedIds.length === 0) {
+    html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">まだ訪問記録がありません</div>';
+  } else {
+    var order = { high: 0, mid: 1, low: 2 };
+    visitedIds.sort(function(a, b){
+      var la = visitStatus[a+'_interest'] || 'mid';
+      var lb = visitStatus[b+'_interest'] || 'mid';
+      return order[la] - order[lb];
+    });
+
+    visitedIds.forEach(function(id) {
+      var c = COMPANIES.find(function(co){ return co.id === id; });
+      if (!c) return;
+      var interest = visitStatus[id+'_interest'] || 'mid';
+      var memo = visitStatus[id+'_memo'] || '';
+      var conf = INTEREST_CONF[interest];
+
+      html += '<div class="report-card" onclick="showCompanyDetail('+c.id+')">';
+      html += '<div class="report-row">';
+      html += '<i data-lucide="'+conf.icon+'" style="width:20px;height:20px;color:'+conf.color+';flex-shrink:0;"></i>';
+      html += '<div class="report-name">'+c.name+'</div>';
+      html += '</div>';
+      if (memo) html += '<div class="report-memo">'+memo+'</div>';
+      html += '</div>';
+    });
+  }
+
+  document.getElementById('visitReportContainer').innerHTML = html;
+  hideAllScreens();
+  showScreen('screenVisitReport');
+}
+
+function goBackToProfile() {
+  hideAllScreens();
+  document.getElementById('topTabs').classList.add('hidden');
+  showScreen('screenProfile');
 }
 
 // Lucide icons init - call after any DOM update that adds lucide icons
