@@ -41,6 +41,40 @@ body {
   font-size: 16px;
 }
 .app { width: 100%; max-width: 430px; min-height: 100vh; background: var(--bg); position: relative; overflow-x: hidden; }
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+  .app { max-width: 720px; }
+  .screen { padding: 32px 40px 48px; }
+  .welcome-hero { padding: 60px 20px 40px; }
+  .welcome-hero h2 { font-size: 32px; }
+  .welcome-hero p { font-size: 17px; }
+  .question-card { padding: 32px 28px; }
+  .q-text { font-size: 22px; }
+  .choice { font-size: 17px; padding: 20px 22px; min-height: 60px; }
+  .value-cards-section h2 { font-size: 28px; }
+  .vc-header { padding: 24px; }
+  .value-card .title { font-size: 28px; }
+  .ptc-header { padding: 20px; }
+  .ptc-name { font-size: 22px; }
+  .section-title { font-size: 26px; }
+  .summary-card { width: 320px; max-width: 360px; }
+  .sc-img { height: 180px; }
+  .booth-name { font-size: 17px; }
+  .booth-connection { font-size: 14px; }
+  .industry-section-label { font-size: 17px; }
+  .btn { padding: 20px; font-size: 18px; }
+  .header h1 { font-size: 22px; }
+  .tab-item { font-size: 14px; padding: 16px 4px 14px; }
+  .map-popup { max-width: 560px; border-radius: var(--radius); margin-bottom: 40px; }
+  .map-popup-overlay { align-items: center; padding: 20px; }
+}
+/* Larger tablet / small desktop (1024px+) */
+@media (min-width: 1024px) {
+  .app { max-width: 960px; }
+  .screen { padding: 40px 60px 56px; }
+  .summary-card { width: 340px; }
+  .hscroll-row { gap: 20px; }
+}
 .header { background: var(--bg); color: var(--text); padding: 14px 20px; position: sticky; top: 0; z-index: 100; }
 .header h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: var(--primary); }
 .header .subtitle { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
