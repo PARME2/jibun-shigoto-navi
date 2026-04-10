@@ -421,16 +421,10 @@ body {
       <div id="valueCardsContainer"></div>
     </div>
     <div id="confirmActions" style="margin-top:24px; display:none;">
-      <button class="btn btn-accent" onclick="goToIndustrySelect()">業種を選ぶ</button>
+      <button class="btn btn-accent" onclick="goToBoothDirect()">おすすめ企業を見る</button>
     </div>
   </div>
 
-  <!-- Industry Select -->
-  <div class="screen" id="screenIndustry">
-    <div class="section-title">興味のある業種</div>
-    <div id="industryList"></div>
-    <button class="btn btn-accent" id="industryNextBtn" onclick="goToBoothFromIndustry()" style="margin-top:20px;opacity:0.5;pointer-events:none;">おすすめを見る</button>
-  </div>
 
   <!-- Profile -->
   <div class="screen" id="screenProfile">
@@ -656,17 +650,12 @@ async function bootApp() {
     // 途中まで回答 → 続きの質問へ
     var nextQ = 0;
     for (var i = 0; i < 7; i++) { if (answers[i]) nextQ = i + 1; }
-    allQuestions = EPISODE_1.concat(EPISODE_2);
+    allQuestions = INTRO_Q.concat(EPISODE_1).concat(EPISODE_2);
     hideAllScreens();
     document.getElementById('topTabs').classList.add('hidden');
     document.getElementById('progressWrap').style.display = 'block';
     showScreen('screenQuestions');
-    if (nextQ >= 6) {
-      generateDeepDive();
-      renderQuestion(6);
-    } else {
-      renderQuestion(nextQ);
-    }
+    renderQuestion(nextQ);
   }
   else {
     // 新規ユーザー → Welcome画面を表示
@@ -700,7 +689,20 @@ function branchIcon(name, size) {
 
 var LOCAL_FLAG = false;
 
-// ===== 質問設計：場面＋困難＋行動 × 2エピソード + 深掘り（全7問） =====
+// ===== 質問設計：進路＋場面＋困難＋行動 × 2エピソード（全7問） =====
+var INTRO_Q = [
+  {
+    id: 0, role: 'intro',
+    context: '',
+    text: '卒業後の進路は？',
+    choices: [
+      { text: '就職を考えている', short: '就職希望', tags: [], careerPath: 'job' },
+      { text: '進学を考えている', short: '進学希望', tags: [], careerPath: 'school' },
+      { text: 'まだ決めていない', short: '未定', tags: [], careerPath: 'undecided' }
+    ]
+  }
+];
+
 var EPISODE_1 = [
   {
     id: 1, role: 'scene',
@@ -920,6 +922,7 @@ var ASK_TEMPLATES = {
 // ===== State =====
 var answers = [];
 var branchCounts = { team: 0, support: 0, growth: 0, stable: 0, craft: 0, analyze: 0 };
+var careerPath = '';
 var topBranches = [];
 var subtypeText = '';
 var displayCompanies = [];
@@ -931,7 +934,7 @@ var allQuestions = [];
 var VISIT_GOAL = 10;
 
 function startWork() {
-  allQuestions = EPISODE_1.concat(EPISODE_2);
+  allQuestions = INTRO_Q.concat(EPISODE_1).concat(EPISODE_2);
   hideAllScreens();
   document.getElementById('topTabs').classList.add('hidden');
   showScreen('screenQuestions');
@@ -985,7 +988,10 @@ function selectChoice(qIdx, cIdx) {
 
   if (choice.localFlag) LOCAL_FLAG = true;
 
-  // スコアリング: actionのみ+1（scene/difficultyはスコアなし）
+  // careerPath保存
+  if (choice.careerPath) careerPath = choice.careerPath;
+
+  // スコアリング: actionのみ+1（scene/difficulty/introはスコアなし）
   if (q.role === 'action') {
     (choice.tags || []).forEach(function(t) {
       if (branchCounts.hasOwnProperty(t)) {
@@ -995,15 +1001,8 @@ function selectChoice(qIdx, cIdx) {
   }
 
   setTimeout(function(){
-    if (qIdx === 2) {
-      // エピソード1完了→そのまま次へ
-      renderQuestion(3);
-    } else if (qIdx === 5) {
-      // エピソード2完了（Q4場面→Q5困難→Q6行動）→ 深掘りQ7を生成
-      generateDeepDive();
-      renderQuestion(6);
-    } else if (qIdx === 6) {
-      // Q7（深掘り）完了 → 判定
+    if (qIdx === 6) {
+      // 全7問完了 → 判定
       updateProgress(totalQuestions);
       calculateFinal();
     } else {
@@ -1027,18 +1026,9 @@ function startEpisode2() {
   renderQuestion(3);
 }
 
-function generateDeepDive() {
-  var sorted = Object.keys(branchCounts).sort(function(a,b){ return branchCounts[b]-branchCounts[a]; });
-  var dd = DEEPDIVE[sorted[0]];
-  allQuestions[6] = { id:7, role:'deepdive', context:dd.context, text:dd.text, choices:dd.choices };
-}
-
 function calculateFinal() {
   var sorted = Object.keys(branchCounts).sort(function(a,b){ return branchCounts[b]-branchCounts[a]; });
   topBranches = sorted.slice(0,3);
-  var q7 = answers[6];
-  if (q7 && q7.subtype) subtypeText = q7.subtype;
-  // Supabaseに結果を保存
   saveResults();
   showValueCards();
 }
@@ -1046,8 +1036,8 @@ function calculateFinal() {
 // scene + action の2文セットで引用を構築
 function getEvidenceForBranch(branchKey) {
   var ev = [];
-  // [action_idx, scene_idx] のペア
-  var pairs = [[2, 0], [5, 3]];
+  // [action_idx, scene_idx] のペア (Q0=intro, Q1=scene1, Q3=action1, Q4=scene2, Q6=action2)
+  var pairs = [[3, 1], [6, 4]];
   pairs.forEach(function(pair) {
     var actionA = answers[pair[0]];
     var sceneA = answers[pair[1]];
@@ -1063,7 +1053,7 @@ function getEvidenceForBranch(branchKey) {
   // フォールバック: actionだけでなくscene/difficulty含め全回答からタグ一致を探す
   if (ev.length === 0) {
     // まずscene+actionペアでsceneタグから引用
-    var scenePairs = [[0, 2], [3, 5]];
+    var scenePairs = [[1, 3], [4, 6]];
     scenePairs.forEach(function(pair) {
       var sceneA = answers[pair[0]];
       var actionA = answers[pair[1]];
@@ -1190,7 +1180,6 @@ function renderProfileContent() {
 
   // やり直し
   html += '<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">';
-  html += '<button class="btn btn-outline" onclick="restartIndustry()" style="font-size:14px;padding:14px;">業種選択をやり直す</button>';
   html += '<button class="btn btn-outline" onclick="restartAnalysis()" style="font-size:14px;padding:14px;color:var(--danger);border-color:var(--danger);">自己分析をやり直す</button>';
   html += '</div>';
 
@@ -1206,31 +1195,11 @@ function goToProfile() {
 }
 
 // ===== 業種選択 =====
-function goToIndustrySelect() {
+function goToBoothDirect() {
   calculateAllCompanies();
-  hideAllScreens(); showScreen('screenIndustry');
-  var industries = {};
-  COMPANIES.forEach(function(c){ industries[c.industry] = (industries[c.industry]||0)+1; });
-  var html = '';
-  Object.keys(industries).forEach(function(ind){
-    html += '<div class="industry-chip" onclick="toggleIndustry(this,\''+ind+'\')" data-industry="'+ind+'">'+ind+'（'+industries[ind]+'社）</div>';
-  });
-  document.getElementById('industryList').innerHTML = html;
-}
-
-function toggleIndustry(el, ind) {
-  if (selectedIndustries[ind]) { delete selectedIndustries[ind]; el.classList.remove('selected'); }
-  else { selectedIndustries[ind] = true; el.classList.add('selected'); }
-  var btn = document.getElementById('industryNextBtn');
-  var count = Object.keys(selectedIndustries).length;
-  if (count > 0) { btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
-  else { btn.style.opacity='0.5'; btn.style.pointerEvents='none'; }
-}
-
-function goToBoothFromIndustry() {
-  saveIndustrySelection();
-  hideAllScreens(); showScreen('screenBooth');
+  hideAllScreens();
   showTabs();
+  showScreen('screenBooth');
   setActiveTab('booth');
   renderBoothList();
 }
@@ -1257,9 +1226,10 @@ function goToBooth() {
 }
 
 // 業種別おすすめ表示
+var boothFilter = 'all'; // 'all' or industry name
+
 function renderBoothList() {
-  var selKeys = Object.keys(selectedIndustries);
-  if (selKeys.length === 0) selKeys = getUniqueIndustries();
+  var selKeys = getUniqueIndustries();
 
   // 業種ごとにグルーピング
   var groups = {};
@@ -1274,27 +1244,44 @@ function renderBoothList() {
 
   var groupKeys = Object.keys(groups);
 
-  // フィルタチップ（アンカーリンク）
+  // フィルタチップ
   var html = '<div class="filter-row" id="boothFilterRow">';
+  html += '<div class="filter-chip'+(boothFilter==='all'?' active':'')+'" onclick="setBoothFilter(\'all\')">全業種 TOP5</div>';
   groupKeys.forEach(function(ind, i) {
-    html += '<div class="filter-chip" onclick="scrollToIndustry('+i+')">'+ind+'（'+groups[ind].length+'）</div>';
+    html += '<div class="filter-chip'+(boothFilter===ind?' active':'')+'" onclick="setBoothFilter(\''+ind+'\')">'+ind+'</div>';
   });
   html += '</div>';
 
-  // 業種ごとのセクション + 横スクロール
-  groupKeys.forEach(function(ind, i) {
-    html += '<div class="industry-section" id="ind_'+i+'">';
-    html += '<div class="industry-section-label">'+ind+'</div>';
-    html += '<div class="hscroll-row">';
-    groups[ind].forEach(function(item){ html += renderSummaryCard(item); });
-    html += '</div></div>';
-  });
-
-  if (groupKeys.length === 0) {
-    html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">すべての企業を「いく予定」に追加しました！</div>';
+  if (boothFilter === 'all') {
+    // 全業種からスコア順で上位5社
+    var allItems = displayCompanies.filter(function(item){
+      return !plannedCompanies[item.company.id];
+    });
+    allItems.sort(function(a,b){ return b.score - a.score; });
+    var top5 = allItems.slice(0, 5);
+    if (top5.length > 0) {
+      html += '<div class="hscroll-row">';
+      top5.forEach(function(item){ html += renderSummaryCard(item); });
+      html += '</div>';
+    } else {
+      html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">すべての企業を「いく予定」に追加しました！</div>';
+    }
+  } else {
+    // 特定業種のセクション
+    var items = groups[boothFilter];
+    if (items && items.length > 0) {
+      html += '<div class="hscroll-row">';
+      items.forEach(function(item){ html += renderSummaryCard(item); });
+      html += '</div>';
+    }
   }
 
   document.getElementById('boothListContainer').innerHTML = html;
+}
+
+function setBoothFilter(val) {
+  boothFilter = val;
+  renderBoothList();
 }
 
 function scrollToIndustry(idx) {
@@ -1954,14 +1941,6 @@ function getVisitedCount(){
   return count;
 }
 
-function restartIndustry() {
-  if (!confirm('業種選択をやり直しますか？\n（自己分析の結果やいく予定はそのまま残ります）')) return;
-  selectedIndustries = {};
-  localStorage.removeItem('jibun_navi_industries');
-  hideAllScreens();
-  goToIndustrySelect();
-}
-
 function restartAnalysis() {
   if (!confirm('自己分析を最初からやり直しますか？\n（いく予定や訪問記録はそのまま残ります）')) return;
   answers = [];
@@ -1978,7 +1957,8 @@ function restartAnalysis() {
     sb.from('results').delete().eq('user_id', currentUserId);
     sb.from('users').update({ completed: false, current_question: 0 }).eq('id', currentUserId);
   }
-  allQuestions = EPISODE_1.concat(EPISODE_2);
+  careerPath = '';
+  allQuestions = INTRO_Q.concat(EPISODE_1).concat(EPISODE_2);
   hideAllScreens();
   document.getElementById('topTabs').classList.add('hidden');
   document.getElementById('profileIcon').classList.add('hidden');
