@@ -65,8 +65,6 @@ body {
   .btn { padding: 20px; font-size: 18px; }
   .header h1 { font-size: 22px; }
   .tab-item { font-size: 14px; padding: 16px 4px 14px; }
-  .map-popup { max-width: 560px; border-radius: var(--radius); margin-bottom: 40px; }
-  .map-popup-overlay { align-items: center; padding: 20px; }
 }
 /* Larger tablet / small desktop (1024px+) */
 @media (min-width: 1024px) {
@@ -173,15 +171,6 @@ body {
 .profile-stat-num { font-size: 28px; font-weight: 900; color: var(--primary); line-height: 1; }
 .profile-stat-label { font-size: 11px; color: var(--text-sub); margin-top: 4px; font-weight: 700; }
 .work-style-tag { display: inline-block; padding: 8px 14px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 800; margin: 0 6px 8px 0; background: var(--primary-light); color: var(--primary); }
-/* Visit Report */
-.report-summary { background: var(--primary-light); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; text-align: center; }
-.report-summary-num { font-size: 32px; font-weight: 900; color: var(--primary); line-height: 1; }
-.report-summary-label { font-size: 12px; color: var(--text-sub); font-weight: 700; margin-top: 4px; }
-.report-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
-.report-card:active { transform: scale(0.98); }
-.report-row { display: flex; align-items: center; gap: 10px; }
-.report-name { font-size: 14px; font-weight: 700; flex: 1; }
-.report-memo { font-size: 12px; color: var(--text-mid); line-height: 1.5; margin-top: 6px; padding-left: 30px; }
 
 /* ===== Booth cards (all companies / challenge) ===== */
 .booth-card { background: var(--card); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; transition: all 0.3s; border: 2px solid var(--border); }
@@ -210,24 +199,6 @@ body {
 .vt-2 { background: var(--blue); }
 .vt-3 { background: var(--orange); }
 
-/* ===== Visit / Challenge ===== */
-.visit-goal { background: var(--primary-light); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; text-align: center; }
-.visit-goal .goal-text { font-size: 17px; font-weight: 800; margin-bottom: 12px; color: var(--text); }
-.visit-progress-bar { background: var(--border); height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
-.visit-progress-fill { height: 100%; background: var(--teal); border-radius: 6px; transition: width 0.4s ease; }
-.visit-progress-text { font-size: 14px; color: var(--text-sub); font-weight: 600; }
-.visit-progress-text strong { color: var(--primary); font-size: 16px; }
-.visit-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; border: 2px solid var(--border); transition: border-color 0.2s; }
-.visit-card.visited { border-color: var(--teal); }
-.visit-header { display: flex; align-items: center; gap: 12px; }
-.visit-check { width: 36px; height: 36px; border: 2.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; font-size: 20px; }
-.visit-check.checked { background: var(--teal); border-color: var(--teal); color: #fff; }
-.visit-check:active { transform: scale(0.85); }
-.visit-name { font-size: 15px; font-weight: 800; flex: 1; }
-.visit-reason { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
-.visit-memo { width: 100%; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; resize: none; height: 56px; font-family: inherit; margin-top: 10px; display: none; transition: border-color 0.2s; }
-.visit-card.visited .visit-memo { display: block; }
-.visit-memo:focus { outline: none; border-color: var(--teal); }
 
 /* ===== Profile icon ===== */
 .profile-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
@@ -247,9 +218,8 @@ body {
 .hscroll-row::-webkit-scrollbar { display: none; }
 .summary-card { width: 80vw; max-width: 320px; background: var(--card); border-radius: var(--radius); border: 2px solid var(--border); padding: 0; cursor: pointer; transition: all 0.2s; scroll-snap-align: center; flex-shrink: 0; display: flex; flex-direction: column; overflow: hidden; }
 .summary-card:active { transform: scale(0.97); border-color: var(--teal); }
-.sc-img { width: 100%; height: 140px; background: linear-gradient(135deg, #e0dfd3, #ccc); display: flex; align-items: center; justify-content: center; color: var(--text-sub); font-size: 40px; position: relative; }
+.sc-img { width: 100%; height: 140px; position: relative; overflow: hidden; }
 .sc-img img { width: 100%; height: 100%; object-fit: cover; }
-.sc-img .sc-booth-float { position: absolute; top: 10px; left: 10px; background: rgba(13,148,136,0.9); color: #fff; font-size: 13px; font-weight: 900; padding: 4px 10px; border-radius: var(--radius-sm); backdrop-filter: blur(4px); }
 .sc-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
 .sc-name { font-size: 16px; font-weight: 800; line-height: 1.3; }
 .sc-work { font-size: 14px; font-weight: 800; color: var(--primary); line-height: 1.4; }
@@ -279,66 +249,12 @@ body {
 .filter-chip:active { transform: scale(0.95); }
 .all-company-count { font-size: 13px; color: var(--text-sub); margin-bottom: 12px; font-weight: 600; }
 
-/* ===== Booth badge ===== */
-.booth-badge { display: inline-block; padding: 3px 8px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 900; background: var(--primary); color: #fff; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0; }
 
 /* ===== Section titles ===== */
 .section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
 .section-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 20px; }
 .industry-section { margin-bottom: 24px; }
 .industry-section-label { font-size: 15px; font-weight: 800; color: var(--text); padding: 10px 0 4px; border-bottom: 2px solid var(--teal); margin-bottom: 4px; display: inline-block; }
-/* Booth map */
-.map-container { background: #1a1a2e; border-radius: var(--radius); padding: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.map-title { color: #e0e0e0; font-size: 11px; font-weight: 600; text-align: center; margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; }
-.map-legend { display: flex; gap: 14px; margin-bottom: 16px; font-size: 12px; font-weight: 600; justify-content: center; }
-.legend-item { display: flex; align-items: center; gap: 5px; color: var(--text-sub); }
-.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
-.legend-dot.planned { background: var(--blue); }
-.legend-dot.visited { background: var(--teal); }
-.legend-dot.default { background: #334155; }
-.map-area { margin-bottom: 16px; position: relative; }
-.map-area-label { font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; padding-left: 2px; letter-spacing: 1px; }
-.map-grid { display: grid; gap: 4px; min-width: fit-content; }
-.map-grid.main { grid-template-columns: repeat(7, 52px); }
-.map-grid.sub { grid-template-columns: repeat(5, 52px); }
-.map-cell { width: 52px; min-height: 52px; border-radius: 6px; padding: 4px 2px; text-align: center; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 2px solid transparent; position: relative; }
-.map-cell.empty { visibility: hidden; }
-.map-cell.default { background: #1e293b; border-color: #334155; }
-.map-cell.planned { background: #172554; border-color: var(--blue); box-shadow: 0 0 8px rgba(48,182,254,0.3); }
-.map-cell.visited { background: #134e4a; border-color: var(--teal); box-shadow: 0 0 8px rgba(93,220,207,0.3); }
-.map-cell:active { transform: scale(0.92); }
-.map-cell .mc-num { font-size: 14px; font-weight: 800; }
-.map-cell.default .mc-num { color: #64748b; }
-.map-cell.planned .mc-num { color: var(--blue); }
-.map-cell.visited .mc-num { color: var(--teal); }
-.map-cell .mc-name { font-size: 7px; line-height: 1.1; color: #94a3b8; word-break: break-all; max-height: 16px; overflow: hidden; }
-.map-cell.planned .mc-name { color: #93c5fd; font-weight: 700; }
-.map-cell.visited .mc-name { color: #99f6e4; font-weight: 700; }
-.map-aisle { height: 8px; background: repeating-linear-gradient(90deg, transparent, transparent 8px, #334155 8px, #334155 10px); margin: 8px 0; border-radius: 2px; opacity: 0.5; }
-.map-entrance { text-align: center; color: #94a3b8; font-size: 10px; font-weight: 700; letter-spacing: 2px; margin-top: 8px; padding: 6px; border-top: 2px dashed #334155; }
-/* Map popup */
-.map-popup-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
-.map-popup-overlay.active { display: flex; }
-.map-popup { background: var(--card); border-radius: var(--radius) var(--radius) 0 0; width: 100%; max-width: 430px; padding: 24px 20px 28px; animation: popupIn 0.25s ease; }
-@keyframes popupIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.map-popup-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.map-popup-booth { width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: #fff; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.map-popup-info { flex: 1; }
-.map-popup-name { font-size: 17px; font-weight: 800; line-height: 1.3; }
-.map-popup-work { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 2px; }
-.map-popup-pr { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 16px; }
-.map-popup-actions { display: flex; gap: 10px; }
-.map-popup-actions .btn { flex: 1; padding: 14px; font-size: 14px; }
-/* Visit form */
-.visit-form-label { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
-.interest-row { display: flex; gap: 8px; margin-bottom: 16px; }
-.interest-btn { flex: 1; padding: 14px 8px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--card); cursor: pointer; transition: all 0.15s; text-align: center; font-family: inherit; }
-.interest-btn:active { transform: scale(0.95); }
-.interest-btn.selected { border-color: var(--primary); background: var(--primary-light); }
-.interest-btn .ib-emoji { font-size: 24px; margin-bottom: 4px; }
-.interest-btn .ib-label { font-size: 11px; font-weight: 800; color: var(--text); }
-.visit-memo-input { width: 100%; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; resize: none; height: 70px; font-family: inherit; margin-bottom: 16px; }
-.visit-memo-input:focus { outline: none; border-color: var(--primary); }
 .section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
 .section-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 16px; }
 .fade-in { animation: fadeIn 0.3s ease; }
@@ -395,7 +311,6 @@ body {
   <!-- Top tabs (hidden until results) -->
   <div class="top-tabs hidden" id="topTabs">
     <button class="tab-item active" onclick="switchTab('booth')" id="navBooth"><i data-lucide="sparkles" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>おすすめ</button>
-    <button class="tab-item" onclick="switchTab('map')" id="navMap"><i data-lucide="map" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>マップ</button>
     <button class="tab-item" onclick="switchTab('all')" id="navAll"><i data-lucide="building-2" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>全企業</button>
   </div>
 
@@ -445,19 +360,7 @@ body {
   </div>
 
   <!-- Booth Map -->
-  <div class="screen" id="screenMap">
-    <div id="mapGoalContainer"></div>
-    <div class="map-legend">
-      <span class="legend-item"><span class="legend-dot planned"></span>いく予定</span>
-      <span class="legend-item"><span class="legend-dot visited"></span>訪問済</span>
-    </div>
-    <div id="boothMapContainer"></div>
-  </div>
 
-  <!-- Map Popup -->
-  <div class="map-popup-overlay" id="mapPopup" onclick="closeMapPopup(event)">
-    <div class="map-popup" id="mapPopupContent"></div>
-  </div>
 
   <!-- Company Detail -->
   <div class="screen" id="screenCompanyDetail">
@@ -465,11 +368,6 @@ body {
     <div id="companyDetailContainer"></div>
   </div>
 
-  <!-- Visit Report -->
-  <div class="screen" id="screenVisitReport">
-    <button class="back-btn" onclick="goBackToProfile()"><i data-lucide="arrow-left" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i> 戻る</button>
-    <div id="visitReportContainer"></div>
-  </div>
 </div>
 
 <script>
@@ -479,14 +377,33 @@ var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 var currentUserId = null;
 
-// ユーザーID管理（LocalStorage + Supabase）
+// Cookie helpers
+function setCookie(name, value, days) {
+  var d = new Date();
+  d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+}
+function getCookie(name) {
+  var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+
+// ユーザーID管理（LocalStorage + Cookie + Supabase）
+function saveUserId(id) {
+  localStorage.setItem('jibun_navi_user_id', id);
+  setCookie('jibun_navi_user_id', id, 365);
+}
+function loadUserId() {
+  return localStorage.getItem('jibun_navi_user_id') || getCookie('jibun_navi_user_id') || null;
+}
+
 async function initUser() {
-  var storedId = localStorage.getItem('jibun_navi_user_id');
+  var storedId = loadUserId();
   if (storedId) {
-    // 既存ユーザーの確認
     var { data } = await sb.from('users').select('*').eq('id', storedId).single();
     if (data) {
       currentUserId = data.id;
+      saveUserId(data.id);
       return data;
     }
   }
@@ -494,7 +411,7 @@ async function initUser() {
   var { data, error } = await sb.from('users').insert({}).select().single();
   if (error) { console.error('User create error:', error); return null; }
   currentUserId = data.id;
-  localStorage.setItem('jibun_navi_user_id', data.id);
+  saveUserId(data.id);
   return data;
 }
 
@@ -529,7 +446,7 @@ async function saveResults() {
   await sb.from('users').update({ completed: true }).eq('id', currentUserId);
 }
 
-// いく予定を保存
+// 興味ありを保存
 async function savePlannedVisit(companyId) {
   if (!currentUserId) return;
   await sb.from('planned_visits').upsert({
@@ -538,28 +455,13 @@ async function savePlannedVisit(companyId) {
   }, { onConflict: 'user_id,company_id' });
 }
 
-// いく予定を削除
+// 興味ありを削除
 async function removePlannedVisit(companyId) {
   if (!currentUserId) return;
   await sb.from('planned_visits').delete()
     .eq('user_id', currentUserId).eq('company_id', companyId);
 }
 
-// 実訪問を保存
-async function saveActualVisit(companyId, visited, memo, interest) {
-  if (!currentUserId) return;
-  if (visited) {
-    await sb.from('actual_visits').upsert({
-      user_id: currentUserId,
-      company_id: companyId,
-      memo: memo || '',
-      interest_level: interest || null
-    }, { onConflict: 'user_id,company_id' });
-  } else {
-    await sb.from('actual_visits').delete()
-      .eq('user_id', currentUserId).eq('company_id', companyId);
-  }
-}
 
 // 業種選択を保存（LocalStorageのみ）
 function saveIndustrySelection() {
@@ -607,23 +509,13 @@ async function restoreSession() {
     if (savedResult.branch_counts) branchCounts = savedResult.branch_counts;
   }
 
-  // いく予定を復元
+  // 興味ありを復元
   var { data: savedPlanned } = await sb.from('planned_visits')
     .select('company_id').eq('user_id', currentUserId);
   if (savedPlanned) {
     savedPlanned.forEach(function(p) { plannedCompanies[p.company_id] = true; });
   }
 
-  // 実訪問を復元
-  var { data: savedVisits } = await sb.from('actual_visits')
-    .select('*').eq('user_id', currentUserId);
-  if (savedVisits) {
-    savedVisits.forEach(function(v) {
-      visitStatus[v.company_id] = true;
-      if (v.memo) visitStatus[v.company_id + '_memo'] = v.memo;
-      if (v.interest_level) visitStatus[v.company_id + '_interest'] = v.interest_level;
-    });
-  }
 
   // 業種選択を復元
   loadIndustrySelection();
@@ -831,66 +723,66 @@ var DEEPDIVE = {
 
 // ===== 企業データ（60社）=====
 var COMPANIES = [
-  { id:1, booth:'1', work:'建設機械を点検・整備する仕事', image:'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=200&fit=crop&q=80', name:'株式会社南陽レンテック', industry:'不動産・物品賃貸業', jobs:["整備職（建設機械）"], pr:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！', detail:'パワーショベルやブルドーザーなど、様々な工事現場で必要とされる建設機械のレンタルを通じて、大分県を中心とした北部九州の社会基盤の整備や生産活動に貢献しています。二十歳になったばかりの社員から整備歴30年を超えるベテランまで在籍しており、堅苦しい雰囲気はなく、各営業所が一つの家族のような雰囲気です。', atmosphere:'お客様に貸し出す前や返却された建設機械の点検や整備、修理が主な業務になります。新入社員の方は、研修や座学を通じて建設機械の種類や名称、仕組みの理解を深めつつ、まずは機械の洗車や清掃、点検など比較的簡単', valueTags:["craft", "growth"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！' },
-  { id:2, booth:'2', work:'自動車シートを製造する仕事', image:'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=400&h=200&fit=crop&q=80', name:'富双シート株式会社', industry:'製造業', jobs:["製造職"], pr:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！', detail:'弊社は、創業20年以上の自動車内装部品製造会社です。 主な事業内容は自動車シートの製造、その他内装部品の製造となります。', atmosphere:'大人気　地元スポーツチームの観戦チケット無料配布（抽選） 大分トリニータとソフトバンクホークスを応援しています', valueTags:["team", "craft", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！' },
-  { id:3, booth:'3', work:'自動倉庫のラックを製作する仕事', image:'https://images.unsplash.com/photo-1567789884554-0b844b597180?w=400&h=200&fit=crop&q=80', name:'有限会社東栄工業所', industry:'製造業', jobs:["製造職"], pr:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！', detail:'立体自動倉庫の鋼製ラックを製作、国内全域に納入している会社です。 最新工場やロボット導入で生産性を高め、日本のマテリアルハンドリングを支える高品質なモノづくりを行っています。', atmosphere:'ラックの組立・溶接・塗装を基礎から習得し、設計、生産管理にも挑戦可能です。 最新設備やロボットを活用しながら、技術を段階的に身につけられる環境です。', valueTags:["craft", "analyze", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！' },
-  { id:4, booth:'4', work:'道路や橋をつくる土木工事の仕事', image:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop&q=80', name:'株式会社 久保組', industry:'建設業', jobs:["土木技術者", "土木技術者", "土木ICTスタッフ"], pr:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。', detail:'青の洞門や競秀峰が名所の本耶馬渓町にあります。「地域と共に、人に貢献」を理念に、公共工事（道路、河川、橋、砂防など）だけでなく、地域の方々の声を聞き、困りごとを解消するために民間工事にも積極的に取り組んでいます。想定を超える災害が起きる時代、地域の方々の暮らしを守るため、日々技術を磨いています。', atmosphere:'入社1年目：見習い（工程や施工方法、専門用語などを実地で学ぶ）　2～3年：現場代理人（主任技術者の指示のもと施工管理を行う）　4～7年：主任技術者（資格を取得し、現場を管理する）　8年目～監理技術者（', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。' },
-  { id:5, booth:'5', work:'自動車部品を運搬・保管する仕事', image:'https://images.unsplash.com/photo-1583912267550-d974311a9a6e?w=400&h=200&fit=crop&q=80', name:'名古屋東部陸運株式会社', industry:'運輸・郵便業', jobs:["技術職"], pr:'大分から地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。', detail:'大分営業所では、自動車関連物流を中心に地域の産業を支える物流業務を展開しています。工場から販売までをつなぐ重要な役割を担い、安全・確実な輸送と保管で社会を支えるインフラとして機能しています。若い社員も多く活躍しており、物流の専門知識と技術を身につけながら成長できる職場です。', atmosphere:'素直に学ぶ姿勢を大切にし、まじめに仕事に向き合いながら、新しいことにも前向きに挑戦できる人を求めています。仲間と協力しながら成長し、地域や社会を支える物流の仕事に取り組める方を歓迎します。', valueTags:["team", "growth"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'大分から地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。' },
-  { id:6, booth:'6', work:'半導体用セラミック部品をつくる仕事', image:'https://images.unsplash.com/photo-1590650046871-92c51d8a4bb2?w=400&h=200&fit=crop&q=80', name:'TOTOファインセラミックス株式会社', industry:'製造業', jobs:["製造職", "事務職"], pr:'中津から世界へ。半導体の未来を担うやりがいと、自己成長を実感できる環境です。', detail:'デジタルが運ぶ未来社会の実現において必要不可欠なのが先端デバイスであり、その先端デバイスを製造する上で欠かせない部材が当社の製品です。 先端デバイス市場に対し、5年、10年を見据えたソリューション提案に基づく商品開発を行うことで、ＩＣＴ社会の発展と省エネルギー・持続可能な社会の実現に貢献します。', atmosphere:'半導体や液晶製造装置に不可欠な「セラミック部材」の製造を担います。入社後は適性に応じ、原料から形を作る「成形」、大型炉で焼き固める「焼成」、精密マシンで削り出す「加工」、測定器や顕微鏡で品質を守る「検', valueTags:["team", "craft", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'中津から世界へ。半導体の未来を担うやりがいと、自己成長を実感できる環境です。' },
-  { id:7, booth:'7', work:'自治体のITシステムを開発する仕事', image:'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop&q=80', name:'なかつ情報通信開発センター株式会社', industry:'情報・通信業', jobs:["技術職"], pr:'中津市役所内での自治体業務が中心。地域に根差し、若手が多数活躍するIT企業です。', detail:'自治体システムの開発・運用やケーブルテレビ事業を通じ、地域社会を支えるIT企業です。未経験からでも安心の丁寧な実務指導に加え、会社がバックアップする資格取得支援制度により、着実なスキルアップを後押しします。年間休日120日、残業も少なく、地元で公私共に充実しながら成長できる環境です。', atmosphere:'自治体システムの開発・運用保守やサーバ監視、データ集計など、ＩＴで地域社会を支える業務に従事します。ケーブルテレビの番組制作や設備保守、加入者訪問など地域密着の仕事も行います。業務は丁寧に指導され、資', valueTags:["analyze", "growth", "stable"], localTag:true, matchTexts:{analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'中津市役所内での自治体業務が中心。地域に根差し、若手が多数活躍するIT企業です。' },
-  { id:8, booth:'8', work:'自動車の内装部品を成形・組立する仕事', image:'https://images.unsplash.com/photo-1562408590-e32931084e23?w=400&h=200&fit=crop&q=80', name:'株式会社 シーゲル', industry:'製造業', jobs:["製造職"], pr:'様々な環境変化に対応し、従業員、地元地域に明るい未来を創造し続ける会社です。', detail:'インストルメントパネルやドアトリムなどの自動車内装部品の製造・組立を手がけています。樹脂成形から組立、検査までの一貫体制により、高品質な製品を安定供給しています。', atmosphere:'入社後は、成形・組立・検査など、それぞれの工程に配属され、まずは基本的な作業からスタートします。作業手順や安全ルールを一つひとつ覚えながら、できることを少しずつ増やしていきます。先輩社員が丁寧に教える', valueTags:["team", "craft", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'様々な環境変化に対応し、従業員、地元地域に明るい未来を創造し続ける会社です。' },
-  { id:9, booth:'9', work:'自動車の骨格部品を製造する仕事', image:'https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=400&h=200&fit=crop&q=80', name:'株式会社ディーアクト 九州工場', industry:'製造業', jobs:["製造職"], pr:'「ダイハツ工業グループ」自由闊達で多くの仲間とともに挑戦していく企業風土を大切にしています。', detail:'ダイハツグループの一員として、自動車部品を中心に各種部品の開発・生産を担っています。 主に自動車のコアとなる骨格部分を手がけており、高い評価を得てすべてのダイハツ車に採用されています。', atmosphere:'ファミレスの様な食堂で、日替わりの各定食や好きな麺類・デザートをその日の気分で選んでいただけます。 また、会社が半額負担しているのでとても安価で提供しています。 従業員の憩いの場にもなっています。', valueTags:["craft", "growth", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境'}, connectionText:'「ダイハツ工業グループ」自由闊達で多くの仲間とともに挑戦していく企業風土を大切にしています。' },
-  { id:10, booth:'10', work:'自動車用ゴム・樹脂部品をつくる仕事', image:'https://images.unsplash.com/photo-1597733336794-12d05021d510?w=400&h=200&fit=crop&q=80', name:'鬼怒川ゴム工業株式会社 九州生産部 第一工場', industry:'製造業', jobs:["製造技能職"], pr:'EV時代も需要が続く部品を、軽量化技術で支える会社です。', detail:'当社は自動車用ゴム・樹脂製造専門会社として世界の自動車産業の発展と共に歩んでいます。 九州第一工場では自動車用ゴム、樹脂部品の車体シール部品（ドア周り、トランクのボディ側等）の製造を行っています。', atmosphere:'入社後は本社・国内他拠点と合同で新入社員研修を行い、基礎から丁寧に学べる環境を整えています。 その後現場へ配属となり、就業状況や適性を見ながら配置転換も実施。 将来的には幅広い職種へ挑戦できます。（例', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'EV時代も需要が続く部品を、軽量化技術で支える会社です。' },
-  { id:11, booth:'1', work:'自動車のサスペンション部品をつくる仕事', image:'https://images.unsplash.com/photo-1623039405147-547794f92e9e?w=400&h=200&fit=crop&q=80', name:'株式会社ヨロズ大分 大分マニュファクチャリングセンター', industry:'製造業', jobs:["保全職", "生産職"], pr:'建物は古いですが、笑顔が絶えない明るい職場です。', detail:'ヨロズグループは、サスペンションを主体とする自動車部品メーカーとして、自動車メーカー各社から信頼を得てまいりました。 ヨロズ大分は、健康で働きがいのある職場づくりの取り組みとして、健康経営優良企業に認定されています。', atmosphere:'若い世代の成長も著しく、笑い声の絶えない快活な職場です。', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, connectionText:'建物は古いですが、笑顔が絶えない明るい職場です。' },
-  { id:12, booth:'2', work:'建設機械をレンタル・整備する仕事', image:'https://images.unsplash.com/photo-1503594384566-461fe158e797?w=400&h=200&fit=crop&q=80', name:'株式会社 ナカノ', industry:'不動産・物品賃貸業', jobs:["技術職"], pr:'建設機械のレンタル・販売で、街のインフラ工事を支える地域密着カンパニー！！', detail:'創業70周年～地域密着～ 地元のお客様に愛される会社で４つの事業を営んでいます。 1.建設機械器具類のレンタル・販売・修理 2.レンタカー各種 3.中古機械及び車輛の販売・買取 4.選挙看板のレンタル・販売・設置および選挙機械器具資材の販売', atmosphere:'明るく元気な挨拶ができる方 地元愛にあふれる方 機械いじりが好きな方', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'建設機械のレンタル・販売で、街のインフラ工事を支える地域密着カンパニー！！' },
-  { id:13, booth:'3', work:'自動車用の精密鋼管を加工する仕事', image:'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=400&h=200&fit=crop&q=80', name:'中津鋼管工業株式会社', industry:'製造業', jobs:["営業職", "製造職", "品質保証", "生産管理"], pr:'中津で冷間引抜鋼管を作り続けて56年。さらに幅広い分野への展開を目指します。', detail:'弊社は、「冷間引抜鋼管（れいかんひきぬきこうかん）」を主力製品とする金属加工メーカーです。 鋼管をより強く、より高い精度で様々な寸法に加工することが出来ます。 弊社の製品の多くは、安全性が強く求められる自動車の重要部品に採用されており、このことからも技術力の高さを感じ取っていただけるはずです。', atmosphere:'半世紀を超える歴史のなかで着実に成長を遂げ、安定した経営基盤を築き上げています。 冷間引抜鋼管へのニーズは多様で、自動車の他にプラントやビル、船舶など幅広い分野において活用されています。 今後はその安', valueTags:["team", "craft", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'中津で冷間引抜鋼管を作り続けて56年。さらに幅広い分野への展開を目指します。' },
-  { id:14, booth:'4', work:'自動車のマフラーを製造する仕事', image:'https://images.unsplash.com/photo-1542744173-05336fcc7ad4?w=400&h=200&fit=crop&q=80', name:'マレリ九州株式会社 中津工場', industry:'製造業', jobs:["製造職"], pr:'自動車部品（マフラー）を製造しているマレリ九州です。 一緒に楽しく働きましょう。', detail:'2019年11月にカルソニックカンセイ九州からマレリ九州に社名変更しました。マレリグループのコーポレートビジョン実現に向けて、地元企業として地域貢献を果たしながら、世界をリードするモノづくり革新で、モノづくり競争力No1を目指します。 ”お客様とパートナーと共に、モビリティの未来を共創する”', atmosphere:'私たちの職場は、自動車部品製造（マフラー）を行っています。 若手からベテランまで声を掛け合い、分からない事はすぐに聞ける明るい職場です。 先輩が丁寧に教えてくれるので、工場勤務が初めてでも安心です。 ', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, connectionText:'自動車部品（マフラー）を製造しているマレリ九州です。 一緒に楽しく働きましょう。' },
-  { id:15, booth:'5', work:'カップ麺の具材を包装する仕事', image:'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&h=200&fit=crop&q=80', name:'株式会社西野物産', industry:'製造業', jobs:["事務職", "製造職"], pr:'創業から113年！国内トップクラスの実績を持つ食品加工メーカー！', detail:'弊社では皆さんが口にするカップ麺に入っている具材を包装しています。日本を代表する大手食品メーカーの大半と取引をしており、安定した業績を維持しています。', atmosphere:'入社後約1週間の全体研修後、製造職は各工場に配属、事務職は引き続き約1週間の研修を行い、各部署に配属となります。配属後は各部署で業務を行います。', valueTags:["team", "support", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'創業から113年！国内トップクラスの実績を持つ食品加工メーカー！' },
-  { id:16, booth:'6', work:'食品トレー用の発泡シートをつくる仕事', image:'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=200&fit=crop&q=80', name:'株式会社積水化成品大分', industry:'製造業', jobs:["製造職"], pr:'発泡プラスチックのトップメーカーである積水化成工業株式会社の１００％子会社です。', detail:'\"当社は、発泡プラスチックスのパイオニア である積水化成品の九州地区における生 産会社として、発泡ポリスチレンシートの製 造を行っています。 生活に欠かせない食品トレーをはじめ、 カップ麺・納豆容器、青果用シートなどに加 工・使用されています。\"', atmosphere:'生活に欠かせない、さまざまな製品に加工される発泡プラスチックス製品の製造・品質管理を行います。わずかな温度や圧力差によって品質が大きく変わってしまいます。都度厳しくチェックすることで、製品のクオリティ', valueTags:["craft", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'発泡プラスチックのトップメーカーである積水化成工業株式会社の１００％子会社です。' },
-  { id:17, booth:'7', work:'自動車のヘッドランプをつくる仕事', image:'https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?w=400&h=200&fit=crop&q=80', name:'九州市光工業株式会社', industry:'製造業', jobs:["製造職", "技術職"], pr:'冷暖房完備で女性も働きやすい環境です。', detail:'日本初のプロジェクターヘッドランプや、水銀フリーHID ヘッドランプや次世代の光源として注目されているLEDヘッドランプ等、独自の製品製造を行ってきました。2017年より工場を拡張した上、フランスのヴァレオグループとなり、グローバルサプライヤーとして事業拡大中です。', atmosphere:'国内主力車種のヘッドランプとリアランプの生産を控えており、業績拡大の計画です。', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'冷暖房完備で女性も働きやすい環境です。' },
-  { id:18, booth:'8', work:'油井管継手や機械部品を加工する仕事', image:'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=400&h=200&fit=crop&q=80', name:'日鉄精密加工株式会社', industry:'製造業', jobs:["技術職"], pr:'日本製鉄㈱の100％子会社で安定した就業環境でお仕事頂けます！', detail:'■カップリング（油井管継手）事業 →石油を掘削するときに使用する油井管パイプの継手を製造しています。大手オイルメジャー等、世界で品質が認められています。 ■精密機械加工事業 →鉄鋼素材を加工して、クレーン車輪などの機械部品や土木基礎用の 鋼管杭、日本製鉄の製鉄所で使用される治工具等を製造しています。', atmosphere:'＜STEP.01＞ まずは座学を通して製品の知識と 安全管理について学んでいきます。 ＜STEP.02＞ 現場へ配属。最初のうちは先輩の 横について仕事をじっくり覚えます。 なお独り立ちをするにあたっ', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'日本製鉄㈱の100％子会社で安定した就業環境でお仕事頂けます！' },
-  { id:19, booth:'9', work:'木製ドアや家具を製作する仕事', image:'https://images.unsplash.com/photo-1625225233840-695456021cde?w=400&h=200&fit=crop&q=80', name:'有限会社 岡崎建具製作所', industry:'製造業', jobs:["製造職"], pr:'『ものづくり』に興味があれば、知識・経験がなくても手に職をつけることができます。', detail:'主に木製の建具(ドア)・家具の製作を行ってます。製作した建具・家具は、こども園や学校、病院、高齢者施設、飲食店等へを取りつけています。私たちと一緒に、お客様に末永く愛用される製品づくりをしませんか？', atmosphere:'まずは先輩社員の作業補助や清掃作業を行いながら、少しずつ仕事を覚えていきます。徐々に工具や機械を使用しながら、作業を任されるようになります。最初から難しい作業や危険な作業をすることはありません。', valueTags:["craft", "stable"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'『ものづくり』に興味があれば、知識・経験がなくても手に職をつけることができます。' },
-  { id:20, booth:'10', work:'携帯ショップで端末を販売する仕事', image:'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=200&fit=crop&q=80', name:'株式会社ジェイピー・ネット', industry:'卸売・小売業', jobs:["営業職", "営業職", "フィールドサポート"], pr:'未経験でも興味があれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。', detail:'未経験でもやってみたい気持ちがあれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。', atmosphere:'入社後は先輩社員と同行による研修指導をおこない、お客様との会話の仕方や提案の流れを学びながら、少しずつ仕事を覚えていただきます。 お客様のお困りごとを聞き、サービスをご案内します。見積作成や導入までの', valueTags:["support"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'未経験でも興味があれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。' },
-  { id:21, booth:'1', work:'半導体の製造設備を保全する仕事', image:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=200&fit=crop&q=80', name:'ルネサスエレクトロニクス株式会社 大分工場', industry:'製造業', jobs:["保全技術職"], pr:'ルネサス大分工場は昨年操業40周年を迎えた半導体後工程の生産拠点です', detail:'ルネサス エレクトロニクスは、研究開発から設計、製造、販売までの 全ての各種半導体の行程を行う、グローバルな半導体会社です。	 日立製作所、三菱電機、NECを起源とする歴史ある強力な技術基盤を有しています。', atmosphere:'積極的にコミュニケーションをとり、日々進化する半導体業界において、自己研鑽と常に新しい知識やスキル習得を意識する人物', valueTags:["craft", "analyze", "growth", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境'}, connectionText:'ルネサス大分工場は昨年操業40周年を迎えた半導体後工程の生産拠点です' },
-  { id:22, booth:'2', work:'船舶用の産業ブレーカを組み立てる仕事', image:'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400&h=200&fit=crop&q=80', name:'株式会社 耶馬溪製作所', industry:'製造業', jobs:["組立課　ブレーカ組立業務", "部品課　部品加工業務", "資材倉庫管理業務"], pr:'産業用ブレーカで世界を支え、安全な電気利用を実現！船舶向けブレーカシェア世界一', detail:'私たちの会社は、発電所や船舶など大規模設備向けの産業用ブレーカを製造し、世界の約60％の海外市場で活躍。特に船舶用ブレーカは世界No.1シェアです。電気の安全を守り 電気の安全を守る技術はこれからの社会に欠かせない分野です。私たちは世界のインフラを支える製品づくりを通して、安心して電気を使える未来を', atmosphere:'組立課：多種多様なブレーカの組立・検査を行い、スイッチや遠隔操作装置などのオプション取り付けも行います。　部品課：ブレーカに必要な部品を原材料を使って加工します。加工機械やロボットのセッティングなども', valueTags:["support", "craft", "stable"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'産業用ブレーカで世界を支え、安全な電気利用を実現！船舶向けブレーカシェア世界一' },
-  { id:23, booth:'3', work:'段ボールケースを製造する仕事', image:'https://images.unsplash.com/photo-1542621334-a254cf47733d?w=400&h=200&fit=crop&q=80', name:'太陽インダストリー株式会社 中津工場・中津新田工場', industry:'製造業', jobs:["製造職"], pr:'”つくる”を通じて、”つながる”社会へ！！', detail:'60年以上にも及ぶ歴史の中で培われた豊富な経験とノウハウを活かして、段ボールケース製造をはじめ人工大理石・レジンコンクリート・FRP製品等、多種多様な分野で事業展開し安定した成長を続けています。', atmosphere:'入社後は社会人としての心構え・安全教育・工場ルール・作業教育などを研修後、配属先部門で先輩指導員から6ヶ月程度モノづくりのノウハウや製品知識など実習し学んでもらいます。又、必要に応じて資格など取得し個', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, connectionText:'”つくる”を通じて、”つながる”社会へ！！' },
-  { id:24, booth:'4', work:'入れ歯やかぶせ物をつくる仕事', image:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=200&fit=crop&q=80', name:'有限会社 サンエイデンタル', industry:'医療・福祉業', jobs:["歯科技工士"], pr:'すべては患者様の健康と笑顔のために', detail:'「歯科技工士」という歯科医療のスペシャリスト集団です。歯科医師の指示により入れ歯・かぶせ物等の人工の歯を製作しています。性別問わず活躍しており、関東を中心に全国レベルの技術を提供しています。', atmosphere:'各部署に配属後、模型処理作業を中心に先輩社員の指導のもと、知識と技術の向上を目指します。入れ歯・マウスピース・前装冠・ハイブリットセラミック・CAD/CAM冠・ジルコニアなど様々な製品を製作しているの', valueTags:["support", "craft", "growth"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'すべては患者様の健康と笑顔のために' },
-  { id:25, booth:'5', work:'自動車シートの骨組みを加工する仕事', image:'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=200&fit=crop&q=80', name:'株式会社TF-METAL九州', industry:'製造業', jobs:["事務職", "製造職", "技術職"], pr:'車のシートフレームの加工・組立・検査を通し、安全で快適な移動を提供する会社です。', detail:'「座るを支え・世界をツナグ」を合言葉に、TF－METAL九州は、自動車用シートフレームを製造しています。 私達はグローバル企業における日本の生産拠点として、世界に誇る技術と品質を提供する会社です。 太陽光パネルの設置などサステナブルな社会の実現の為、SDGsへの取り組みにも積極的に参加しています。', atmosphere:'明るく前向きで　行動力と熱意のある人財、 学歴よりも経験や能力が企業の成長を左右すると考えています。 何事にも好奇心を持ち、学びに情熱をもって成長し続ける人を求めます。', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, connectionText:'車のシートフレームの加工・組立・検査を通し、安全で快適な移動を提供する会社です。' },
-  { id:26, booth:'6', work:'トイレや洗面器の衛生陶器をつくる仕事', image:'https://images.unsplash.com/photo-1585503418537-88331351ad99?w=400&h=200&fit=crop&q=80', name:'TOTOサニテクノ株式会社', industry:'製造業', jobs:["製造職"], pr:'ＴＯＴＯサニテクノは、ＴＯＴＯグループの中核となる 衛生陶器事業を担う会社です。', detail:'創業以来続く「親切が第一」、「奉仕の精神」を忘れずに、良品の供給とお客様の満足を追求し、社会から必要とされる企業であり続けたいと願っています。 世界中のお客様のために、「人と環境にやさしい未来」を創造します。 国内最大の腰掛便器の生産拠点として、主力の腰掛便器の他、洗面器・手洗器等を生産しています。', atmosphere:'◆高卒新入社員からベテラン社員まで幅広い年齢層が働いています。 ◆業務だけに限らず、改善活動なども活発なので和気あいあいとしています。 ◆新入社員の教育にも力をいれています。', valueTags:["support", "craft", "stable"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'ＴＯＴＯサニテクノは、ＴＯＴＯグループの中核となる 衛生陶器事業を担う会社です。' },
-  { id:27, booth:'7', work:'結婚式・葬儀の式場を運営する仕事', image:'https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=200&fit=crop&q=80', name:'株式会社サンレー', industry:'生活・娯楽業', jobs:["営業職", "接客職"], pr:'人生の大切な節目に寄り添い、自分自身も成長できる仕事がここにあります。', detail:'創業60年を迎える冠婚葬祭のサンレーは、葬祭会館「紫雲閣」の運営、結婚式場「VILLA LUCE」をはじめとする結婚式場・衣裳店の運営、互助会事業を展開。人生の節目を支える総合儀式サービス企業として、地域に根ざした安心と感動を提供しています。', atmosphere:'人の人生の節目に寄り添う仕事だからこそ、思いやりとチームワークを大切にする温かい職場です。若手からベテランまで互いに支え合いながら学び、成長していける環境があります。', valueTags:["support"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'人生の大切な節目に寄り添い、自分自身も成長できる仕事がここにあります。' },
-  { id:28, booth:'8', work:'自動車部品を樹脂成形・塗装する仕事', image:'https://images.unsplash.com/photo-1625756500577-e04f5cf8e345?w=400&h=200&fit=crop&q=80', name:'株式会社 ユーテック', industry:'製造業', jobs:["製造職", "技術職"], pr:'操業22年、従業員数90名の家族観溢れたアットホームな会社です。', detail:'自動車用内外装部品の樹脂成形・塗装（カラー塗装・植毛塗装)の加工工場です。 日々塗装の技術向上を目指し誠心誠意さまざまなご要望にお応えする事を使命と考え、 お客様に満足していただける製品づくりに努めています。', atmosphere:'職場単位でチームを組み、みんなで協力しながら製品を作り上げていきます。 支え合う職場でより良い製品が作り出されます。', valueTags:["craft", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'操業22年、従業員数90名の家族観溢れたアットホームな会社です。' },
-  { id:29, booth:'9', work:'セラミック部品を機械加工する仕事', image:'https://images.unsplash.com/photo-1504917595217-d4dc5ebb6b7d?w=400&h=200&fit=crop&q=80', name:'株式会社ＫＯＴＡＮＩ', industry:'製造業', jobs:["製造職"], pr:'地元中津で若手が元気に活躍中！社会を支えるセラミック加工の仕事です。', detail:'セラミックを機械で加工するものづくりの仕事です。コツコツ続けることで技術が身につき、いろいろな製品を支える力になります。地元中津の工場で、毎日仲間と協力しながら取り組んでいます。', atmosphere:'入社後はまず安全やルールを学ぶところからスタート。その後は先輩と一緒に加工機を操作し、セラミック製品をセットし、寸法や仕上がりを確認しながら作業を覚えます。先輩のサポートを受けながら少しずつ技術を身に', valueTags:["team", "craft", "stable"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'地元中津で若手が元気に活躍中！社会を支えるセラミック加工の仕事です。' },
-  { id:30, booth:'10', work:'工場や建物の建築工事をする仕事', image:'https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=400&h=200&fit=crop&q=80', name:'株式会社 梶原組', industry:'建設業', jobs:["技術職"], pr:'もの造りを通して、地域に貢献する会社です。', detail:'スーパーゼネコンの下請け工事、地元企業工場のメンテナンスやリノベーション等、建築工事全般を行っている会社です。 私たちのモットーは【技術力で地域に貢献】、安全・品質・環境保全はもちろんのこと、お客様の要望により多く応えられるオンリー１の技術力を目指しています。', atmosphere:'現場管理業務 （品質管理・施工管理・工程管理・安全管理） 現場調査、見積もりから図面の作成等の現場管理を行います。', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'もの造りを通して、地域に貢献する会社です。' },
-  { id:31, booth:'1', work:'ドコモショップで接客・販売する仕事', image:'https://images.unsplash.com/photo-1556155092-490a1ba16284?w=400&h=200&fit=crop&q=80', name:'株式会社かがし屋', industry:'情報・通信業', jobs:["接客職"], pr:'従業員が、安心して、夢中で、「働く」ことを楽しめる環境づくりを大切にしています！', detail:'福岡・大分で、文具用品・OA機器販売をはじめ、ステーショナリーショップ、ドコモショップ、ベーカリーの運営、介護福祉事業や太陽光発電事業など、地域に密着した９つの事業を展開しています。“地域に愛される企業”を志し、社会の価値観の変化を的確にキャッチしながら事業の多角化と規模の拡大に取組んでいます。', atmosphere:'・地元で腰を据えて働きたい ・人とコミュニケーションをとることが好き ・人の役に立ちたい、人から感謝されることがモチベーションになる ・残業時間を抑えて仕事と自分の時間を両立したい ・チームワーク重視', valueTags:["support", "growth"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'従業員が、安心して、夢中で、「働く」ことを楽しめる環境づくりを大切にしています！' },
-  { id:32, booth:'2', work:'自動車用アルミ配管を加工する仕事', image:'https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=400&h=200&fit=crop&q=80', name:'株式会社 渡辺製作所', industry:'製造業', jobs:["製造職"], pr:'配管加工技術でクルマの快適と走りを支える自動車部品メーカーです。', detail:'弊社独自の技術力・開発力でアルミ配管部品を中心とした自動車部品の普及と安全性の向上を通じて快適な移動手段の一翼を担うことを目指しており、製品の軽量化・コンパクト化を追求することで、社会全体が無理なくカーボンニュートラルへ向かえるよう貢献できると考え取り組んでいます。', atmosphere:'新人教育を受けた後、半年ほど各工程（切断・端末加工・曲げ・ロー付け・気密検査・組立）で現場研修を行いすべての工程を学びます。研修で自社製品が出来るまでを学び、一人一人の適性に合った配属先を決定します。', valueTags:["craft", "analyze"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事'}, connectionText:'配管加工技術でクルマの快適と走りを支える自動車部品メーカーです。' },
-  { id:33, booth:'3', work:'トラック荷台など自社製品を開発する仕事', image:'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=200&fit=crop&q=80', name:'愛宕自動車工業株式会社', industry:'製造業', jobs:["技術職/製造職", "事務職/専門職"], pr:'社食の提供や安心して暮らせる社宅の提供等、衣食住を意識した職場環境を整えています', detail:'自社製品の開発・製造・販売を行っています。「安全と物流を創造するテクニカルファクトリー」の企業理念の下、環境負荷の低減や社会課題の解決に貢献する製品づくりを目指しています。', atmosphere:'①技術系総合職：自社製品の製造・架装・自動車整備・塗装など。 ②営業系総合職：自社製品の販売・マーケティング戦略の立案など。 ③事務系総合職：原価管理・ISO関連業務・安全衛生管理・広報業務など。', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'社食の提供や安心して暮らせる社宅の提供等、衣食住を意識した職場環境を整えています' },
-  { id:34, booth:'4', work:'自動車を点検・修理する仕事', image:'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=400&h=200&fit=crop&q=80', name:'有限会社松下モータース', industry:'サービス業', jobs:["技術職", "営業職"], pr:'１９歳からプロの自動車整備士へ！挑戦できる若手育成企業として成長し続けます。', detail:'1969年創業。中津市に根ざした自動車整備工場です。19歳から26歳の若手メカニックが活躍し、先輩がしっかりサポートする育成環境が特長。自社工場で整備・修理を行い、安心・安全な軽自動車を低価格で提供しています。若手がのびのび成長し、地域のカーライフを支え続けています。', atmosphere:'フロントや営業で多くの女性社員が活躍する職場です。お客様と直接関わり、感謝や信頼の言葉をいただくことで大きなやりがいと誇りを感じられます。「もっと頑張ろう」と前向きな気持ちが生まれ、自分らしく成長でき', valueTags:["support", "craft", "growth"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'１９歳からプロの自動車整備士へ！挑戦できる若手育成企業として成長し続けます。' },
-  { id:35, booth:'5', work:'石油プラント用の機器を設計する仕事', image:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&h=200&fit=crop&q=80', name:'Design City Japan株式会社', industry:'研究・技術サービス業', jobs:["技術職（機械設計）"], pr:'各種プラント（石油化学、製鉄等）に建設・設置される機器を”設計”しています。', detail:'各種プラント（石油化学、製鉄等）に設置される機械・機器・設備等を”設計”している、いわゆる【設計会社】です。取引先は日本全国に拡がり、海外プラント建設プロジェクトにも数多く携わっています。 主に設計図面の作成、強度計算など基本設計、計画設計、詳細設計を行なっています。耐震設計は、売りの一つです。', atmosphere:'若手勉強会など社内勉強会を定期的に実施。資格に応じて手厚い手当あり。技術者として着実にステップアップ出来る環境があります！', valueTags:["team", "analyze", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'各種プラント（石油化学、製鉄等）に建設・設置される機器を”設計”しています。' },
-  { id:36, booth:'6', work:'工場のロボット自動化設備をつくる仕事', image:'https://images.unsplash.com/photo-1563520240344-52b067aa5f84?w=400&h=200&fit=crop&q=80', name:'（株）オモテ', industry:'製造業', jobs:["技術職/製造職"], pr:'社員の平均年齢が38才と若い人が多い元気な会社です。', detail:'当社は自動車完成車メーカーや部品メーカーの工場のラインで使用する自動化設備やロボット装置等の設計から製作までを手掛けています。特にロボットを使った生産用機械設備の製作が得意であり、省力化、人手不足の解消に貢献しており、私たちが製作した機械がアメリカ、ブラジル、南アフリカ等の工場で稼働しています。', atmosphere:'まずは、新入社員教育や高所、感電防止等安全教育の研修を受けたのち、設計、製缶、加工、組立の各部署に配属されます。部署ごとで「モノづくり」の基礎を先輩たちの指導のもと学んでいきます。', valueTags:["craft", "analyze"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事'}, connectionText:'社員の平均年齢が38才と若い人が多い元気な会社です。' },
-  { id:37, booth:'7', work:'建物の空調・給排水設備を施工する仕事', image:'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&h=200&fit=crop&q=80', name:'株式会社 三好冷暖房', industry:'建設業', jobs:["技術職"], pr:'弊社は管工事業で建築物に欠かせない空気、水を供給する為の設計施工会社です。', detail:'主な事業内容は、社名でわかるように冷暖房工事ですが様々な工事の設計施工を行っています。 主な顧客は官公庁、大手サブコン、地元工場等ですが一般個人まで気軽に対応しています。 弊社は、昨年創業50年の節目を迎え、新社屋の改装や作業服の変更などを実施しています。', atmosphere:'当社は大分県発注の工事において2年連続で優良建設工事表彰を受賞しています。 これは、当社の技術力の高いところを示すものであり社員のモチベーション向上にもつながっています。', valueTags:["craft", "analyze", "growth"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'弊社は管工事業で建築物に欠かせない空気、水を供給する為の設計施工会社です。' },
-  { id:38, booth:'8', work:'生コンクリートを製造する仕事', image:'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=200&fit=crop&q=80', name:'福進株式会社', industry:'製造業', jobs:["製造職", "ドライバー"], pr:'休日数増加・有給休暇取得率の高さ・全世代の働きやすい環境作りに取り組んでます', detail:'1982年の創業以来、生コンクリート製造を中心に地域のインフラを支えてきました。現在は運送事業・建設資材販売・産業廃棄物中間処理業を含む３社のグループ体制で事業を成長展開し、「人」を大切にしながら品質と信頼を追求し、地域の未来づくりに挑戦し続けています。', atmosphere:'仲間と協力しながら目標に向かい、明るく前向きに新しい事に挑戦出来る方！ スキルアップのための資格取得もどんどんチャレンジ出来ます。', valueTags:["team", "craft", "stable"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'休日数増加・有給休暇取得率の高さ・全世代の働きやすい環境作りに取り組んでます' },
-  { id:39, booth:'9', work:'ホテルや病院の特注家具をつくる仕事', image:'https://images.unsplash.com/photo-1558291053-30e15bfc0cfd?w=400&h=200&fit=crop&q=80', name:'中津木工株式会社', industry:'製造業', jobs:["事務職", "製造職", "技術職"], pr:'家具造りの伝統と技術を学べる創業89年目を迎えた歴史ある会社です。', detail:'創業89年目を迎え、創業以来「木」と携わってきました。特注家具・建具の設計施工、内装工事、木工事の施工に従事しており、幅広い木製品の完全受注生産を行っています。 主にゼネコンや店舗設計施工会社の依頼で、ホテル・病院、文化施設などの特注家具を中心に、個人住宅の家具・建具など幅広く施工しています。', atmosphere:'ライン作業ではなく、一人の人が最初から最後まで製品を組立ていきますので、先輩社員について基本的な工具や木工機械の使い方を学びながら基本的な家具造りの方法を学んでいきます。 簡単な家具製作の練習をして、', valueTags:["craft", "stable"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'家具造りの伝統と技術を学べる創業89年目を迎えた歴史ある会社です。' },
-  { id:40, booth:'10', work:'道路や橋の測量・設計をする仕事', image:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=200&fit=crop&q=80', name:'日進コンサルタント株式会社', industry:'建設業', jobs:["技術職"], pr:'道路、河川、砂防、橋梁等の計画で測量・設計を行い構造物を地図に残す仕事です。', detail:'1971年に測量会社として創業し、おかげさまで５４年が過ぎました。主に大分県内の公共事業を受注している測量・設計、点検調査会社です。土木の高い専門性を生かしたコンサルティング業務を行っており、また、豪雨災害等では早期復旧を目指し、災害現場での測量や災害復旧設計を、使命感を持って業務を行っています。', atmosphere:'測量・設計とは、現況の地形を測定し道路、ダム、橋梁等を計画するため、設計図面や地図などの基本情報を作成する仕事です。近年は、ドローン等を使った測量も主流になっています。', valueTags:["analyze", "growth"], localTag:true, matchTexts:{analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'道路、河川、砂防、橋梁等の計画で測量・設計を行い構造物を地図に残す仕事です。' },
-  { id:41, booth:'1', work:'軽自動車を組み立て・製造する仕事', image:'https://images.unsplash.com/photo-1573497491765-dccce02b29df?w=400&h=200&fit=crop&q=80', name:'ダイハツ九州株式会社', industry:'製造業', jobs:["技能職"], pr:'中津市で長く働ける、軽自動車づくりを支える安定企業です。', detail:'ダイハツ九州は中津市から全国へ軽自動車を届けるメーカーです。ダイハツの軽自動車の70％、年間40万台を生産しています。安心・安全な職場環境と充実した福利厚生で、地元で長く成長しながら働けます。', atmosphere:'有給休暇が取得しやすく、社員食堂や独身寮、生活や健康を支える各種補助制度も充実。 年間有給取得は平均17日、完全週休2日制＆年3回の長期連休があり 仕事とプライベートの両立を後押ししています。', valueTags:["team", "craft", "stable"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'中津市で長く働ける、軽自動車づくりを支える安定企業です。' },
-  { id:42, booth:'2', work:'高齢者の生活を介護で支える仕事', image:'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=200&fit=crop&q=80', name:'株式会社ケアリング', industry:'医療・福祉業', jobs:["介護職"], pr:'子育て中の方も多数！多くの女性が活躍中。自分らしく、笑顔で働ける職場です。', detail:'互いに助け合い、高め合うチームワークが自慢！2000年の創業以来、25年にわたり「心と命」を繋いできました。仕事には真摯に取り組みながらも、遊び心を忘れず、自分らしく生き生きと働けます。子育て中の方も多数活躍中。あなたの「人に寄り添う温かい心」を、ぜひ当社で活かしてください！', atmosphere:'・介護の知識やスキルを勉強することに興味がある方 ・介護の知識を生かして活躍したい方 ・人と関わるのが好きな方 ・相手の気持ちを思いやれる方 ・笑顔で優しく接することができる方 ・真面目に頑張れる方 ', valueTags:["team", "support"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事'}, connectionText:'子育て中の方も多数！多くの女性が活躍中。自分らしく、笑顔で働ける職場です。' },
-  { id:43, booth:'3', work:'ドラッグストアで薬や化粧品を売る仕事', image:'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&h=200&fit=crop&q=80', name:'株式会社ドラッグストアモリ', industry:'卸売・小売業', jobs:["販売職"], pr:'接客経験が無くても大丈夫！入社後に研修があるので安心してお仕事を始められます！', detail:'お薬・化粧品・栄養の知識を活かし、地域の方々の【健康】と【美】をサポートしています。また、ドラモリだけのオリジナル商品の開発にも力を入れており、商品の質はもちろんパッケージデザインなどすべてにこだわっています！また、「社員に厚く」を掲げているドラモリでは、基本給・各種手当も業界最高水準です。', atmosphere:'ドラモリでは、高校卒業後に入社して活躍している先輩がたくさんいます！「友だちや先生と関わるのが好き」「誰かに“ありがとう”と言われると嬉しい」「部活や勉強で新しいことに挑戦するのが楽しい」「好きなこと', valueTags:["support", "analyze", "growth"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'接客経験が無くても大丈夫！入社後に研修があるので安心してお仕事を始められます！' },
-  { id:44, booth:'4', work:'産業用・医療用ガスを届ける仕事', image:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=200&fit=crop&q=80', name:'株式会社 山国商会', industry:'卸売・小売業', jobs:["営業職", "運転職"], pr:'地域を支える基盤となれ！ 産業・医療・生活を支える仕事', detail:'創業68年を迎える総合ガス商社です。 主な事業内容は、酸素/窒素/アルゴンなどの産業用/医療用高圧ガス・溶接材料・」↓ここで改行 ＬＰガスの販売。 大分県中津市を拠点に、産業・医療・生活を支えています。', atmosphere:'トラックにて固定客先（企業、工場、病院など）に」↓ここで改行 ガスや部品を配送。 LPガス・酸素ガス等の高圧ガスや溶接機器など様々。 お客様とのコミュニケーションが得意な方大歓迎！ 将来は営業活動や配', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'地域を支える基盤となれ！ 産業・医療・生活を支える仕事' },
-  { id:45, booth:'5', work:'大型トラックを整備・修理する仕事', image:'https://images.unsplash.com/photo-1549317661-bd32c8ce0bbe?w=400&h=200&fit=crop&q=80', name:'UDトラックス株式会社', industry:'卸売・小売業', jobs:["整備職"], pr:'整備のプロフェッショナルを目指す無限の可能性を持ったあなたを応援します。', detail:'私たちの仕事は目の前のトラックを整備するだけのように思うかもしれませんが、実は日本の物流を支えることにもつながっています。責任は重大ですが、やりがいのある仕事です。', atmosphere:'入社後は車検という作業を行って頂きます。 3人～４人のチームで仕事を行います。普段の仕事の中で上司や先輩と一緒なので相談したりサポートをもらったり、決して孤独感はありません。', valueTags:["craft", "analyze", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'整備のプロフェッショナルを目指す無限の可能性を持ったあなたを応援します。' },
-  { id:46, booth:'6', work:'自動車用ガラスに部品を組み付ける仕事', image:'https://images.unsplash.com/photo-1622905810727-9cc1126d56a7?w=400&h=200&fit=crop&q=80', name:'ビューテック株式会社 中津作業所', industry:'製造業', jobs:["製造職"], pr:'総勢16名のコンパクトな職場です！若い方が活躍している職場です。', detail:'今年で創業61年の老舗企業 グループ従業員1万3,400人を誇る、大手メーカーです。 主にダイハツ九州様向けの自動車ガラスに構成部品組付け＆検査 扱っている製品はsafetyガラスと呼ばれ、軽量で万が一割れても切創することのない安全なガラスです。', atmosphere:'入社後、本社（愛知県）で１週間の全体研修後、中津に戻り最初の１か月間は安全・品質に重点を置いた教育を行い、 終了後に実作業の教育・訓練に移行し終了後、配置となります。', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, connectionText:'総勢16名のコンパクトな職場です！若い方が活躍している職場です。' },
-  { id:47, booth:'7', work:'自動車部品を倉庫管理・配送する仕事', image:'https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=400&h=200&fit=crop&q=80', name:'豊能運送株式会社 大分営業所', industry:'運輸・郵便業', jobs:["運転職", "製造職", "運転職"], pr:'中津市に営業所開設してもうすぐ20年。厳しくも和やかな雰囲気の職場です', detail:'ダイハツグループの物流会社で主にダイハツ九州様への自動車部品を取り扱っています。 ①運送事業：荷主様からお預かりした製品を大型トラックでお届けする、②倉庫事業：荷主様からお預かりした製品を倉庫で保管し、納入先の要望に応じてお届けする、③製品加工事業：荷主様からお預かりした部品を組み立ててお届けする。', atmosphere:'現業職では入社直後は倉庫での仕事につき、経験と適性、本人希望により大型トラック乗務での仕事に就いて頂く場合があります。', valueTags:["team", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', stable:'安定した待遇で長く働ける環境'}, connectionText:'中津市に営業所開設してもうすぐ20年。厳しくも和やかな雰囲気の職場です' },
-  { id:48, booth:'8', work:'道路や港の舗装・土木工事をする仕事', image:'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&h=200&fit=crop&q=80', name:'岡本土木株式会社', industry:'建設業', jobs:["技術職"], pr:'舗装・土木・港湾工事などの幅広い実績と卓越した技術力を持ち長い歴史を誇る老舗企業', detail:'創業は1917年（大正6年） 岡本土木株式会社は大分県中津市で創業。100年以上続く歴史の長い老舗企業 北九州市、中津市、福岡市に拠点を構え、社会インフラ整備に大きく貢献しております', atmosphere:'入社後、１ヵ月間新入社員研修を実施 【施工管理】 現場に配属後、先輩社員の補佐として各管理業務を行います 【重機オペレーター】 経験や安全意識が重視されますので、建設機械の基本操作の習得を行います', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'舗装・土木・港湾工事などの幅広い実績と卓越した技術力を持ち長い歴史を誇る老舗企業' },
-  { id:49, booth:'9', work:'冷凍食品を保管・加工・配送する仕事', image:'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=400&h=200&fit=crop&q=80', name:'株式会社ムクノ', industry:'製造業', jobs:["事務職", "倉庫管理業", "営業職", "製造職"], pr:'珍しい職種ですが働いている方々は未経験の方ばかりですのでお気軽にお問合せ下さい', detail:'弊社は大きく３つの業務を行っております。 １．食品の原材料や、加工した食品の冷凍保管をする冷凍倉庫業 ２．地域特産を使用した加工食品の製造 ３．商品の配送、納品業務（アイスクリームなど）', atmosphere:'入社後はおよそ１カ月程度、研修にて業務内容について把握していただきます。研修後は各部署の方と一緒に業務を行っていただきます。', valueTags:["craft", "stable"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'珍しい職種ですが働いている方々は未経験の方ばかりですのでお気軽にお問合せ下さい' },
-  { id:50, booth:'10', work:'建物の電気・空調工事をする仕事', image:'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=200&fit=crop&q=80', name:'株式会社クラフティア（旧 九電工）', industry:'建設業', jobs:["技術職"], pr:'2025年10月、『九電工』から『クラフティア』へ社名変更しました！！', detail:'私たちは、人の暮らしを支える『社会インフラ』と『快適な環境づくり』を通して、社会に貢献しています！ ① 電気工事 ② 情報通信工事 ③ 空調・衛生工事 ④ 配電工事 ⑤ エネルギー事業', atmosphere:'地図に残る、やりがいのある仕事です！ 【電気】電気を『安心』して使えるように工事します。 【空調管】水と空気を『快適』に使えるように工事します。 【配電】発電所で作られた電気を『家庭に届ける』ために工', valueTags:["team", "craft", "growth"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'2025年10月、『九電工』から『クラフティア』へ社名変更しました！！' },
-  { id:51, booth:'1', work:'レンタカーの貸出・接客をする仕事', image:'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=200&fit=crop&q=80', name:'株式会社中津レンタリース', industry:'サービス業', jobs:["接客職/事務職"], pr:'希望休100%取得可。積極的な有給取得推進。希望者の週休3日導入を行っています。', detail:'当社は創業60年を超える、地元密着のレンタカー会社です。定番の車から、バイクやキッチンカーなど、地域に求められる様々なレンタカーを取り扱っています。また、中津・宇佐・大分に拠点があり、大分県全域でサービスを提供しています。社員・お客様・地域のために、次の70年に向けて社員と共に邁進しています。', atmosphere:'私たちが大切にしているのは、能力やスキルではなく人柄です。実際、スタッフの大半はレンタカー業界未経験からスタートしています。人と話すのが好き。車に興味がある。細かい作業が得意。そんな方にぴったりです。', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'希望休100%取得可。積極的な有給取得推進。希望者の週休3日導入を行っています。' },
-  { id:52, booth:'2', work:'荷物を倉庫保管しトラックで届ける仕事', image:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=200&fit=crop&q=80', name:'株式会社 中津急行', industry:'建設業', jobs:["技術職"], pr:'安全・確実・迅速をモットーに、社員みんなが 楽しく働ける会社です。', detail:'1950年創立の中津急行は、貸切輸送・小荷物輸送といった運送業を行う会社です。 加えて本社の他に10を超える数の拠点を展開しています。 また、倉庫も多数保有しており保管～出荷・配送といった トータル物流の提案・提供を行っています。', atmosphere:'従業員同士の仲が良く、普段は楽しく緩い雰囲気で仕事をしています。 しかし、安全に対しては厳しく考えており、絶対無事故を目指して、 メリハリのある仕事を心がけています。', valueTags:["team", "support", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'安全・確実・迅速をモットーに、社員みんなが 楽しく働ける会社です。' },
-  { id:53, booth:'3', work:'倉庫で荷物を管理・出荷する仕事', image:'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=200&fit=crop&q=80', name:'株式会社 中津急行', industry:'運輸・郵便業', jobs:["営業職", "倉庫作業員", "事務職"], pr:'安全・確実・迅速をモットーに、社員みんなが楽しく働ける会社です。', detail:'1950年創立の中津急行は、貸切輸送・小荷物輸送といった運送業を行う会社です。本社の他に10を超える数の拠点を展開しています。倉庫も多数保有しており保管～出荷・配送といったトータル物流の提案・提供を行っています。', atmosphere:'従業員同士の仲が良く、普段は楽しく緩い雰囲気で仕事をしています。安全に対しては厳しく考えており、絶対無事故を目指して、メリハリのある仕事を心がけています。', valueTags:["team", "stable"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'' },
-  { id:54, booth:'4', work:'高齢者の暮らしを介護で支える仕事', image:'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=400&h=200&fit=crop&q=80', name:'社会福祉法人泰然会', industry:'医療・福祉業', jobs:["介護職"], pr:'入居者様の笑顔になる時間は職員も笑顔になる時間を実感してみませんか？', detail:'地域密着型で29名定員の特別養護老人ホームです。 小規模だからこそ入居者様1人1人の思いを大切にでき そこで働く職員の生活も大切にすることを目標にしています。', atmosphere:'暖かい日は、施設の周囲を車いす散歩や運動をしてリラックスしています。 職員同士の声かけや入居者様との交流を大切にしながら、穏やかで安心できる雰囲気づくりを心がけています。季節を感じる時間も楽しんでいま', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'入居者様の笑顔になる時間は職員も笑顔になる時間を実感してみませんか？' },
-  { id:55, booth:'5', work:'電子部品を組み立て・検査する仕事', image:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=200&fit=crop&q=80', name:'中津コスモス電機株式会社', industry:'製造業', jobs:["技術職", "事務職"], pr:'弊社は創業42年になる電子部品製造会社です。 可変抵抗器、自動車電装品の製造。', detail:'電子部品の組立・検査及び生産工程の管理業務を行います。 生産ラインのオペレーターとして、組立業務・部材補充など生産ラインの管理や ラインの軽微なトラブル対応や復旧作業を行います。', atmosphere:'生産部では、可変抵抗器（ポテンショントリマー）の製造。 技術系では、設備の保全、改善、設計など。', valueTags:["craft", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'弊社は創業42年になる電子部品製造会社です。 可変抵抗器、自動車電装品の製造。' },
-  { id:56, booth:'6', work:'段ボール箱を製造・販売する仕事', image:'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&h=200&fit=crop&q=80', name:'九州ケース株式会社', industry:'製造業', jobs:["製造職", "営業職"], pr:'地域密着でコストと品質を両立する信頼を築く」↓ここで改行 段ボール会社。', detail:'ネットショッピングなどの影響により、大幅な需要増が続く段ボール。 それは人々の生活を支える「社会の基礎」の一部とも言えます。 そんな普段意識せずに接している段ボールを、 私たちは高品質、そして迅速に提供できるように 日々誇りを持って仕事に取り組んでいます。', atmosphere:'〇「段シート」の製造:原紙セッティング・検査等 段原紙 (1t程度)を転がして機械にセットする 　　原紙は工程近くまでリフトを使用 〇「段ボールケース」の製造 :セッティング・検査・インクの補充等 段', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'地域密着でコストと品質を両立する信頼を築く」↓ここで改行 段ボール会社。' },
-  { id:57, booth:'7', work:'路線バスの車両を整備する仕事', image:'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400&h=200&fit=crop&q=80', name:'大交北部バス株式会社', industry:'運輸・郵便業', jobs:["バス整備士"], pr:'市内に路線バスを運行する当社は、暮らしに必要な公共交通として、人と街を繋ぎます。', detail:'私たち大交北部バスは、中津市を中心に路線バスをはじめ、貸切バスや空港リムジンバスを運行する会社です。地域の暮らしに欠かせない交通インフラとしてこれからも人と街をつないでいきます。', atmosphere:'当社が運行する路線バス、貸切バスの整備業務全般（点検・修理など）を担当します。未経験のみなさんは、バスの走る仕組みからゆっくり研修しますので、安心してチャレンジしてください！', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'市内に路線バスを運行する当社は、暮らしに必要な公共交通として、人と街を繋ぎます。' },
-  { id:58, booth:'8', work:'犯罪捜査や地域の治安を守る仕事', image:'https://images.unsplash.com/photo-1580893246395-52aead8960dc?w=400&h=200&fit=crop&q=80', name:'大分県警察', industry:'公務', jobs:[], pr:'正義の心と熱い信念を胸に、大分の治安維持のために働いています！', detail:'大分県警察は、警察官と警察事務職員で構成されています。警察官は犯人の逮捕や事件捜査を行います。警察事務職員は予算・庁舎管理などを行います。', atmosphere:'まずは警察学校に配属されます。警察学校は全寮制です。同期生と寝食を共にし、切磋琢磨しながら、現場で働く知識と体力を身につけます。警察学校を卒業した後は、県内の警察署・交番で働きます。', valueTags:["team", "support", "analyze"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事'}, connectionText:'正義の心と熱い信念を胸に、大分の治安維持のために働いています！' },
-  { id:59, booth:'9', work:'国の防衛・災害救助に当たる仕事', image:'https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?w=400&h=200&fit=crop&q=80', name:'防衛省 自衛隊 大分地方協力本部', industry:'公務', jobs:[], pr:'平和を守る『誇り』と、自分のスキルで活躍できる『やりがい』を実感できる仕事です。', detail:'自衛隊は日本を守る特別国家公務員です。「国の防衛」「災害派遣」「国際平和協力活動」の３つの役割があります。今ある『平和な日常』を守るため、世界各地で隊員は日々訓練して、スキルアップに努めています。', atmosphere:'年間の休日は約１５０日（１年の１/３以上）。長期の休暇も取得できます。駐屯地・基地の宿舎は家賃無料。もちろん、光熱水費も無料です。朝・昼・晩の３食とも隊員食堂で無料で食べれるので、食費がかかりません。', valueTags:["team", "growth", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境'}, connectionText:'平和を守る『誇り』と、自分のスキルで活躍できる『やりがい』を実感できる仕事です。' },
-  { id:60, booth:'10', work:'市民の暮らしを支える行政の仕事', image:'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=400&h=200&fit=crop&q=80', name:'中津市役所', industry:'公務', jobs:[], pr:'暮らし満足No.1のまち「中津」を目指して', detail:'市役所の業務は、市民の生活の基盤である税や介護の福祉部門、水道や道路のなどのインフラ部門のほか、観光・広報、商業、農業、企画、教育行政など、多岐にわたります。近年は、「中津流DX」という独自の取り組みを進め、ますます業務の効率化を図っています。中津市役所で一緒に働きませんか？', atmosphere:'中津市役所では、下記に当てはまる人物を募集します。 １．中津が好きな人（中津市を良くしたいと思える人） ２．コミュニケーションが好きな人 ３．チームワークを大事にする人 ４．何事にもチャレンジする気持', valueTags:["support", "analyze", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'暮らし満足No.1のまち「中津」を目指して' }
+  { id:1, booth:'1', work:'', image:'images/1.png', name:'株式会社南陽レンテック', industry:'不動産・物品賃貸業', jobs:["整備職（建設機械）"], pr:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！', detail:'パワーショベルやブルドーザーなど、様々な工事現場で必要とされる建設機械のレンタルを通じて、大分県を中心とした北部九州の社会基盤の整備や生産活動に貢献しています。二十歳になったばかりの社員から整備歴30年を超えるベテランまで在籍しており、堅苦しい雰囲気はなく、各営業所が一つの家族のような雰囲気です。', atmosphere:'', valueTags:["craft", "growth"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "お客様に貸し出す前や返却された建設機械の点検や整備、修理が主な業務になります。新入社員の方は、研修や座学を通じて建設機械の種類や名称、仕組みの理解を深めつつ、まずは機械の洗車や清掃、点検など比較的簡単な業務からスタートします。その後は、経験とともに難易度の高い業務（修理等）にも挑戦して頂きます。"}, {"label": "求める人物像", "content": "当社では以下の点を重視しています！ 【コミュニケーション能力】相手の話をきちんと聞き、自分の考えも分かりやすく伝えられる力。 【協調性】周囲と協力し、チームの一員として助け合いながら行動できる姿勢。 【主体性】指示を待つだけでなく、自ら考え、気づき、進んで行動する力。"}, {"label": "成長を支援する制度", "content": "入社後は、導入研修→基礎研修→実務研修と段階を踏み、無理なく知識と技術を身につけていきます。現場では先輩社員がサポートし、分からないことはすぐに聞ける環境です。パワーショベルやフォークリフトなど、業務に必要な資格・免許は全額会社負担で取得可能。未経験からでも、確実に「できること」を増やしていきます。"}], connectionText:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！' },
+  { id:2, booth:'2', work:'', image:'images/2.jpeg', name:'富双シート株式会社', industry:'製造業', jobs:["製造職"], pr:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！', detail:'弊社は、創業20年以上の自動車内装部品製造会社です。 主な事業内容は自動車シートの製造、その他内装部品の製造となります。', atmosphere:'', valueTags:["team", "craft", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "社員に人気の福利厚生", "content": "大人気　地元スポーツチームの観戦チケット無料配布（抽選） 大分トリニータとソフトバンクホークスを応援しています☆"}, {"label": "社員に人気の福利厚生", "content": "入社ごグループでの合同入社式あり（定期採用者に限る） 大阪での入社式に参加し、大阪観光やユニバーサルスタジオジャパンで交流を深めます。"}, {"label": "社員に人気の福利厚生", "content": "週休完全2日制 社食補助 駐車場無料 その他福利厚生充実しています♪"}], connectionText:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！' },
+  { id:3, booth:'3', work:'', image:'images/3.jpg', name:'有限会社東栄工業所', industry:'製造業', jobs:["製造職"], pr:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！', detail:'立体自動倉庫の鋼製ラックを製作し、国内全域に納入している会社です。 最新工場やロボット導入で生産性を高め、日本のマテリアルハンドリングを支える高品質なモノづくりを行っています。', atmosphere:'', valueTags:["craft", "analyze", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "入社後の仕事", "content": "ラックの組立・溶接・塗装を基礎から習得し、設計、生産管理にも挑戦可能です。 最新設備やロボットを活用しながら、技術を段階的に身につけられる環境です。"}, {"label": "職場の雰囲気", "content": "働き方改革で県知事表彰を受けた、明るく前向きな職場です。 週末にはFC東栄（フットサル）で汗をかき、仕事も人間関係も充実できる環境です。 多様な人材が安心して働ける環境づくりを大切にしております。"}, {"label": "社員に人気の福利厚生", "content": "誕生日ケーキのプレゼントに加え、タイ人実習生と楽しむタイ料理パーティーも人気です。 交流が活発で、仕事以外の時間も笑顔が生まれる温かい職場です。"}], connectionText:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！' },
+  { id:4, booth:'4', work:'', image:'images/4.jpg', name:'株式会社 久保組', industry:'建設業', jobs:["土木技術者", "土木技術者", "土木ICTスタッフ"], pr:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。', detail:'青の洞門や競秀峰が名所の本耶馬渓町にあります。「地域と共に、人に貢献」を理念に、公共工事（道路、河川、橋、砂防など）だけでなく、地域の方々の声を聞き、困りごとを解消するために民間工事にも積極的に取り組んでいます。想定を超える災害が起きる時代、地域の方々の暮らしを守るため、日々技術を磨いています。', atmosphere:'', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "入社1年目：見習い（工程や施工方法、専門用語などを実地で学ぶ）　2～3年：現場代理人（主任技術者の指示のもと施工管理を行う）　4～7年：主任技術者（資格を取得し、現場を管理する）　8年目～監理技術者（自社や下請さんを含めた工事全体の管理を行う）とステップアップしていきます。"}, {"label": "職場の雰囲気", "content": "一つの工事を4～5人のチームで行います。それぞれ年代や立場は違いますが、お互いを尊重してコミュニケーションを取りながら楽しく仕事をしています。"}, {"label": "成長を支援する制度", "content": "免許や資格取得を応援しています。中型車や重機の免許などの費用は全額会社負担です。土木施工管理技士などの資格取得後には手当を支給します。"}], connectionText:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。' },
+  { id:5, booth:'5', work:'', image:'images/5.jpg', name:'名古屋東部陸運株式会社', industry:'運輸・郵便業', jobs:["技術職"], pr:'大分から地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。', detail:'大分営業所では、自動車関連物流を中心に地域の産業を支える物流業務を展開しています。工場から販売までをつなぐ重要な役割を担い、安全・確実な輸送と保管で社会を支えるインフラとして機能しています。若い社員も多く活躍しており、物流の専門知識と技術を身につけながら成長できる職場です。', atmosphere:'', valueTags:["team", "growth"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "求める人物像", "content": "素直に学ぶ姿勢を大切にし、まじめに仕事に向き合いながら、新しいことにも前向きに挑戦できる人を求めています。仲間と協力しながら成長し、地域や社会を支える物流の仕事に取り組める方を歓迎します。"}, {"label": "職場の雰囲気", "content": "先輩や上司とも話しやすく、分からないことや困ったことはすぐに相談できる職場です。意見も伝えやすい風通しの良い環境で、安心して仕事を覚えていくことができます。"}, {"label": "今後の展望", "content": "北九州にも新しい営業所を開設し、事業エリアを広げながら成長を続けています。これからも物流を通じて地域や産業を支え、さらに大きく発展していくことを目指しています。"}], connectionText:'大分から地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。' },
+  { id:6, booth:'6', work:'', image:'images/6.png', name:'TOTOファインセラミックス株式会社', industry:'製造業', jobs:["製造職", "事務職"], pr:'中津から世界へ。半導体の未来を担うやりがいと、自己成長を実感できる環境です。', detail:'デジタルが運ぶ未来社会の実現において必要不可欠なのが先端デバイスであり、その先端デバイスを製造する上で欠かせない部材が当社の製品です。 先端デバイス市場に対し、5年、10年を見据えたソリューション提案に基づく商品開発を行うことで、ＩＣＴ社会の発展と省エネルギー・持続可能な社会の実現に貢献します。', atmosphere:'', valueTags:["team", "craft", "growth"], localTag:false, singleOnly:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "入社後の仕事", "content": "半導体や液晶製造装置に不可欠な「セラミック部材」の製造を担います。入社後は適性に応じ、原料から形を作る「成形」、大型炉で焼き固める「焼成」、精密マシンで削り出す「加工」、測定器や顕微鏡で品質を守る「検査」のいずれかの工程に配属。世界を支える最先端のものづくりを、基礎から着実に習得できる環境です。"}, {"label": "職場の雰囲気", "content": "最新設備が整うクリーンな製造現場は、常に整理され業務に集中できる環境です。社内は年齢に関わらず意見を交わせるフラットな組織文化で、若手の成長を支えるバックアップ体制も万全。ミスを責めるのではなく、チーム全体で改善策を共有しフォローし合う風通しの良さが、確かな安心感と高い生産性を生んでいます。"}, {"label": "求める人物像", "content": "最新鋭の工場では世代を超えたチームプレーが不可欠なため、周囲と明るく対話できる方を求めています。現場でのコミュニケーションを大切にしながら、将来は製造の核となるリーダーを目指せる方を歓迎します。"}], connectionText:'中津から世界へ。半導体の未来を担うやりがいと、自己成長を実感できる環境です。' },
+  { id:7, booth:'7', work:'', image:'images/7.jpg', name:'なかつ情報通信開発センター株式会社', industry:'情報・通信業', jobs:["技術職"], pr:'中津市役所内での自治体業務が中心。地域に根差し、若手が多数活躍するIT企業です。', detail:'自治体システムの開発・運用やケーブルテレビ事業を通じ、地域社会を支えるIT企業です。未経験からでも安心の丁寧な実務指導に加え、会社がバックアップする資格取得支援制度により、着実なスキルアップを後押しします。年間休日120日、残業も少なく、地元で公私共に充実しながら成長できる環境です。', atmosphere:'', valueTags:["analyze", "growth", "stable"], localTag:true, matchTexts:{analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "自治体システムの開発・運用保守やサーバ監視、データ集計など、ＩＴで地域社会を支える業務に従事します。ケーブルテレビの番組制作や設備保守、加入者訪問など地域密着の仕事も行います。業務は丁寧に指導され、資格取得支援制度により未経験から専門スキルを磨ける環境です"}, {"label": "求める人物像", "content": "自治体や放送事業を通じ、地域社会へ貢献したい意欲のある方を求めます。PCの基本操作ができ、周囲と円滑な連携ができるコミュニケーション能力を重視します。ITの実務経験や基本情報技術者の資格があれば尚良しですが、未経験でも丁寧な指導があるため、自ら学び成長する前向きな姿勢を歓迎します"}, {"label": "今後の展望", "content": "自治体システムや放送事業を通じ地域社会を支え、更なる発展を目指します。ITと放送を融合させ利便性向上に貢献します。資格取得支援等の教育を充実させ、増員による組織強化を図りながら、次世代と共に成長し続ける地域密着の企業を目指します"}], connectionText:'中津市役所内での自治体業務が中心。地域に根差し、若手が多数活躍するIT企業です。' },
+  { id:8, booth:'8', work:'', image:'images/8.jpg', name:'株式会社 シーゲル', industry:'製造業', jobs:["製造職"], pr:'様々な環境変化に対応し、従業員、地元地域に明るい未来を創造し続ける会社です。', detail:'インストルメントパネルやドアトリムなどの自動車内装部品の製造・組立を手がけています。樹脂成形から組立、検査までの一貫体制により、高品質な製品を安定供給しています。', atmosphere:'', valueTags:["team", "craft", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "入社後は、成形・組立・検査など、それぞれの工程に配属され、まずは基本的な作業からスタートします。作業手順や安全ルールを一つひとつ覚えながら、できることを少しずつ増やしていきます。先輩社員が丁寧に教えるので、未経験でも安心です。"}, {"label": "求める人物像", "content": "モノづくりに興味があり、あいさつや返事などの基本を大切にしながら、まじめに取り組める方を歓迎します。前向きに挑戦し、成長したい方を応援します。"}, {"label": "社員に人気の福利厚生", "content": "社員同士の交流を深めるBBQや忘年会、クラブ活動などのイベントがあります。夏には熱中症予防としてオリジナルTシャツの支給やかき氷の提供も行っています。職場やイベントの様子はInstagramで紹介中。ぜひチェックしてみてください。 🔍: siegel_nakatsu"}], connectionText:'様々な環境変化に対応し、従業員、地元地域に明るい未来を創造し続ける会社です。' },
+  { id:9, booth:'9', work:'', image:'images/9.jpg', name:'株式会社ディーアクト 九州工場', industry:'製造業', jobs:["製造職"], pr:'「ダイハツ工業グループ」自由闊達で多くの仲間とともに挑戦していく企業風土を大切にしています。', detail:'ダイハツグループの一員として、自動車部品を中心に各種部品の開発・生産を担っています。 主に自動車のコアとなる骨格部分を手がけており、高い評価を得てすべてのダイハツ車に採用されています。', atmosphere:'', valueTags:["craft", "growth", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "社員に人気の福利厚生", "content": "ファミレスの様な食堂で、日替わりの各定食や好きな麺類・デザートをその日の気分で選んでいただけます。 また、会社が半額負担しているのでとても安価で提供しています。 従業員の憩いの場にもなっています。"}, {"label": "求める人物像", "content": "経験・年齢・性別は問いません。 現場ではトレーナーが丁寧にレクチャーするので、ご安心ください。 明るくやる気のある方をお待ちしています。"}, {"label": "社員に人気の福利厚生", "content": "完全週休2日制の土日休みです。※繁忙期により休出あり 年間休日は121日で、GW・お盆・年末年始は9連休～11連休ほど長いお休みがある為、 趣味やプライベートの時間を充実できる環境です。"}], connectionText:'「ダイハツ工業グループ」自由闊達で多くの仲間とともに挑戦していく企業風土を大切にしています。' },
+  { id:10, booth:'10', work:'', image:'images/10.png', name:'鬼怒川ゴム工業株式会社 九州生産部 第一工場', industry:'製造業', jobs:["製造技能職"], pr:'EV時代も需要が続く部品を、軽量化技術で支える会社です。', detail:'当社は自動車用ゴム・樹脂製造専門会社として世界の自動車産業の発展と共に歩んでいます。 九州第一工場では自動車用ゴム、樹脂部品の車体シール部品（ドア周り、トランクのボディ側等）の製造を行っています。', atmosphere:'', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "入社後は本社・国内他拠点と合同で新入社員研修を行い、基礎から丁寧に学べる環境を整えています。 その後現場へ配属となり、就業状況や適性を見ながら配置転換も実施。 将来的には幅広い職種へ挑戦できます。（例　生産オペレーター　⇒　技術職・管理部門など）"}, {"label": "求める人物像", "content": "・コツコツ丁寧に作業できる方 ・やる気をもって前向きに取り組める方 ・落ち着いた環境で長く働きたい方 前向きに挑戦するやる気のある方、大歓迎です！！"}, {"label": "社員に人気の福利厚生", "content": "◇社員食堂・食事補助あり 　栄養士さんの考えたバランスの取れた食事を低価格で提供しています。 ◇各種自動販売機設置（24時間利用可能） 　飲料、お菓子、アイスクリーム、カップラーメン、パン"}], connectionText:'EV時代も需要が続く部品を、軽量化技術で支える会社です。' },
+  { id:11, booth:'1', work:'', image:'images/11.PNG', name:'株式会社ヨロズ大分 大分マニュファクチャリングセンター', industry:'製造業', jobs:["保全職", "生産職"], pr:'建物は古いですが、笑顔が絶えない明るい職場です。', detail:'ヨロズグループは、サスペンションを主体とする自動車部品メーカーとして、自動車メーカー各社から信頼を得てまいりました。 ヨロズ大分は、健康で働きがいのある職場づくりの取り組みとして、健康経営優良企業に認定されています。', atmosphere:'', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, sections:[{"label": "職場の雰囲気", "content": "若い世代の成長も著しく、笑い声の絶えない快活な職場です。"}, {"label": "求める人物像", "content": "元気とやる気があれば、経験や資格が無くても大丈夫です。 必要な技能・技術・資格は、入社後にOJTや通信教育、外部講習（会社負担）等で取得可能です。 ※OJT：日常業務を通じて先輩が後輩に指導する教育"}, {"label": "入社後の仕事", "content": "＊生産職：プレス、組立設備のオペレーター ＊技術（保全）職：プレス機、ロボット、溶接機、治具の保全 ＊生産管理、品質保証：生産計画、品質パトロール等"}], connectionText:'建物は古いですが、笑顔が絶えない明るい職場です。' },
+  { id:12, booth:'2', work:'', image:'images/12.jpg', name:'株式会社 ナカノ', industry:'不動産・物品賃貸業', jobs:["技術職"], pr:'建設機械のレンタル・販売で、街のインフラ工事を支える地域密着カンパニー！！', detail:'創業70周年～地域密着～ 地元のお客様に愛される会社で４つの事業を営んでいます。 1.建設機械器具類のレンタル・販売・修理 2.レンタカー各種 3.中古機械及び車輛の販売・買取 4.選挙看板のレンタル・販売・設置および選挙機械器具資材の販売', atmosphere:'', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "求める人物像", "content": "明るく元気な挨拶ができる方 地元愛にあふれる方 機械いじりが好きな方"}, {"label": "職場の雰囲気", "content": "明るく活気のある職場です。 休日も多く、仕事とプライベートの両立が図れます。 若手社員の頑張りをベテラン社員が全力で支えてくれます。"}, {"label": "入社後の仕事", "content": "職種は建設機械の営業職、整備職の二つです。 入社後は営業職、整備職問わず、建設機械に関する知識を学びます。 営業職は各営業所で接客も含め一定期間の研修を行います。 整備職は中津営業所にて機械整備・点検などを中心に一定期間の研修を行います。 機械整備に必要な資格は会社費用負担で取得をサポートします。"}], connectionText:'建設機械のレンタル・販売で、街のインフラ工事を支える地域密着カンパニー！！' },
+  { id:13, booth:'3', work:'', image:'images/13.jpeg', name:'中津鋼管工業株式会社', industry:'製造業', jobs:["営業職", "製造職", "品質保証", "生産管理"], pr:'中津で冷間引抜鋼管を作り続けて56年。さらに幅広い分野への展開を目指します。', detail:'弊社は、「冷間引抜鋼管（れいかんひきぬきこうかん）」を主力製品とする金属加工メーカーです。 鋼管をより強く、より高い精度で様々な寸法に加工することが出来ます。 弊社の製品の多くは、安全性が強く求められる自動車の重要部品に採用されており、このことからも技術力の高さを感じ取っていただけるはずです。', atmosphere:'', valueTags:["team", "craft", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "今後の展望", "content": "半世紀を超える歴史のなかで着実に成長を遂げ、安定した経営基盤を築き上げています。 冷間引抜鋼管へのニーズは多様で、自動車の他にプラントやビル、船舶など幅広い分野において活用されています。 今後はその安定基盤のもと、自動車の分野で培った高い技術力で新たな分野にもチャレンジしていきたいと考えております。"}, {"label": "求める人物像", "content": "新しい時代を切り開いていくにあたって欠かせないのが、意欲を持って仕事に取り組んでくれる若いみなさんです。当社の人材観は「働く一両、考える五両」という言葉に集約できます。指示を待っているだけ（働く一両）ではなく、自ら考えて行動する（考える五両）を重視しています。"}, {"label": "職場の雰囲気", "content": "部署の垣根を超えた和気あいあいとした社風が自慢です！ プライベートでも仲の良い社員同士でスポーツや釣りなどを楽しんでいます。 年間休日数は124日。完全週休二日制（土日休み）に加え長期休暇もあるので、ゆっくりリフレッシュできます。"}], connectionText:'中津で冷間引抜鋼管を作り続けて56年。さらに幅広い分野への展開を目指します。' },
+  { id:14, booth:'4', work:'', image:'images/14.jpg', name:'マレリ九州株式会社 中津工場', industry:'製造業', jobs:["製造職"], pr:'自動車部品（マフラー）を製造しているマレリ九州です。 一緒に楽しく働きましょう。', detail:'2019年11月にカルソニックカンセイ九州からマレリ九州に社名変更しました。マレリグループのコーポレートビジョン実現に向けて、地元企業として地域貢献を果たしながら、世界をリードするモノづくり革新で、モノづくり競争力No1を目指します。 ”お客様とパートナーと共に、モビリティの未来を共創する”', atmosphere:'', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, sections:[{"label": "職場の雰囲気", "content": "私たちの職場は、自動車部品製造（マフラー）を行っています。 若手からベテランまで声を掛け合い、分からない事はすぐに聞ける明るい職場です。 先輩が丁寧に教えてくれるので、工場勤務が初めてでも安心です。 モノづくりの達成感を我々と一緒に味わいましょう。"}, {"label": "求める人物像", "content": "・コミュニケーション（報連相）を大切にする人 ・周囲と協力し、思いやりを持って行動できる人 ・分からない事を「分からない」とはっきり言える人 ・小さなことでもコツコツ努力を続けられる人 ・自分の意見を持ち、相手の意見も大切にできる人 ・失敗を恐れず、成長を楽しめる人"}, {"label": "社員に人気の福利厚生", "content": "社員が安心して長く働けるよう、各種社会保険をはじめ、休暇制度や手当など福利厚生を整えています。 中でもリフレッシュ休暇は1週間連続で休暇を取得でき、心も体もリフレッシュできます。 また、社員向けに新車を安く購入できる制度があります。 車が身近な仕事ならではの、うれしい福利厚生です。"}], connectionText:'自動車部品（マフラー）を製造しているマレリ九州です。 一緒に楽しく働きましょう。' },
+  { id:15, booth:'5', work:'', image:'images/15.JPG', name:'株式会社西野物産', industry:'製造業', jobs:["事務職", "製造職"], pr:'創業から113年！国内トップクラスの実績を持つ食品加工メーカー！', detail:'弊社では皆さんが口にするカップ麺に入っている具材を包装しています。日本を代表する大手食品メーカーの大半と取引をしており、安定した業績を維持しています。', atmosphere:'', valueTags:["team", "support", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "入社後約1週間の全体研修後、製造職は各工場に配属、事務職は引き続き約1週間の研修を行い、各部署に配属となります。配属後は各部署で業務を行います。"}, {"label": "求める人物像", "content": "様々な部署や職種を経験できる弊社では、自身の成長意欲のある方やチャレンジ精神のある方を求めています。また、食品の安全と衛生を大切にしながら、コツコツと丁寧に作業ができる方、周りと協力して仕事に取り組める方も歓迎します。未経験でも先輩が丁寧に教えますので安心してご応募ください。"}, {"label": "職場の雰囲気", "content": "幅広い年齢層の社員が多数在籍しており、上下関係も気にせず皆で協力して仕事をしています。他部署の従業員との連携も強く、社員同士の相談やコミュニケーションも非常に取りやすい職場です。衛生管理も徹底しており、職場は常に清潔で空調管理もされているため、一年を通して快適で働きやすい職場環境です。"}], connectionText:'創業から113年！国内トップクラスの実績を持つ食品加工メーカー！' },
+  { id:16, booth:'6', work:'', image:'images/16.png', name:'株式会社積水化成品大分', industry:'製造業', jobs:["製造職"], pr:'発泡プラスチックのトップメーカーである積水化成工業株式会社の１００％子会社です。', detail:'"当社は、発泡プラスチックスのパイオニア である積水化成品の九州地区における生 産会社として、発泡ポリスチレンシートの製 造を行っています。 生活に欠かせない食品トレーをはじめ、 カップ麺・納豆容器、青果用シートなどに加 工・使用されています。"', atmosphere:'', valueTags:["craft", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "生活に欠かせない、さまざまな製品に加工される発泡プラスチックス製品の製造・品質管理を行います。わずかな温度や圧力差によって品質が大きく変わってしまいます。都度厳しくチェックすることで、製品のクオリティを維持する重要なポジションであり、仕事を通して専門的な技術を身に付けることができます。"}, {"label": "職場の雰囲気", "content": "３５歳以下の若手社員が多く活躍しています。有給休暇も取得し易く、人間関係も良好で離職率の低い職場です。三交替勤務ですが、平日の休日や昼間の時間を利用しプライベートも充実できます。"}, {"label": "社員に人気の福利厚生", "content": "◉社員食堂あり◉年間休日\t124日程度（夏季休暇・年末年始休暇あり）◉リフレッシュ休暇　\t勤続10年：3日間／勤続20年・30年：5日間◉結婚休暇\t5日間◉産前産後休業◉育児休◉出産休暇◉子の看護休暇\t◉介護休暇"}], connectionText:'発泡プラスチックのトップメーカーである積水化成工業株式会社の１００％子会社です。' },
+  { id:17, booth:'7', work:'', image:'images/17.jpg', name:'九州市光工業株式会社', industry:'製造業', jobs:["製造職", "技術職"], pr:'冷暖房完備で女性も働きやすい環境です。', detail:'日本初のプロジェクターヘッドランプや、水銀フリーHID ヘッドランプや次世代の光源として注目されているLEDヘッドランプ等、独自の製品製造を行ってきました。2017年より工場を拡張した上、フランスのヴァレオグループとなり、グローバルサプライヤーとして事業拡大中です。', atmosphere:'', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "今後の展望", "content": "国内主力車種のヘッドランプとリアランプの生産を控えており、業績拡大の計画です。"}, {"label": "社員に人気の福利厚生", "content": "花見やボウリング大会、ゴルフ大会で和気あいあいと楽しい職場環境です。"}, {"label": "成長を支援する制度", "content": "E-larningや集合研修など充実した能力開発のシステムがあり、成長を実感できます。"}], connectionText:'冷暖房完備で女性も働きやすい環境です。' },
+  { id:18, booth:'8', work:'', image:'images/18.jpg', name:'日鉄精密加工株式会社', industry:'製造業', jobs:["技術職"], pr:'日本製鉄㈱の100％子会社で安定した就業環境でお仕事頂けます！', detail:'■カップリング（油井管継手）事業 →石油を掘削するときに使用する油井管パイプの継手を製造しています。大手オイルメジャー等、世界で品質が認められています。 ■精密機械加工事業 →鉄鋼素材を加工して、クレーン車輪などの機械部品や土木基礎用の 鋼管杭、日本製鉄の製鉄所で使用される治工具等を製造しています。', atmosphere:'', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "＜STEP.01＞ まずは座学を通して製品の知識と 安全管理について学んでいきます。 ＜STEP.02＞ 現場へ配属。最初のうちは先輩の 横について仕事をじっくり覚えます。 なお独り立ちをするにあたっては 独自の社内資格が必要。これはだいたい 入社半年～1年ほどで取得できます。"}, {"label": "成長を支援する制度", "content": "・各種公的資格取得支援 入社後、会社の全額費用負担のもと資格取得を目指せます。 受験料のみならず学校に通う費用も当社が負担。この支援制度を活かし、あなたも資格をGETください！"}, {"label": "求める人物像", "content": "・チームワークを大切にしているので積極的にコミュニケーションを取れる人 →困ったときは助け合う。先輩が後輩を常にフォローする。そうした温かな風土が根づいています ・モノづくりに興味がある人 →「好きこそ物の上手なれ」という言葉があるように、モノづくりが好きなら自然とスキルアップを望めます。"}], connectionText:'日本製鉄㈱の100％子会社で安定した就業環境でお仕事頂けます！' },
+  { id:19, booth:'9', work:'', image:'images/19.jpg', name:'有限会社 岡崎建具製作所', industry:'製造業', jobs:["製造職"], pr:'『ものづくり』に興味があれば、知識・経験がなくても手に職をつけることができます。', detail:'主に木製の建具(ドア)・家具の製作を行ってます。製作した建具・家具は、こども園や学校、病院、高齢者施設、飲食店等へ取りつけています。私たちと一緒に、お客様に末永く愛用される製品づくりをしませんか？', atmosphere:'', valueTags:["craft", "stable"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "まずは先輩社員の作業補助や清掃作業を行いながら、少しずつ仕事を覚えていきます。徐々に工具や機械を使用しながら、作業を任されるようになります。最初から難しい作業や危険な作業をすることはありません。"}, {"label": "求める人物像", "content": "・ものづくりに興味のある方 ・お客様に末永く愛用してもらえる製品づくりを共に目指せる方 ・経験を積み、資格取得を目指したい方(資格取得補助制度有り)"}, {"label": "職場の雰囲気", "content": "少人数ながら、20代から60代までの幅広い世代が活躍しています。個人作業が多いですが、わからないことがあれば丁寧に指導します。ミーティングには社長も加わり、和やかな雰囲気です。"}], connectionText:'『ものづくり』に興味があれば、知識・経験がなくても手に職をつけることができます。' },
+  { id:20, booth:'10', work:'', image:'images/20.png', name:'株式会社ジェイピー・ネット', industry:'卸売・小売業', jobs:["営業職", "営業職", "フィールドサポート"], pr:'未経験でも興味があれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。', detail:'未経験でもやってみたい気持ちがあれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。', atmosphere:'', valueTags:["support"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "入社後は先輩社員と同行による研修指導をおこない、お客様との会話の仕方や提案の流れを学びながら、少しずつ仕事を覚えていただきます。 お客様のお困りごとを聞き、サービスをご案内します。見積作成や導入までのフォローも少しずつ担当します。 研修やサポートがあるので、未経験でも安心です。"}, {"label": "求める人物像", "content": "地元愛があり、明るく、挨拶がしっかりできる方。 新しいことに前向きにチャレンジできる方。 チームで協力しながら成長したい方。"}, {"label": "社員に人気の福利厚生", "content": "参加自由な懇親会や社員旅行などの社内行事が充実しています。 インフルエンザや健康診断、資格取得の助成など働きやすい環境を目指しています。 無料で利用できる提携ジムもあり、健康づくりにも意識を高めています。"}], connectionText:'未経験でも興味があれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。' },
+  { id:21, booth:'1', work:'', image:'images/21.jpg', name:'ルネサスエレクトロニクス株式会社 大分工場', industry:'製造業', jobs:["保全技術職"], pr:'ルネサス大分工場は昨年操業40周年を迎えた半導体後工程の生産拠点です', detail:'ルネサス エレクトロニクスは、研究開発から設計、製造、販売までの 全ての各種半導体の行程を行う、グローバルな半導体会社です。	 日立製作所、三菱電機、NECを起源とする歴史ある強力な技術基盤を有しています。', atmosphere:'', valueTags:["craft", "analyze", "growth", "stable"], localTag:false, singleOnly:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "求める人物像", "content": "積極的にコミュニケーションをとり、日々進化する半導体業界において、自己研鑽と常に新しい知識やスキル習得を意識する人物"}, {"label": "社員に人気の福利厚生", "content": "・作業環境・労働条件ともに充実し、安全で快適な職場です。 ・福利厚生施設として、食堂・売店があります。 ・有給休暇は初年度から18日付与退職金、企業年金制度、各種休暇 　も充実しています"}, {"label": "入社後の仕事", "content": "『設備保全員』とは 装置の調子が悪いときに部品交換や調整など修理をしたり、常に良い状態が保てるように 点検したりして装置の維持管理をしています。また、更に装置を良くする改善も行っています"}], connectionText:'ルネサス大分工場は昨年操業40周年を迎えた半導体後工程の生産拠点です' },
+  { id:22, booth:'2', work:'', image:'images/22.jpg', name:'株式会社 耶馬溪製作所', industry:'製造業', jobs:["組立課　ブレーカ組立業務", "部品課　部品加工業務", "資材倉庫管理業務"], pr:'産業用ブレーカで世界を支え、安全な電気利用を実現！船舶向けブレーカシェア世界一', detail:'私たちの会社は、発電所や船舶など大規模設備向けの産業用ブレーカを製造し、世界の約60％の海外市場で活躍。特に船舶用ブレーカは世界No.1シェアです。電気の安全を守り電気の安全を守る技術はこれからの社会に欠かせない分野です。私たちは世界のインフラを支える製品づくりを通して、安心して電気を使える未来をつくっています。', atmosphere:'', valueTags:["support", "craft", "stable"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "組立課：多種多様なブレーカの組立・検査を行い、スイッチや遠隔操作装置などのオプション取り付けも行います。　部品課：ブレーカに必要な部品を原材料を使って加工します。加工機械やロボットのセッティングなども重要な業務です。"}, {"label": "入社後の仕事", "content": "品質管理課：納入部品の受入検査を行います。様々な種類の部品を検査しますが単純作業が続かないのが特徴の職場です。 耶馬溪製作所はほとんどのラインがコンベア生産方式ではないので自分のペースで安心して作業できます。女性が多く活躍しているのも特徴です。"}, {"label": "職場の雰囲気", "content": "年間有給平均取得日数14.5日と有給取得しやすい職場です。前年度未使用分は繰り越しでき最大40日になります。自分自身のイベントや学校行事、家庭の用事など事前申請だけでなく、急な体調不良、緊急の用事なども融通がききます。また、日勤なので生活リズムが安定し、年齢が上がってからも身体に優しい職場です。"}], connectionText:'産業用ブレーカで世界を支え、安全な電気利用を実現！船舶向けブレーカシェア世界一' },
+  { id:23, booth:'3', work:'', image:'images/23.jpg', name:'太陽インダストリー株式会社 中津工場・中津新田工場', industry:'製造業', jobs:["製造職"], pr:'”つくる”を通じて、”つながる”社会へ！！', detail:'60年以上にも及ぶ歴史の中で培われた豊富な経験とノウハウを活かして、段ボールケース製造をはじめ人工大理石・レジンコンクリート・FRP製品等、多種多様な分野で事業展開し安定した成長を続けています。', atmosphere:'', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, sections:[{"label": "入社後の仕事", "content": "入社後は社会人としての心構え・安全教育・工場ルール・作業教育などを研修後、配属先部門で先輩指導員から6ヶ月程度モノづくりのノウハウや製品知識など実習し学んでもらいます。又、必要に応じて資格など取得し個々のスキルアップを目指して事業運営に貢献して頂きます。"}, {"label": "求める人物像", "content": "・社内外を問わず積極的にコミュニケーションをとって失敗を恐れない行動力のある方 ・心身ともに健康で明るく楽しく元気で、礼節を大切にする、やる気のある方 ・モノづくりが好きな方 ・会社のルールを守れる方 経験や知識がなくても活躍できるように育成していきますので、安心して永く働けます。"}, {"label": "職場の雰囲気", "content": "・20～70代までの幅広い年齢層の方がプロ意識を持ちながら真剣に、且つ楽しく勤務してます ・『従業員の安全・安心』を最優先に、働きやすい職場づくりを全従業員で実施中 ・仕事とプライベートをバランス良く充実させる為に、会社が全力でバックアップ ・厚生会では従業員同士の絆が深まるイベントを毎年企画実施"}], connectionText:'”つくる”を通じて、”つながる”社会へ！！' },
+  { id:24, booth:'4', work:'', image:'images/24.jpg', name:'有限会社 サンエイデンタル', industry:'医療・福祉業', jobs:["歯科技工士"], pr:'すべては患者様の健康と笑顔のために', detail:'「歯科技工士」という歯科医療のスペシャリスト集団です。歯科医師の指示により入れ歯・かぶせ物等の人工の歯を製作しています。性別問わず活躍しており、関東を中心に全国レベルの技術を提供しています。', atmosphere:'', valueTags:["support", "craft", "growth"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "入社後の仕事", "content": "各部署に配属後、模型処理作業を中心に先輩社員の指導のもと、知識と技術の向上を目指します。入れ歯・マウスピース・前装冠・ハイブリットセラミック・CAD/CAM冠・ジルコニアなど様々な製品を製作しているので、適性や今後の目標を聞きながら専門性を高めていきます。"}, {"label": "成長を支援する制度", "content": "歯科技工士になるために、大分県歯科技工士育成基金奨学金や返済支援制度など、専門学校を卒業し国家試験に合格するための支援が充実しています。また、専門学校と連携しインターンシップの受け入れも行っています。"}, {"label": "社員に人気の福利厚生", "content": "会社主催のBBQ大会や社員旅行などの楽しいイベントや、サークル活動がとても活発です。仕事から離れてにぎやかな雰囲気の中で、社員同士の親交が深まり職場での結束力が生まれています。"}], connectionText:'すべては患者様の健康と笑顔のために' },
+  { id:25, booth:'5', work:'', image:'images/25.jpg', name:'株式会社TF-METAL九州', industry:'製造業', jobs:["事務職", "製造職", "技術職"], pr:'車のシートフレームの加工・組立・検査を通し、安全で快適な移動を提供する会社です。', detail:'「座るを支え・世界をツナグ」を合言葉に、TF－METAL九州は、自動車用シートフレームを製造しています。 私達はグローバル企業における日本の生産拠点として、世界に誇る技術と品質を提供する会社です。 太陽光パネルの設置などサステナブルな社会の実現の為、SDGsへの取り組みにも積極的に参加しています。', atmosphere:'', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, sections:[{"label": "求める人物像", "content": "明るく前向きで　行動力と熱意のある人財、 学歴よりも経験や能力が企業の成長を左右すると考えています。 何事にも好奇心を持ち、学びに情熱をもって成長し続ける人を求めます。"}, {"label": "今後の展望", "content": "今までに培った技術を活かし、フレーム生産のみならず、プレス～カチオン電着塗装～ロボット溶接～フレーム組立の一環生産が可能な工場を実現し、更なるビジネスの拡大を目指していきます。"}, {"label": "社員に人気の福利厚生", "content": "各種イベントの定期的な開催を通じて、社員のモチベーション向上と、コミュニケーションアップを図っています。 ■うどんサービスデー　■オータムフェスティバル　■クリスマスプレゼント　■オアシス活動　■バーベキュー大会　など"}], connectionText:'車のシートフレームの加工・組立・検査を通し、安全で快適な移動を提供する会社です。' },
+  { id:26, booth:'6', work:'', image:'images/26.jpg', name:'TOTOサニテクノ株式会社', industry:'製造業', jobs:["製造職"], pr:'ＴＯＴＯサニテクノは、ＴＯＴＯグループの中核となる衛生陶器事業を担う会社です。', detail:'創業以来続く「親切が第一」、「奉仕の精神」を忘れずに、良品の供給とお客様の満足を追求し、社会から必要とされる企業であり続けたいと願っています。 世界中のお客様のために、「人と環境にやさしい未来」を創造します。 国内最大の腰掛便器の生産拠点として、主力の腰掛便器の他、洗面器・手洗器等を生産しています。', atmosphere:'', valueTags:["support", "craft", "stable"], localTag:false, singleOnly:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "職場の雰囲気", "content": "◆高卒新入社員からベテラン社員まで幅広い年齢層が働いています。 ◆業務だけに限らず、改善活動なども活発なので和気あいあいとしています。 ◆新入社員の教育にも力をいれています。"}, {"label": "求める人物像", "content": "◆強い「自覚と意志」を持ち、自ら学び成長する自律人財。 ◆自律人財とは、ＴＯＴＯグループの想いや方向性に共感し、自分の役割を理解した上で、何をすべきかを自分で考えて行動する人財。"}, {"label": "社員に人気の福利厚生", "content": "◆社会保険完備（健康保険・厚生年金・雇用保険・労災） ◆通勤費・定期券代支給 ◆ＴＯＴＯ直営保養所あり 　家族や友人と社員価格で宿泊できます！ ◆結婚・出産・慶弔時に給付金あり ◆カフェテリアプラン制度（医療費補助等） ◆年間休日123日/有給休暇 最大20日付与/GW・お盆・年末年始に長期連休あり"}], connectionText:'ＴＯＴＯサニテクノは、ＴＯＴＯグループの中核となる衛生陶器事業を担う会社です。' },
+  { id:27, booth:'7', work:'', image:'images/27.png', name:'株式会社サンレー', industry:'生活・娯楽業', jobs:["営業職", "接客職"], pr:'人生の大切な節目に寄り添い、自分自身も成長できる仕事がここにあります。', detail:'創業60年を迎える冠婚葬祭のサンレーは、葬祭会館「紫雲閣」の運営、結婚式場「VILLA LUCE」をはじめとする結婚式場・衣裳店の運営、互助会事業を展開。人生の節目を支える総合儀式サービス企業として、地域に根ざした安心と感動を提供しています。', atmosphere:'', valueTags:["support"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "職場の雰囲気", "content": "人の人生の節目に寄り添う仕事だからこそ、思いやりとチームワークを大切にする温かい職場です。若手からベテランまで互いに支え合いながら学び、成長していける環境があります。"}, {"label": "入社後の仕事", "content": "【葬祭部門の場合】入社後は研修をしたうえで、まずは先輩社員に付いて実務を学びます。その後は、ご家族様との打ち合わせやセレモニー運営を担当します。丁寧にお話を伺い、故人様の人生やご家族の想いに寄り添ったご提案を行います。「あなたでよかった」と言われるやりがいを実感できる仕事です。"}, {"label": "求める人物像", "content": "人と関わることが好きで、相手の気持ちを大切にできる方を求めています。特別な知識や経験は必要ありません。入社後に先輩が丁寧に教えるので安心して成長できます。仲間と協力しながら、人の役に立つ仕事がしたいという気持ちを持ち、前向きに学び続けられる方を歓迎します。"}], connectionText:'人生の大切な節目に寄り添い、自分自身も成長できる仕事がここにあります。' },
+  { id:28, booth:'8', work:'', image:'images/28.jpg', name:'株式会社 ユーテック', industry:'製造業', jobs:["製造職", "技術職"], pr:'操業22年、従業員数90名の家族観溢れたアットホームな会社です。', detail:'自動車用内外装部品の樹脂成形・塗装（カラー塗装・植毛塗装)の加工工場です。 日々塗装の技術向上を目指し誠心誠意さまざまなご要望にお応えする事を使命と考え、 お客様に満足していただける製品づくりに努めています。', atmosphere:'', valueTags:["craft", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "職場の雰囲気", "content": "職場単位でチームを組み、みんなで協力しながら製品を作り上げていきます。 支え合う職場でより良い製品が作り出されます。"}, {"label": "今後の展望", "content": "2026年度に新たな事業として成形棟を増築し樹脂成形事業を開始しています。 新たな事に色々と挑戦していくチャレンジ企業です。"}, {"label": "社員に人気の福利厚生", "content": "各種コミュニケーションイベントを開催しています。 毎年末には従業員全員でクリスマス会を行い食事会と福引大会等を行って 従業員間のコミュニケーションを取っています。"}], connectionText:'操業22年、従業員数90名の家族観溢れたアットホームな会社です。' },
+  { id:29, booth:'9', work:'', image:'images/29.jpg', name:'株式会社ＫＯＴＡＮＩ', industry:'製造業', jobs:["製造職"], pr:'地元中津で若手が元気に活躍中！社会を支えるセラミック加工の仕事です。', detail:'セラミックを機械で加工するものづくりの仕事です。コツコツ続けることで技術が身につき、いろいろな製品を支える力になります。地元中津の工場で、毎日仲間と協力しながら取り組んでいます。', atmosphere:'', valueTags:["team", "craft", "stable"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "入社後はまず安全やルールを学ぶところからスタート。その後は先輩と一緒に加工機を操作し、セラミック製品をセットし、寸法や仕上がりを確認しながら作業を覚えます。先輩のサポートを受けながら少しずつ技術を身につけ、習得後は自分で製品の加工を管理し、品質と安全を守る大切な役割を任されます。"}, {"label": "職場の雰囲気", "content": "年齢や性別に関係なく、ものづくりが好きな仲間が集まる元気な職場です。未経験からスタートした先輩も多く、みんなで声をかけ合いながら成長しています。分からないこともすぐ聞ける、チームワーク抜群の環境です。"}, {"label": "成長を支援する制度", "content": "資格取得は会社が費用をサポート。作業に必要なものやスキルアップにつながる資格も、安心して挑戦できます。研修や勉強会もあり、仕事だけでなく社会人としても成長できる環境です。"}], connectionText:'地元中津で若手が元気に活躍中！社会を支えるセラミック加工の仕事です。' },
+  { id:30, booth:'10', work:'', image:'images/30.jpg', name:'株式会社 梶原組', industry:'建設業', jobs:["技術職"], pr:'もの造りを通して、地域に貢献する会社です。', detail:'スーパーゼネコンの下請け工事、地元企業工場のメンテナンスやリノベーション等、建築工事全般を行っている会社です。 私たちのモットーは【技術力で地域に貢献】、安全・品質・環境保全はもちろんのこと、お客様の要望により多く応えられるオンリー１の技術力を目指しています。', atmosphere:'', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "現場管理業務 （品質管理・施工管理・工程管理・安全管理） 現場調査、見積もりから図面の作成等の現場管理を行います。"}, {"label": "成長を支援する制度", "content": "資格取得の為のサポートが充実！ 社員一人ひとりのスキルアップを全力で応援しています。 資格取得にかかる受験料や教材費はもちろん、講習等の受講料も会社が全額負担。 さらに、合格時にはお祝い金も支給！"}, {"label": "求める人物像", "content": "お客様の声に耳を傾け、思いをくみとり、形にする。 そして、自分の仕事に誠実かつ真剣に向き合える方を求めます。"}], connectionText:'もの造りを通して、地域に貢献する会社です。' },
+  { id:31, booth:'1', work:'', image:'images/31.png', name:'株式会社かがし屋', industry:'情報・通信業', jobs:["接客職"], pr:'従業員が、安心して、夢中で、「働く」ことを楽しめる環境づくりを大切にしています！', detail:'福岡・大分で、文具用品・OA機器販売をはじめ、ステーショナリーショップ、ドコモショップ、ベーカリーの運営、介護福祉事業や太陽光発電事業など、地域に密着した９つの事業を展開しています。“地域に愛される企業”を志し、社会の価値観の変化を的確にキャッチしながら事業の多角化と規模の拡大に取組んでいます。', atmosphere:'', valueTags:["support", "growth"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "求める人物像", "content": "・地元で腰を据えて働きたい ・人とコミュニケーションをとることが好き ・人の役に立ちたい、人から感謝されることがモチベーションになる ・残業時間を抑えて仕事と自分の時間を両立したい ・チームワーク重視の職場環境で働きたい"}, {"label": "入社後の仕事", "content": "・店舗にいらしたお客様への接客・販売、受付業務 ・携帯電話、スマートフォン、タブレットの新規契約手続き ・機種変更・契約内容の変更手続き ・操作方法やサービスなど各種相談への対応 ・店内のPOP作成・キャンペーン対応 ・イベント店舗の運営（イベント会社と共同で運営します）"}, {"label": "今後の展望", "content": "「地域のチカラ共創企業」へと進化します！地域に深く根を下ろし、欠かせない存在として、地域のお客様と共に未来へ挑戦します。そして「100億円企業」という高みを目指して参ります。この大きな挑戦を担う主役である従業員の皆様が、安心して、夢中で、楽しく働ける環境づくりに全力で取り組んで参ります！"}], connectionText:'従業員が、安心して、夢中で、「働く」ことを楽しめる環境づくりを大切にしています！' },
+  { id:32, booth:'2', work:'', image:'images/32.jpg', name:'株式会社 渡辺製作所', industry:'製造業', jobs:["製造職"], pr:'配管加工技術でクルマの快適と走りを支える自動車部品メーカーです。', detail:'弊社独自の技術力・開発力でアルミ配管部品を中心とした自動車部品の普及と安全性の向上を通じて快適な移動手段の一翼を担うことを目指しており、製品の軽量化・コンパクト化を追求することで、社会全体が無理なくカーボンニュートラルへ向かえるよう貢献できると考え取り組んでいます。', atmosphere:'', valueTags:["craft", "analyze"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事'}, sections:[{"label": "入社後の仕事", "content": "新人教育を受けた後、半年ほど各工程（切断・端末加工・曲げ・ロー付け・気密検査・組立）で現場研修を行いすべての工程を学びます。研修で自社製品が出来るまでを学び、一人一人の適性に合った配属先を決定します。各工程では自社開発した設備を使用しての作業となりますが未経験でも作業がしやすいように工夫しています。"}, {"label": "職場の雰囲気", "content": "社員の平均年齢は37.8歳でその中でも製造現場は若手社員が多く、和気あいあいとした雰囲気です。誰かが休めば皆でフォローするなど支えあいながら日々の生産目標を達成しています。またグループ内で作業内容の改善に取り組むこともあり、こういった活動を通してチーム力も上がってきています。"}, {"label": "今後の展望", "content": "主要大手自動車メーカー工場の九州進出や自動車関連事業工場の建設予定などでの新規需要見込みや昨年度からの新規立ち上げも続いています。 九州工場以外にも国内に４拠点・海外に１拠点のグループ企業全体としても受注拡大を目標とし、また働きやすい職場を目指して今後も更なる成長を図っていきます。"}], connectionText:'配管加工技術でクルマの快適と走りを支える自動車部品メーカーです。' },
+  { id:33, booth:'3', work:'', image:'images/33.jpg', name:'愛宕自動車工業株式会社', industry:'製造業', jobs:["技術職/製造職", "事務職/専門職"], pr:'社食の提供や安心して暮らせる社宅の提供等、衣食住を意識した職場環境を整えています', detail:'自社製品の開発・製造・販売を行っています。「安全と物流を創造するテクニカルファクトリー」の企業理念の下、環境負荷の低減や社会課題の解決に貢献する製品づくりを目指しています。', atmosphere:'', valueTags:["craft", "analyze", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "①技術系総合職：自社製品の製造・架装・自動車整備・塗装など。 ②営業系総合職：自社製品の販売・マーケティング戦略の立案など。 ③事務系総合職：原価管理・ISO関連業務・安全衛生管理・広報業務など。"}, {"label": "社員に人気の福利厚生", "content": "福利厚生が充実しています。社員食堂あり(1食330円)。シャワールーム・洗濯ルーム完備で、夏季は汗を流してから帰宅できます。社宅があり、遠方からでも安心です。その他社内レクリエーションあり。"}, {"label": "今後の展望", "content": "主力事業である「エコロジーボックス®」「リニボ®」「トラック図書館」「ATAGO‐CUSTOM」を強みに、現在45都道府県への納入実績を４７都道府県に拡大し、全国のお客様に自社製品の提供を行うことです。その幅広いフィールドで意欲的に取り組み、新しいことにチャレンジしたい人を当社では求めています。"}], connectionText:'社食の提供や安心して暮らせる社宅の提供等、衣食住を意識した職場環境を整えています' },
+  { id:34, booth:'4', work:'', image:'images/34.JPG', name:'有限会社松下モータース', industry:'サービス業', jobs:["技術職", "営業職"], pr:'１９歳からプロの自動車整備士へ！挑戦できる若手育成企業として成長し続けます。', detail:'1969年創業。中津市に根ざした自動車整備工場です。19歳から26歳の若手メカニックが活躍し、先輩がしっかりサポートする育成環境が特長。自社工場で整備・修理を行い、安心・安全な軽自動車を低価格で提供しています。若手がのびのび成長し、地域のカーライフを支え続けています。', atmosphere:'', valueTags:["support", "craft", "growth"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "職場の雰囲気", "content": "フロントや営業で多くの女性社員が活躍する職場です。お客様と直接関わり、感謝や信頼の言葉をいただくことで大きなやりがいと誇りを感じられます。「もっと頑張ろう」と前向きな気持ちが生まれ、自分らしく成長できる温かく活気ある雰囲気が整っています。"}, {"label": "求める人物像", "content": "求める人財は　・プラス発想な方　・素直な方"}, {"label": "今後の展望", "content": "私たちの会社が目指しているのは、「人々の暮らしや社会にとって、なくてはならない存在」になることです。そのために、私たちは常にお客様の立場に立ち、期待を超えるサービスや商品を提供することに挑戦し続けています。また、「社員が幸せになる会社」を目指し、一人ひとりが自分らしく働ける環境づくりを行っています。"}], connectionText:'１９歳からプロの自動車整備士へ！挑戦できる若手育成企業として成長し続けます。' },
+  { id:35, booth:'5', work:'', image:'images/35.jpg', name:'Design City Japan株式会社', industry:'研究・技術サービス業', jobs:["技術職（機械設計）"], pr:'各種プラント（石油化学、製鉄等）に建設・設置される機器を”設計”しています。', detail:'各種プラント（石油化学、製鉄等）に設置される機械・機器・設備等を”設計”している、いわゆる【設計会社】です。取引先は日本全国に拡がり、海外プラント建設プロジェクトにも数多く携わっています。 主に設計図面の作成、強度計算など基本設計、計画設計、詳細設計を行なっています。耐震設計は、売りの一つです。', atmosphere:'', valueTags:["team", "analyze", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "成長を支援する制度", "content": "若手勉強会など社内勉強会を定期的に実施。資格に応じて手厚い手当あり。技術者として着実にステップアップ出来る環境があります！"}, {"label": "求める人物像", "content": "1.わからないこと、経験がないことでも、手を挙げて　チャレンジできる人 2.問題・課題に気づく力を持ち、柔軟性と好奇心を持って　解決できる人 3.現状に満足せず、向上心を持って　学び続けられる人"}, {"label": "入社後の仕事", "content": "入社後１～2か月は社外研修や社内研修で、社会人としてのマナーや、会社や業界について学び、設計者としての心構えを身につけます。CAD操作や図面作成も丁寧に指導します。約4か月後には先輩アシスタントとして、簡単な業務から始めていきます。 メンター制度もあり、業務のことや生活面でもしっかりサポートします。"}], connectionText:'各種プラント（石油化学、製鉄等）に建設・設置される機器を”設計”しています。' },
+  { id:36, booth:'6', work:'', image:'images/36.JPG', name:'（株）オモテ', industry:'製造業', jobs:["技術職/製造職"], pr:'社員の平均年齢が38才と若い人が多い元気な会社です。', detail:'当社は自動車完成車メーカーや部品メーカーの工場のラインで使用する自動化設備やロボット装置等の設計から製作までを手掛けています。特にロボットを使った生産用機械設備の製作が得意であり、省力化、人手不足の解消に貢献しており、私たちが製作した機械がアメリカ、ブラジル、南アフリカ等の工場で稼働しています。', atmosphere:'', valueTags:["craft", "analyze"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事'}, sections:[{"label": "入社後の仕事", "content": "まずは、新入社員教育や高所、感電防止等安全教育の研修を受けたのち、設計、製缶、加工、組立の各部署に配属されます。部署ごとで「モノづくり」の基礎を先輩たちの指導のもと学んでいきます。"}, {"label": "求める人物像", "content": "明るく元気で何事も前向きに捉える方で、チームで成果を上げることを楽しいと感じる方をもとめています。"}, {"label": "成長を支援する制度", "content": "全トヨタ工場で通用する高所作業、感電防止の研修からクレーン、フォークリフト等各部署で必要な資格を会社の費用で取得してもらいます。"}], connectionText:'社員の平均年齢が38才と若い人が多い元気な会社です。' },
+  { id:37, booth:'7', work:'', image:'images/37.jpg', name:'株式会社 三好冷暖房', industry:'建設業', jobs:["技術職"], pr:'弊社は管工事業で建築物に欠かせない空気、水を供給する為の設計施工会社です。', detail:'主な事業内容は、社名でわかるように冷暖房工事ですが様々な工事の設計施工を行っています。 主な顧客は官公庁、大手サブコン、地元工場等ですが一般個人まで気軽に対応しています。 弊社は、昨年創業50年の節目を迎え、新社屋の改装や作業服の変更などを実施しています。', atmosphere:'', valueTags:["craft", "analyze", "growth"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "職場の雰囲気", "content": "当社は大分県発注の工事において2年連続で優良建設工事表彰を受賞しています。 これは、当社の技術力の高いところを示すものであり社員のモチベーション向上にもつながっています。"}, {"label": "求める人物像", "content": "建設業は、担い手不足であり、若手入職者が皆無の状態が続いています。 昔で言う「手に職を付ける」チャンスです。 学歴や成績は問いません。ヤル気があり、節度を持った行動が出来れば年齢、性別は問いません。 資格の取得に必要な費用などの補助制度や、合格時の祝金など充実しています。"}, {"label": "社員に人気の福利厚生", "content": "・各種保険、退職金制度有り ・週休二日制、有給休暇 ・資格取得金補助、祝金 ・健康促進器具設置 ・会社の行事(慰安旅行、慰労会) ・レクレーション(ゴルフ、釣り、カラオケ、ボーリング)"}], connectionText:'弊社は管工事業で建築物に欠かせない空気、水を供給する為の設計施工会社です。' },
+  { id:38, booth:'8', work:'', image:'images/38.jpg', name:'福進株式会社', industry:'製造業', jobs:["製造職", "ドライバー"], pr:'休日数増加・有給休暇取得率の高さ・全世代の働きやすい環境作りに取り組んでます', detail:'1982年の創業以来、生コンクリート製造を中心に地域のインフラを支えてきました。現在は運送事業・建設資材販売・産業廃棄物中間処理業を含む３社のグループ体制で事業を成長展開し、「人」を大切にしながら品質と信頼を追求し、地域の未来づくりに挑戦し続けています。', atmosphere:'', valueTags:["team", "craft", "stable"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "求める人物像", "content": "仲間と協力しながら目標に向かい、明るく前向きに新しい事に挑戦出来る方！ スキルアップのための資格取得もどんどんチャレンジ出来ます。"}, {"label": "職場の雰囲気", "content": "当社では営業から製造、納品までを一貫して行っており、常に部署間同士のコミュニケーションが活発で意見交換が出来る環境が整っています。 社員全員でワンチームとなって業務に取り組んでいます！"}, {"label": "入社後の仕事", "content": "入社後は配属部署で先輩社員の教育のもと、業務を覚えていただきます。 当社には、同業経験者の社員も未経験の社員も多数在籍しています。 一人一人の技量に合わせてサポートしていますので未経験の方も安心して働けます。"}], connectionText:'休日数増加・有給休暇取得率の高さ・全世代の働きやすい環境作りに取り組んでます' },
+  { id:39, booth:'9', work:'', image:'images/39.JPG', name:'中津木工株式会社', industry:'製造業', jobs:["事務職", "製造職", "技術職"], pr:'家具造りの伝統と技術を学べる創業89年目を迎えた歴史ある会社です。', detail:'創業89年目を迎え、創業以来「木」と携わってきました。特注家具・建具の設計施工、内装工事、木工事の施工に従事しており、幅広い木製品の完全受注生産を行っています。 主にゼネコンや店舗設計施工会社の依頼で、ホテル・病院、文化施設などの特注家具を中心に、個人住宅の家具・建具など幅広く施工しています。', atmosphere:'', valueTags:["craft", "stable"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "ライン作業ではなく、一人の人が最初から最後まで製品を組立ていきますので、先輩社員について基本的な工具や木工機械の使い方を学びながら基本的な家具造りの方法を学んでいきます。 簡単な家具製作の練習をして、製作方法の知識を身につけ、実際に現場へ出向いて家具を取付る知識や技術も身につけていきます。"}, {"label": "求める人物像", "content": "・向上心があり、自分から積極的に聞く姿勢のある方 ・臨機応変な対応が出来る方 ・周りの人と協力して作業が出来る方 ・決められたことだけでなく、何事にも取り組む姿勢のある方"}, {"label": "今後の展望", "content": "もうすぐ創業100周年を迎えようとしていますが、その先の200年を目指しています。 まずは11年後の100周年を一緒に迎え、その先の未来を共に歩んでいきましょう。 長年の技術と経験を大切に、時代や変化の状況に合わせて、地域社会と共に歩む企業であり続けたいと思います。"}], connectionText:'家具造りの伝統と技術を学べる創業89年目を迎えた歴史ある会社です。' },
+  { id:40, booth:'10', work:'', image:'images/40.JPG', name:'日進コンサルタント株式会社', industry:'建設業', jobs:["技術職"], pr:'道路、河川、砂防、橋梁等の計画で測量・設計を行い構造物を地図に残す仕事です。', detail:'1971年に測量会社として創業し、おかげさまで５４年が過ぎました。主に大分県内の公共事業を受注している測量・設計、点検調査会社です。土木の高い専門性を生かしたコンサルティング業務を行っており、また、豪雨災害等では早期復旧を目指し、災害現場での測量や災害復旧設計に、使命感を持って取り組み、実施しています。', atmosphere:'', valueTags:["analyze", "growth"], localTag:true, matchTexts:{analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "測量・設計とは、現況の地形を測定し道路、ダム、橋梁等を計画するため、設計図面や地図などの基本情報を作成する仕事です。近年は、ドローン等を使った測量も主流になっています。"}, {"label": "入社後の仕事", "content": "調査業務は、道路、トンネル及び橋梁等を定期的に点検する業務です。近年は、新技術のドローンや調査機器を使用して調査点検を行います。"}, {"label": "社員に人気の福利厚生", "content": "ボーリング大会、懇親会、フルーツ狩り、バーベキュー、社員旅行等の行事を毎年行っています。参加は自由ですが、みんなで楽しく行っています。"}], connectionText:'道路、河川、砂防、橋梁等の計画で測量・設計を行い構造物を地図に残す仕事です。' },
+  { id:41, booth:'1', work:'', image:'images/41.jpg', name:'ダイハツ九州株式会社', industry:'製造業', jobs:["技能職"], pr:'中津市で長く働ける、軽自動車づくりを支える安定企業です。', detail:'ダイハツ九州は中津市から全国へ軽自動車を届けるメーカーです。ダイハツの軽自動車の70％、年間40万台を生産しています。安心・安全な職場環境と充実した福利厚生で、地元で長く成長しながら働けます。', atmosphere:'', valueTags:["team", "craft", "stable"], localTag:true, singleOnly:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "社員に人気の福利厚生", "content": "有給休暇が取得しやすく、社員食堂や独身寮、生活や健康を支える各種補助制度も充実。 年間有給取得は平均17日、完全週休2日制＆年3回の長期連休があり 仕事とプライベートの両立を後押ししています。"}, {"label": "求める人物像", "content": "ものづくりに興味を持ち元気と忍耐力をもって仕事に向き合える人を求めています。仲間とのコミュニケーションを大切にし、決まりを守りながら協力して働けることを重視しています。前向きに学び地元で成長したいという意欲を持ち、高校卒業後の第一歩を安心して踏み出したい方を歓迎します。仲間と共に成長できる環境です。"}, {"label": "今後の展望", "content": "ダイハツ九州は軽自動車生産を支える中核企業として、長年にわたり安定した経営を続けています。確かな生産基盤と需要に支えられ、将来にわたって安心して働ける環境が整った会社です。 こうした安定した事業環境のもと、将来にわたって安心して働ける職場づくりを進めており、従業員一人ひとりが長く活躍できる環境が整った会社です。"}], connectionText:'中津市で長く働ける、軽自動車づくりを支える安定企業です。' },
+  { id:42, booth:'2', work:'', image:'images/42.jpg', name:'株式会社ケアリング', industry:'医療・福祉業', jobs:["介護職"], pr:'子育て中の方も多数！多くの女性が活躍中。自分らしく、笑顔で働ける職場です。', detail:'互いに助け合い、高め合うチームワークが自慢！2000年の創業以来、25年にわたり「心と命」を繋いできました。仕事には真摯に取り組みながらも、遊び心を忘れず、自分らしく生き生きと働けます。子育て中の方も多数活躍中。あなたの「人に寄り添う温かい心」を、ぜひ当社で活かしてください！', atmosphere:'', valueTags:["team", "support"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事'}, sections:[{"label": "求める人物像", "content": "・介護の知識やスキルを勉強することに興味がある方 ・介護の知識を生かして活躍したい方 ・人と関わるのが好きな方 ・相手の気持ちを思いやれる方 ・笑顔で優しく接することができる方 ・真面目に頑張れる方  どれか一つでも当てはまる方、是非ケアリングへお越しください！"}, {"label": "成長を支援する制度", "content": "「学びたい」気持ちを大切にします。上位資格取得を全力で応援！試験対策のフォローなど、働きながらスキルアップを目指せる環境を整えています。"}, {"label": "社員に人気の福利厚生", "content": "福岡で開催されるケアリング大運動会が人気です。 社員だけでなくお子さんやご家族、お友達まで大集合！「遊ぶときは徹底的に」がケアリング流。世代を超えてみんなで笑い、汗を流して絆を深める、笑顔あふれる一大イベントです！"}], connectionText:'子育て中の方も多数！多くの女性が活躍中。自分らしく、笑顔で働ける職場です。' },
+  { id:43, booth:'3', work:'', image:'images/43.JPG', name:'株式会社ドラッグストアモリ', industry:'卸売・小売業', jobs:["販売職"], pr:'接客経験が無くても大丈夫！入社後に研修があるので安心してお仕事を始められます！', detail:'お薬・化粧品・栄養の知識を活かし、地域の方々の【健康】と【美】をサポートしています。また、ドラモリだけのオリジナル商品の開発にも力を入れており、商品の質はもちろんパッケージデザインなどすべてにこだわっています！また、「社員に厚く」を掲げているドラモリでは、基本給・各種手当も業界最高水準です。', atmosphere:'', valueTags:["support", "analyze", "growth"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "求める人物像", "content": "ドラモリでは、高校卒業後に入社して活躍している先輩がたくさんいます！「友だちや先生と関わるのが好き」「誰かに“ありがとう”と言われると嬉しい」「部活や勉強で新しいことに挑戦するのが楽しい」「好きなこと、得意なことを仕事にしたい」そんな高校生のみなさん、ぜひ説明会へお越しください♪"}, {"label": "入社後の仕事", "content": "店舗で店長や先輩社員から、カウンセリングに必要な商品知識や、商品の発注・陳列、レジなどの業務の流れを習得していただきます。 医薬品、化粧品、健康食品、その他商品全般に関する知識、体のことや病気のこと、薬の知識を社内勉強会やＷEＢ勉強会で学び、お客様に沢山の情報を提供していきます。"}, {"label": "成長を支援する制度", "content": "医薬品、化粧品、健康食品、その他取扱い商品全般について、社内勉強会で学んでいきます。体験型の勉強会なので楽しく学べる！その他にも、ＷEＢ勉強会や資格取得勉強会など勤務時間内での教育サポートは業界NO.1です！得意なこと、好きなことを伸ばしてステップアップできます！"}], connectionText:'接客経験が無くても大丈夫！入社後に研修があるので安心してお仕事を始められます！' },
+  { id:44, booth:'4', work:'', image:'images/44.jpg', name:'株式会社 山国商会', industry:'卸売・小売業', jobs:["営業職", "運転職"], pr:'地域を支える基盤となれ！ 産業・医療・生活を支える仕事', detail:'創業68年を迎える総合ガス商社です。 主な事業内容は、酸素/窒素/アルゴンなどの産業用/医療用高圧ガス・溶接材料・ ＬＰガスの販売。 大分県中津市を拠点に、産業・医療・生活を支えています。', atmosphere:'', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "トラックにて固定客先（企業、工場、病院など）に ガスや部品を配送。 LPガス・酸素ガス等の高圧ガスや溶接機器など様々。 お客様とのコミュニケーションが得意な方大歓迎！ 将来は営業活動や配管工事も！"}, {"label": "成長を支援する制度", "content": "トラック運転が初めてでも安心！準中型免許は会社負担で免許取得できます。 その他仕事につながる資格は、基本的に会社が応援！ 社員の大半がフォークリフト・玉掛け免許も取得済み。 高圧ガス各種免許もとって、 知識の幅を広げて楽しみましょう。"}, {"label": "職場の雰囲気", "content": "幅広い年代が活躍中で、人間関係が良い環境です。 安定した仕事量で安心して働けます。 基本的に17時退勤でライフスタイルも充実！ 中津市を盛り上げて、豊かに暮らせます。"}], connectionText:'地域を支える基盤となれ！ 産業・医療・生活を支える仕事' },
+  { id:45, booth:'5', work:'', image:'images/45.jpg', name:'UDトラックス株式会社', industry:'卸売・小売業', jobs:["整備職"], pr:'整備のプロフェッショナルを目指す無限の可能性を持ったあなたを応援します。', detail:'私たちの仕事は目の前のトラックを整備するだけのように思うかもしれませんが、実は日本の物流を支えることにもつながっています。責任は重大ですが、やりがいのある仕事です。', atmosphere:'', valueTags:["craft", "analyze", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, sections:[{"label": "入社後の仕事", "content": "入社後は車検という作業を行って頂きます。 3人～４人のチームで仕事を行います。普段の仕事の中で上司や先輩と一緒なので相談したりサポートをもらったり、決して孤独感はありません。"}, {"label": "求める人物像", "content": "仕事はチーム制なのでコミュニケーション力が求められます。 ただし、コミュニケーションはしゃべるだけでなく、人の話を聞いたり、積極的に学ぶことも重要です。 また、車に関心のある方をお待ちしています！"}, {"label": "成長を支援する制度", "content": "何といっても入社後1年間が大事となります。 UDトラックスではフレッシュマンリーダーという頼りになる先輩がマンツーマンで指導してくれます。 慣れない社会人生活の中での仕事は大変ですがフレッシュマンリーダーがフォローしてくれるので安心です。"}], connectionText:'整備のプロフェッショナルを目指す無限の可能性を持ったあなたを応援します。' },
+  { id:46, booth:'6', work:'', image:'images/46.jpg', name:'ビューテック株式会社 中津作業所', industry:'製造業', jobs:["製造職"], pr:'総勢16名のコンパクトな職場です！若い方が活躍している職場です。', detail:'今年で創業61年の老舗企業 グループ従業員1万3,400人を誇る、大手メーカーです。 主にダイハツ九州様向けの自動車ガラスに構成部品組付け＆検査 扱っている製品はsafetyガラスと呼ばれ、軽量で万が一割れても切創することのない安全なガラスです。', atmosphere:'', valueTags:["team", "craft"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事'}, sections:[{"label": "入社後の仕事", "content": "入社後、本社（愛知県）で１週間の全体研修後、中津に戻り最初の１か月間は安全・品質に重点を置いた教育を行い、 終了後に実作業の教育・訓練に移行し終了後、配置となります。"}, {"label": "求める人物像", "content": "明るく、元気で何事にもチャレンジ精神旺盛な向上心のある方。 優しく気遣いのできる方！静かに黙々と作業できる方！！も大歓迎です！！！"}, {"label": "社員に人気の福利厚生", "content": "【社会保険】 健康保険、厚生年金保険、雇用保険、労災保険 【 その他 従業員向け特典多数 】　 ・社員旅行 （慰安旅行） 全拠点の従業員が集合して、温泉等への国内旅行。費用は全額会社負担 ・年末年始支給品あり 年末はおせちセット・お肉・カレンダー・お餅等、年越しを迎えられる品一式。年始にはお年玉あり"}], connectionText:'総勢16名のコンパクトな職場です！若い方が活躍している職場です。' },
+  { id:47, booth:'7', work:'', image:'images/47.jpg', name:'豊能運送株式会社 大分営業所', industry:'運輸・郵便業', jobs:["運転職", "製造職", "運転職"], pr:'中津市に営業所開設してもうすぐ20年。厳しくも和やかな雰囲気の職場です', detail:'ダイハツグループの物流会社で主にダイハツ九州様への自動車部品を取り扱っています。 ①運送事業：荷主様からお預かりした製品を大型トラックでお届けする、②倉庫事業：荷主様からお預かりした製品を倉庫で保管し、納入先の要望に応じてお届けする、③製品加工事業：荷主様からお預かりした部品を組み立ててお届けする。', atmosphere:'', valueTags:["team", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "現業職では入社直後は倉庫での仕事につき、経験と適性、本人希望により大型トラック乗務での仕事に就いて頂く場合があります。"}, {"label": "求める人物像", "content": "健康で元気、そして何事にも興味をもって積極的に取り組んでいただける方です。業務は先輩方が丁寧に指導していきます。"}, {"label": "職場の雰囲気", "content": "性別、年齢、職種は様々ですが“頼りになる物流会社”になるために助け合い、お客様にご満足をお届けしています"}], connectionText:'中津市に営業所開設してもうすぐ20年。厳しくも和やかな雰囲気の職場です' },
+  { id:48, booth:'8', work:'', image:'images/48.jpg', name:'岡本土木株式会社', industry:'建設業', jobs:["技術職"], pr:'舗装・土木・港湾工事などの幅広い実績と卓越した技術力を持ち長い歴史を誇る老舗企業', detail:'創業は1917年（大正6年） 岡本土木株式会社は大分県中津市で創業。100年以上続く歴史の長い老舗企業 北九州市、中津市、福岡市に拠点を構え、社会インフラ整備に大きく貢献しております', atmosphere:'', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "入社後、１ヵ月間新入社員研修を実施 【施工管理】 現場に配属後、先輩社員の補佐として各管理業務を行います 【重機オペレーター】 経験や安全意識が重視されますので、建設機械の基本操作の習得を行います"}, {"label": "成長を支援する制度", "content": "社員のスキルアップ、資格取得に会社が全力で支援。eラーニングの他、積極的なキャリアアップを支援 【自己啓発支援制度】 ・資格取得費用全額補助（合格者のみ） ・合格祝金支給 ・各種研修・セミナー費用の補助 ・eラーニング制度の導入"}, {"label": "職場の雰囲気", "content": "当社は、何でも相談できる風通しの良い社風が魅力です。 日々の業務を通して土木施工に関する知識と技術を着実に身につけられるほか、資格取得を積極的に支援する制度も充実 社員の成長を会社全体でサポート"}], connectionText:'舗装・土木・港湾工事などの幅広い実績と卓越した技術力を持ち長い歴史を誇る老舗企業' },
+  { id:49, booth:'9', work:'', image:'images/49.jpg', name:'株式会社ムクノ', industry:'製造業', jobs:["事務職", "倉庫管理業", "営業職", "製造職"], pr:'珍しい職種ですが働いている方々は未経験の方ばかりですのでお気軽にお問合せ下さい', detail:'弊社は大きく３つの業務を行っております。 １．食品の原材料や、加工した食品の冷凍保管をする冷凍倉庫業 ２．地域特産を使用した加工食品の製造 ３．商品の配送、納品業務（アイスクリームなど）', atmosphere:'', valueTags:["craft", "stable"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "入社後はおよそ１カ月程度、研修にて業務内容について把握していただきます。研修後は各部署の方と一緒に業務を行っていただきます。"}, {"label": "求める人物像", "content": "未経験の方でも大丈夫！業務経験がない方も多く働いています。分からない時はまわりの方が教えてくれるので、困ったときにすぐに相談してくれる方は大歓迎です。"}, {"label": "成長を支援する制度", "content": "入社後に資格が必要な部署に配属になった際は、資格の取得に必要な費用の一部を補助する制度もございます。"}], connectionText:'珍しい職種ですが働いている方々は未経験の方ばかりですのでお気軽にお問合せ下さい' },
+  { id:50, booth:'10', work:'', image:'images/50.jpg', name:'株式会社クラフティア（旧 九電工）', industry:'建設業', jobs:["技術職"], pr:'2025年10月、『九電工』から『クラフティア』へ社名変更しました！！', detail:'私たちは、人の暮らしを支える『社会インフラ』と『快適な環境づくり』を通して、社会に貢献しています！ ① 電気工事 ② 情報通信工事 ③ 空調・衛生工事 ④ 配電工事 ⑤ エネルギー事業', atmosphere:'', valueTags:["team", "craft", "growth"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "地図に残る、やりがいのある仕事です！ 【電気】電気を『安心』して使えるように工事します。 【空調管】水と空気を『快適』に使えるように工事します。 【配電】発電所で作られた電気を『家庭に届ける』ために工事をします。"}, {"label": "成長を支援する制度", "content": "人財育成（研修・資格取得支援・エルダー制度）は、とても充実しています！ 入社後は、研修施設（アカデミー）で実技訓練を通し、一から『知識』『技術』『技能』の基礎を学ぶことができます。"}, {"label": "求める人物像", "content": "『バイタリティーにあふれ、何事にもチャレンジし、プロフェッショナル志向で、最後まであきらめない人』 特に、「体力」「チームワーク力」「コミュニケーション力」を兼ね備えている方が活躍しています！"}], connectionText:'2025年10月、『九電工』から『クラフティア』へ社名変更しました！！' },
+  { id:51, booth:'1', work:'', image:'images/51.jpg', name:'株式会社中津レンタリース', industry:'サービス業', jobs:["接客職/事務職"], pr:'希望休100%取得可。積極的な有給取得推進。希望者の週休3日導入を行っています。', detail:'当社は創業60年を超える、地元密着のレンタカー会社です。定番の車から、バイクやキッチンカーなど、地域に求められる様々なレンタカーを取り扱っています。また、中津・宇佐・大分に拠点があり、大分県全域でサービスを提供しています。社員・お客様・地域のために、次の70年に向けて社員と共に邁進しています。', atmosphere:'', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "求める人物像", "content": "私たちが大切にしているのは、能力やスキルではなく人柄です。実際、スタッフの大半はレンタカー業界未経験からスタートしています。人と話すのが好き。車に興味がある。細かい作業が得意。そんな方にぴったりです。"}, {"label": "職場の雰囲気", "content": "20代から40代まで、幅広い世代の社員が働いており、会話が絶えない明るい職場です。接客や車の配車、洗車など、様々な仕事を皆で分担して行うため、チームとして仕事をしていく面白さと楽しさがあります。"}, {"label": "成長を支援する制度", "content": "動画を活用した、未経験からでも学べるマニュアル学習。社員の能力に合わせて、適正な評価と昇給を行う人事評価。スキルアップを支援するための、積極的な社内外の研修プログラム。一歩ずつ学び、成長を重ねながら、新しい可能性を広げていく共育の仕組みを作っています。"}], connectionText:'希望休100%取得可。積極的な有給取得推進。希望者の週休3日導入を行っています。' },
+  { id:52, booth:'2', work:'', image:'images/53.jpg', name:'株式会社 中津急行', industry:'建設業', jobs:["技術職"], pr:'安全・確実・迅速をモットーに、社員みんなが 楽しく働ける会社です。', detail:'1950年創立の中津急行は、貸切輸送・小荷物輸送といった運送業を行う会社です。 加えて本社の他に10を超える数の拠点を展開しています。 また、倉庫も多数保有しており保管～出荷・配送といった トータル物流の提案・提供を行っています。', atmosphere:'', valueTags:["team", "support", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "職場の雰囲気", "content": "従業員同士の仲が良く、普段は楽しく緩い雰囲気で仕事をしています。 しかし、安全に対しては厳しく考えており、絶対無事故を目指して、 メリハリのある仕事を心がけています。"}, {"label": "求める人物像", "content": "運転手も事務員も、お客様とのコミュニケーションをとる機会が多いです。 一番重要視しているのは、何よりも「挨拶ができる人」というところです。 また、弊社は地域密着型企業で、中津市と一緒に様々な事業に取り組む こともあります。地元愛に溢れた方に来てもらえるとより嬉しいです。"}, {"label": "社員に人気の福利厚生", "content": "毎年社員同士で食事会などを行うと、会社から助成金が支給されます。 社員同士のコミュニケーションの場となり、みなで楽しむことができます。 他にも演劇鑑賞といった趣味にも一部助成金が支給されます。"}], connectionText:'安全・確実・迅速をモットーに、社員みんなが 楽しく働ける会社です。' },
+  { id:53, booth:'3', work:'倉庫で荷物を管理・出荷する仕事', image:'images/53.jpg', name:'株式会社 中津急行', industry:'運輸・郵便業', jobs:["営業職", "倉庫作業員", "事務職"], pr:'安全・確実・迅速をモットーに、社員みんなが楽しく働ける会社です。', detail:'1950年創立の中津急行は、貸切輸送・小荷物輸送といった運送業を行う会社です。本社の他に10を超える数の拠点を展開しています。倉庫も多数保有しており保管～出荷・配送といったトータル物流の提案・提供を行っています。', atmosphere:'従業員同士の仲が良く、普段は楽しく緩い雰囲気で仕事をしています。安全に対しては厳しく考えており、絶対無事故を目指して、メリハリのある仕事を心がけています。', valueTags:["team", "stable"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'' },
+  { id:54, booth:'4', work:'', image:'images/54.jpg', name:'社会福祉法人泰然会', industry:'医療・福祉業', jobs:["介護職"], pr:'入居者様の笑顔になる時間は職員も笑顔になる時間を実感してみませんか？', detail:'地域密着型で29名定員の特別養護老人ホームです。 小規模だからこそ入居者様1人1人の思いを大切にでき そこで働く職員の生活も大切にすることを目標にしています。', atmosphere:'', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "職場の雰囲気", "content": "暖かい日は、施設の周囲を車いす散歩や運動をしてリラックスします。 職員同士の声かけや入居者様との交流を大切にしながら、穏やかで安心できる雰囲気づくりを心がけています。季節を感じる時間も楽しんでいます。"}, {"label": "社員に人気の福利厚生", "content": "ＢＢＱ　お楽しみ抽選会もあります。 職員互助会では、グループ企業合同での新年会、ボウリング大会やバーベキュー大会など開催し、職員間のコミュニケーションを図っています。"}, {"label": "職場の雰囲気", "content": "入居者様、ご家族様、地域の方と一緒に小さな花火大会で楽しみます。 笑顔あふれる温かな職場で、入居者様やご家族様、地域の方と心を通わせながら、思い出に残るひとときを大切にしています。"}], connectionText:'入居者様の笑顔になる時間は職員も笑顔になる時間を実感してみませんか？' },
+  { id:55, booth:'5', work:'', image:'images/55.jpg', name:'中津コスモス電機株式会社', industry:'製造業', jobs:["技術職", "事務職"], pr:'弊社は創業42年になる電子部品製造会社です。 可変抵抗器、自動車電装品の製造。', detail:'電子部品の組立・検査及び生産工程の管理業務を行います。 生産ラインのオペレーターとして、組立業務・部材補充など生産ラインの管理や ラインの軽微なトラブル対応や復旧作業を行います。', atmosphere:'', valueTags:["craft", "stable"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "入社後の仕事", "content": "生産部では、可変抵抗器（ポテンショントリマー）の製造。 技術系では、設備の保全、改善、設計など。"}, {"label": "求める人物像", "content": "自分を高める意欲があり、何事にも積極的チャレンジしていく気持ちのある人。 他の社員と協力して業務や改善などをしていく向上心のある人。"}, {"label": "成長を支援する制度", "content": "仕事に必要なスキルを取得するための研修制度・通信教育・資格取得支援など。"}], connectionText:'弊社は創業42年になる電子部品製造会社です。 可変抵抗器、自動車電装品の製造。' },
+  { id:56, booth:'6', work:'', image:'images/56.jpg', name:'九州ケース株式会社', industry:'製造業', jobs:["製造職", "営業職"], pr:'地域密着でコストと品質を両立する信頼を築く」↓ここで改行 段ボール会社。', detail:'ネットショッピングなどの影響により、大幅な需要増が続く段ボール。 それは人々の生活を支える「社会の基礎」の一部とも言えます。 そんな普段意識せずに接している段ボールを、 私たちは高品質、そして迅速に提供できるように 日々誇りを持って仕事に取り組んでいます。', atmosphere:'', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "〇「段シート」の製造:原紙セッティング・検査等 段原紙 (1t程度)を転がして機械にセットする 　　原紙は工程近くまでリフトを使用 〇「段ボールケース」の製造 :セッティング・検査・インクの補充等 段ボールに印刷する為の版 　　のセッティング及びインクの補充 段ボールシートを機械にセットする"}, {"label": "社員に人気の福利厚生", "content": "・基本週休2日 (2025年度の実績で年間休日が120日) ・必要な資格の費用のサポートも実施しております。 ・昼食補助もあります。"}, {"label": "求める人物像", "content": "段ボールの製造は複数工程に分かれており、各工程の協力が大事なので、 チームワークとコミュニケーション重視する方"}], connectionText:'地域密着でコストと品質を両立する信頼を築く」↓ここで改行 段ボール会社。' },
+  { id:57, booth:'7', work:'', image:'images/57.png', name:'大交北部バス株式会社', industry:'運輸・郵便業', jobs:["バス整備士"], pr:'市内に路線バスを運行する当社は、暮らしに必要な公共交通として、人と街を繋ぎます。', detail:'私たち大交北部バスは、中津市を中心に路線バスをはじめ、貸切バスや空港リムジンバスを運行する会社です。地域の暮らしに欠かせない交通インフラとしてこれからも人と街をつないでいきます。', atmosphere:'', valueTags:["support", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "入社後の仕事", "content": "当社が運行する路線バス、貸切バスの整備業務全般（点検・修理など）を担当します。未経験のみなさんは、バスの走る仕組みからゆっくり研修しますので、安心してチャレンジしてください！"}, {"label": "求める人物像", "content": "親会社である大分交通の経営方針を表す三つの言葉「公共奉仕」「積極実践」「和心協力」。すなわち「地域の皆様に信頼される」「積極的にチャレンジする」「仲間と心を一つにできる」人物を求めています。"}, {"label": "職場の雰囲気", "content": "非常にアットホームな職場です。営業所や整備工場の建物は古いですが、整備に必要な工具などは準備されており、修繕が必要な箇所は、計画的に改装するなど、常に「働きやすい職場環境」を追い続けています。"}], connectionText:'市内に路線バスを運行する当社は、暮らしに必要な公共交通として、人と街を繋ぎます。' },
+  { id:58, booth:'8', work:'', image:'images/58.jpg', name:'大分県警察', industry:'公務', jobs:[], pr:'正義の心と熱い信念を胸に、大分の治安維持のために働いています！', detail:'大分県警察は、警察官と警察事務職員で構成されています。警察官は犯人の逮捕や事件捜査を行います。警察事務職員は予算・庁舎管理などを行います。', atmosphere:'', valueTags:["team", "support", "analyze"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', support:'人の役に立ち「ありがとう」と言われる仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事'}, sections:[{"label": "採用後の仕事", "content": "まずは警察学校に配属されます。警察学校は全寮制です。同期生と寝食を共にし、切磋琢磨しながら、現場で働く知識と体力を身につけます。警察学校を卒業した後は、県内の警察署・交番で働きます。"}, {"label": "職場の雰囲気", "content": "若手が多く活気があります。同じ職場の中で、警察官も警察事務職員も協力して働いています。わからないことがあれば、上司や先輩がしっかり教えてくれます。"}, {"label": "人気の福利厚生", "content": "年次休暇に加え、夏季休暇やリフレッシュ休暇があります。旅行やアウトドアなど、しっかりと働くためにしっかりと余暇を楽しんでいます。"}], connectionText:'正義の心と熱い信念を胸に、大分の治安維持のために働いています！' },
+  { id:59, booth:'9', work:'', image:'images/59.jpg', name:'防衛省 自衛隊 大分地方協力本部', industry:'公務', jobs:[], pr:'平和を守る『誇り』と、自分のスキルで活躍できる『やりがい』を実感できる仕事です。', detail:'自衛隊は日本を守る特別国家公務員です。「国の防衛」「災害派遣」「国際平和協力活動」の３つの役割があります。今ある『平和な日常』を守るため、世界各地で隊員は日々訓練して、スキルアップに努めています。', atmosphere:'', valueTags:["team", "growth", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境'}, sections:[{"label": "人気の福利厚生", "content": "年間の休日は約１５０日（１年の１/３以上）。長期の休暇も取得できます。駐屯地・基地の宿舎は家賃無料。もちろん、光熱水費も無料です。朝・昼・晩の３食とも隊員食堂で無料で食べれるので、食費がかかりません。"}, {"label": "成長を支援する制度", "content": "自衛隊の仕事は種類も豊富なので、自分に向いている仕事がきっと見つかります。仕事に必要な免許や資格も取得でき、自分の進みたい道に挑戦できます。活躍のフィールドは国内だけでなく、海外にも広がります。"}, {"label": "求める人物像", "content": "運動が苦手な人、体力に自信がなくても大丈夫。デスクワークや車の運転などの仕事もあります。女性自衛官も急増中。女性が働きやすい環境への取り組みやワーク・ライフ・バランスにも積極的に取り組んでいます。"}], connectionText:'平和を守る『誇り』と、自分のスキルで活躍できる『やりがい』を実感できる仕事です。' },
+  { id:60, booth:'10', work:'', image:'images/60.JPG', name:'中津市役所', industry:'公務', jobs:[], pr:'暮らし満足No.1のまち「中津」を目指して', detail:'市役所の業務は、市民の生活の基盤である税や介護の福祉部門、水道や道路のなどのインフラ部門のほか、観光・広報、商業、農業、企画、教育行政など、多岐にわたります。近年は、「中津流DX」という独自の取り組みを進め、ますます業務の効率化を図っています。中津市役所で一緒に働きませんか？', atmosphere:'', valueTags:["support", "analyze", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, sections:[{"label": "求める人物像", "content": "中津市役所では、下記に当てはまる人物を募集します。 １．中津が好きな人（中津市を良くしたいと思える人） ２．コミュニケーションが好きな人 ３．チームワークを大事にする人 ４．何事にもチャレンジする気持ちを持っている人"}, {"label": "成長を支援する制度", "content": "入庁後は、まず新採用職員研修を受けていただきます。その後、実際に業務をしながらのOJT（オン・ジョブ・トレーニング）と並行して、基礎的・専門的な知識を身につけるための選択制研修により、スキルアップを図ります。また、入庁後３年目の職員を対象とした研修により、これまでの振り返りと今後の成長を促します。"}, {"label": "社員に人気の福利厚生", "content": "仕事以外の活動も充実しています。職員互助会では、職員同士の親睦を深めることを目的に、ボウリング大会、ミニバレーボール大会、プロ野球観戦ツアーなどを企画し、毎年多くの職員が参加しています。また、クラブ活動も盛んで、野球部、サッカー部、ソフトテニス部、ソフトボール部、音楽部などが活動しています。"}], connectionText:'暮らし満足No.1のまち「中津」を目指して' }
 ];
 
 var WORKSTYLE_MAP = {
@@ -928,10 +820,8 @@ var subtypeText = '';
 var displayCompanies = [];
 var selectedIndustries = {};
 var plannedCompanies = {};
-var visitStatus = {};
 var totalQuestions = 7;
 var allQuestions = [];
-var VISIT_GOAL = 10;
 
 function startWork() {
   allQuestions = INTRO_Q.concat(EPISODE_1).concat(EPISODE_2);
@@ -1125,12 +1015,10 @@ function renderProfileContent() {
   html += '<div class="profile-hero-title">マイプロフィール</div>';
   html += '</div>';
 
-  // 進捗（いく予定 / 訪問済み）
+  // 進捗（興味あり / 訪問済み）
   var plannedCount = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length;
-  var visitedCount = getVisitedCount();
   html += '<div class="profile-stats">';
-  html += '<div class="profile-stat"><div class="profile-stat-num">'+plannedCount+'</div><div class="profile-stat-label">いく予定</div></div>';
-  html += '<div class="profile-stat"><div class="profile-stat-num">'+visitedCount+'</div><div class="profile-stat-label">訪問済み</div></div>';
+  html += '<div class="profile-stat"><div class="profile-stat-num">'+plannedCount+'</div><div class="profile-stat-label">興味あり</div></div>';
   html += '</div>';
 
   // タイプカード（タイプ結果と同じグラデ形式）
@@ -1176,7 +1064,6 @@ function renderProfileContent() {
 
   // ナビゲーション
   html += '<button class="btn btn-accent" onclick="goToBooth()" style="margin-bottom:12px;">おすすめを見る</button>';
-  html += '<button class="btn btn-outline" onclick="showVisitReport()" style="margin-bottom:12px;"><i data-lucide="file-text" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i>訪問レポートを見る</button>';
 
   // やり直し
   html += '<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">';
@@ -1238,33 +1125,50 @@ function renderBoothList() {
       return item.company.industry === ind && !plannedCompanies[item.company.id];
     });
     items.sort(function(a,b){ return b.score - a.score; });
-    var top5 = items.slice(0, 5);
-    if (top5.length > 0) groups[ind] = top5;
+    var top4 = [];
+    var singleUsed = false;
+    for (var j = 0; j < items.length && top4.length < 4; j++) {
+      if (items[j].company.singleOnly) {
+        if (singleUsed) continue;
+        singleUsed = true;
+      }
+      top4.push(items[j]);
+    }
+    if (top4.length > 0) groups[ind] = top4;
   });
 
   var groupKeys = Object.keys(groups);
 
   // フィルタチップ
   var html = '<div class="filter-row" id="boothFilterRow">';
-  html += '<div class="filter-chip'+(boothFilter==='all'?' active':'')+'" onclick="setBoothFilter(\'all\')">全業種 TOP5</div>';
+  html += '<div class="filter-chip'+(boothFilter==='all'?' active':'')+'" onclick="setBoothFilter(\'all\')">全業種 TOP4</div>';
   groupKeys.forEach(function(ind, i) {
     html += '<div class="filter-chip'+(boothFilter===ind?' active':'')+'" onclick="setBoothFilter(\''+ind+'\')">'+ind+'</div>';
   });
   html += '</div>';
 
   if (boothFilter === 'all') {
-    // 全業種からスコア順で上位5社
+    // 全業種からスコア順でTOP4（singleOnly企業は最大1社）
     var allItems = displayCompanies.filter(function(item){
       return !plannedCompanies[item.company.id];
     });
     allItems.sort(function(a,b){ return b.score - a.score; });
-    var top5 = allItems.slice(0, 5);
-    if (top5.length > 0) {
+    var top4 = [];
+    var singleUsed = false;
+    for (var i = 0; i < allItems.length && top4.length < 4; i++) {
+      var item = allItems[i];
+      if (item.company.singleOnly) {
+        if (singleUsed) continue;
+        singleUsed = true;
+      }
+      top4.push(item);
+    }
+    if (top4.length > 0) {
       html += '<div class="hscroll-row">';
-      top5.forEach(function(item){ html += renderSummaryCard(item); });
+      top4.forEach(function(item){ html += renderSummaryCard(item); });
       html += '</div>';
     } else {
-      html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">すべての企業を「いく予定」に追加しました！</div>';
+      html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">すべての企業を「興味あり」にしました！</div>';
     }
   } else {
     // 特定業種のセクション
@@ -1304,7 +1208,7 @@ function getUniqueIndustries() {
 
 function toggleIndustryGroup(el) { el.classList.toggle('open'); }
 
-// いく予定セクション（旧版 - renderPlannedHeaderに移行済み）
+// 興味ありセクション（旧版 - renderPlannedHeaderに移行済み）
 function renderPlannedSection() { renderPlannedHeader();
 }
 
@@ -1340,7 +1244,7 @@ function renderPlannedHeader() {
   if (!el) return;
   if (ids.length === 0) { el.innerHTML = ''; return; }
   var html = '<div class="planned-toggle" onclick="togglePlannedBody()">';
-  html += '<span class="pt-title"><i data-lucide="clipboard-list" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> いく予定 '+ids.length+'社</span>';
+  html += '<span class="pt-title"><i data-lucide="clipboard-list" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> 興味あり '+ids.length+'社</span>';
   html += '<span class="pt-arrow" id="ptArrow"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></span></div>';
   html += '<div class="planned-body" id="plannedBody"><div class="hscroll-row">';
   ids.forEach(function(cid){
@@ -1385,7 +1289,7 @@ function renderSummaryCard(item) {
 
   // 画像 + ブース番号フロート
   html += '<div class="sc-img">';
-  html += '<span class="sc-booth-float">No.'+(c.booth||c.id)+'</span>';
+
   if (c.image) html += '<img src="'+c.image+'" alt="'+c.name+'">';
   html += '</div>';
 
@@ -1411,7 +1315,7 @@ function renderSummaryCard(item) {
   html += '<div class="sc-footer">';
   html += '<div class="sc-detail-hint">詳しく見る →</div>';
   if (!isPlanned) {
-    html += '<button class="sc-plan-btn" data-plan-id="'+c.id+'" onclick="event.stopPropagation();addToPlanned('+c.id+')">いく予定</button>';
+    html += '<button class="sc-plan-btn" data-plan-id="'+c.id+'" onclick="event.stopPropagation();addToPlanned('+c.id+')">興味あり</button>';
   } else {
     html += '<button class="sc-plan-btn done" data-plan-id="'+c.id+'" onclick="event.stopPropagation();">予定済 <i data-lucide="check" style="width:13px;height:13px;vertical-align:-2px;"></i></button>';
   }
@@ -1434,21 +1338,19 @@ function showCompanyDetail(companyId) {
 
   // 画像
   if (c.image) {
-    html += '<div style="width:100%;height:180px;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;"><img src="'+c.image+'" alt="'+c.name+'" style="width:100%;height:100%;object-fit:cover;"></div>';
-  } else {
-    html += '<div style="width:100%;height:180px;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);display:flex;align-items:center;justify-content:center;color:var(--text-sub);"><i data-lucide="building-2" style="width:48px;height:48px;"></i></div>';
+    html += '<div style="width:100%;height:320px;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;"><img src="'+c.image+'" alt="'+c.name+'" style="width:100%;height:100%;object-fit:cover;"></div>';
   }
 
   html += '<div style="text-align:center;margin-bottom:16px;">';
   html += '<div style="font-size:22px;font-weight:800;margin-bottom:4px;">'+c.name+'</div>';
-  html += '<span class="booth-badge" style="font-size:14px;padding:6px 14px;margin-bottom:8px;">'+(c.booth||'')+'</span> ';
+  html += ' ';
   html += '<span class="booth-industry">'+c.industry+'</span>';
   html += '</div>';
 
-  // いく予定ボタン
+  // 興味ありボタン
   html += '<div style="text-align:center;margin-bottom:16px;">';
   if (!isPlanned) {
-    html += '<button class="plan-btn" onclick="addToPlanned('+c.id+');showCompanyDetail('+c.id+');" style="padding:10px 20px;font-size:14px;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;" viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>いく予定に追加</button>';
+    html += '<button class="plan-btn" onclick="addToPlanned('+c.id+');showCompanyDetail('+c.id+');" style="padding:10px 20px;font-size:14px;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;" viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>興味あり</button>';
   } else {
     html += '<button class="plan-btn" style="padding:10px 20px;font-size:14px;background:var(--accent);color:#fff;border-color:var(--accent);" onclick="removePlanned('+c.id+');showCompanyDetail('+c.id+');"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>予定済 — 取消</button>';
   }
@@ -1472,8 +1374,12 @@ function showCompanyDetail(companyId) {
   }
 
   // 企業情報
-  html += '<div class="profile-section"><h3>企業PR</h3><div class="detail-text">'+c.detail+'</div></div>';
-  if (c.atmosphere) html += '<div class="profile-section"><h3>職場の雰囲気</h3><div class="detail-text">'+c.atmosphere+'</div></div>';
+  html += '<div class="profile-section"><h3>企業PR・事業内容</h3><div class="detail-text">'+c.detail+'</div></div>';
+  if (c.sections && c.sections.length > 0) {
+    c.sections.forEach(function(sec) {
+      html += '<div class="profile-section"><h3>'+sec.label+'</h3><div class="detail-text">'+sec.content+'</div></div>';
+    });
+  }
   if (c.jobs.length > 0) html += '<div class="profile-section"><h3>採用職種</h3><div class="detail-text">'+c.jobs.join('、')+'</div></div>';
 
   // 聞いてみよう
@@ -1491,7 +1397,7 @@ function showCompanyDetail(companyId) {
 
 function goBackFromDetail() {
   hideAllScreens();
-  var screenMap = {booth:'screenBooth', map:'screenMap', all:'screenAllCompanies'};
+  var screenMap = {booth:'screenBooth', all:'screenAllCompanies'};
   showScreen(screenMap[lastTab] || 'screenBooth');
 }
 
@@ -1512,14 +1418,14 @@ function renderBoothCard(item) {
   html += '<div class="booth-card" id="booth_'+c.id+'">';
   html += '<div class="booth-header" onclick="toggleBooth('+c.id+')">';
   html += '<div class="booth-info">';
-  html += '<div class="booth-name"><span class="booth-badge" style="margin-right:6px;">'+(c.booth||'')+'</span>'+c.name+'</div>';
+  html += '<div class="booth-name">'+c.name+'</div>';
   html += '<span class="booth-industry">'+c.industry+'</span>';
   html += '<div class="booth-connection">'+connectionLine+'</div>';
   html += '</div>';
   html += '<div class="booth-right">';
   html += '<div class="booth-arrow"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>';
   if (!isPlanned) {
-    html += '<button class="plan-btn" onclick="event.stopPropagation();addToPlanned('+c.id+')"><i data-lucide="bookmark" style="width:13px;height:13px;vertical-align:-2px;margin-right:2px;"></i> いく予定</button>';
+    html += '<button class="plan-btn" onclick="event.stopPropagation();addToPlanned('+c.id+')"><i data-lucide="bookmark" style="width:13px;height:13px;vertical-align:-2px;margin-right:2px;"></i> 興味あり</button>';
   } else {
     html += '<span style="font-size:11px;color:var(--accent);font-weight:700;"><i data-lucide="check" style="width:11px;height:11px;vertical-align:-1px;"></i> 予定済</span>';
   }
@@ -1546,8 +1452,12 @@ function renderBoothCard(item) {
   }
   html += '</div>';
 
-  html += '<div class="detail-item"><div class="detail-label">企業PR</div><div class="detail-text">'+c.detail+'</div></div>';
-  if (c.atmosphere) html += '<div class="detail-item"><div class="detail-label">職場の雰囲気</div><div class="detail-text">'+c.atmosphere+'</div></div>';
+  html += '<div class="detail-item"><div class="detail-label">企業PR・事業内容</div><div class="detail-text">'+c.detail+'</div></div>';
+  if (c.sections && c.sections.length > 0) {
+    c.sections.forEach(function(sec) {
+      html += '<div class="detail-item"><div class="detail-label">'+sec.label+'</div><div class="detail-text">'+sec.content+'</div></div>';
+    });
+  }
   if (c.jobs.length > 0) html += '<div class="detail-item"><div class="detail-label">採用職種</div><div class="detail-text">'+c.jobs.join('、')+'</div></div>';
 
   // 聞いてみよう
@@ -1583,14 +1493,13 @@ function switchTab(tab){
   else {
     showTabs();
     if(tab==='booth'){ showScreen('screenBooth'); renderBoothList(); lastTab='booth'; }
-    else if(tab==='map'){ showScreen('screenMap'); renderBoothMap(); lastTab='map'; }
-    else if(tab==='all'){ showScreen('screenAllCompanies'); renderAllCompanies(); lastTab='all'; }
+      else if(tab==='all'){ showScreen('screenAllCompanies'); renderAllCompanies(); lastTab='all'; }
     setActiveTab(tab);
   }
 }
 function setActiveTab(tab){
   document.querySelectorAll('.tab-item').forEach(function(el){el.classList.remove('active');});
-  var map = {booth:'navBooth', map:'navMap', all:'navAll'};
+  var map = {booth:'navBooth', all:'navAll'};
   var el = document.getElementById(map[tab]);
   if(el) el.classList.add('active');
 }
@@ -1599,90 +1508,6 @@ function showTabs(){
   document.getElementById('profileIcon').classList.remove('hidden');
 }
 
-function renderBoothMap() {
-  // 進捗バー
-  var visitedCount = getVisitedCount();
-  var target = Math.max(VISIT_GOAL, Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length);
-  var pct = target > 0 ? Math.round((visitedCount / target) * 100) : 0;
-  if (pct > 100) pct = 100;
-  var goalHtml = '<div class="visit-goal">';
-  goalHtml += '<div class="goal-text"><i data-lucide="target" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> 目標：'+target+'社のブースを回ろう！</div>';
-  goalHtml += '<div class="visit-progress-text" style="margin-bottom:8px;"><strong>'+visitedCount+'</strong> / '+target+'社 訪問済';
-  if (visitedCount >= target) goalHtml += ' <i data-lucide="party-popper" style="width:16px;height:16px;vertical-align:-3px;"></i> 達成！';
-  goalHtml += '</div>';
-  goalHtml += '<div class="visit-progress-bar"><div class="visit-progress-fill" style="width:'+pct+'%"></div></div>';
-  goalHtml += '</div>';
-  document.getElementById('mapGoalContainer').innerHTML = goalHtml;
-
-  // 会社をID→objectでルックアップ
-  var byId = {};
-  COMPANIES.forEach(function(c){ byId[c.id] = c; });
-
-  function cell(id) {
-    var c = byId[id];
-    if (!c) return '<div class="map-cell empty"></div>';
-    var isPlanned = plannedCompanies[c.id];
-    var isVisited = visitStatus[c.id];
-    var state = isVisited ? 'visited' : isPlanned ? 'planned' : 'default';
-    var shortName = c.name.replace(/株式会社|有限会社|（株）|㈱|株式|会社| |　/g, '').substring(0, 5);
-    var showName = (isPlanned || isVisited);
-    return '<div class="map-cell '+state+'" onclick="mapCellTap('+c.id+')">'
-      + '<div class="mc-num">'+c.id+'</div>'
-      + (showName ? '<div class="mc-name">'+shortName+'</div>' : '')
-      + '</div>';
-  }
-
-  // メインエリア: 7列 × 7行 = 49ブース (1〜47 + 空き)
-  // 画像のように左上から番号を配置
-  var mainRows = [
-    [42, 0, 36, 30, 0, 19, 13, 12, 6],
-    [43, 37, 35, 29, 0, 20, 14, 11, 5],
-    [44, 38, 34, 28, 0, 21, 15, 10, 4],
-    [45, 39, 33, 27, 0, 22, 16,  9, 3],
-    [46, 40, 32, 26, 0, 23, 17,  8, 2],
-    [47, 41, 31, 25, 0, 24, 18,  7, 1],
-  ];
-
-  // サブエリア: 48〜60
-  var subRows = [
-    [48, 53, 56, 57, 60],
-    [49, 52, 55, 58, 0],
-    [50, 51, 54, 59, 0],
-  ];
-
-  var html = '<div class="map-container">';
-  html += '<div class="map-title">FLOOR MAP</div>';
-
-  // メインエリア
-  html += '<div class="map-area">';
-  html += '<div class="map-grid" style="grid-template-columns:repeat(9,52px);">';
-  mainRows.forEach(function(row) {
-    row.forEach(function(id) {
-      if (id === 0) html += '<div class="map-cell empty"></div>';
-      else html += cell(id);
-    });
-  });
-  html += '</div></div>';
-
-  // 通路
-  html += '<div class="map-aisle"></div>';
-
-  // サブエリア
-  html += '<div class="map-area">';
-  html += '<div class="map-grid" style="grid-template-columns:repeat(5,52px);">';
-  subRows.forEach(function(row) {
-    row.forEach(function(id) {
-      if (id === 0) html += '<div class="map-cell empty"></div>';
-      else html += cell(id);
-    });
-  });
-  html += '</div></div>';
-
-  html += '<div class="map-entrance">▲ 入口 ENTRANCE</div>';
-  html += '</div>';
-
-  document.getElementById('boothMapContainer').innerHTML = html;
-}
 
 var allFilterState = { planned: true, industry: '' };
 
@@ -1693,7 +1518,7 @@ function renderAllFilters() {
   var plannedCount = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length;
 
   var html = '<div class="filter-row">';
-  html += '<div class="filter-chip planned-filter'+(allFilterState.planned?' active':'')+'" onclick="toggleAllFilter(\'planned\')"><i data-lucide="bookmark" style="width:13px;height:13px;vertical-align:-2px;margin-right:2px;"></i> いく予定（'+plannedCount+'）</div>';
+  html += '<div class="filter-chip planned-filter'+(allFilterState.planned?' active':'')+'" onclick="toggleAllFilter(\'planned\')"><i data-lucide="bookmark" style="width:13px;height:13px;vertical-align:-2px;margin-right:2px;"></i> 興味あり（'+plannedCount+'）</div>';
   html += '<div class="filter-chip'+(allFilterState.industry===''&&!allFilterState.planned?' active':'')+'" onclick="toggleAllFilter(\'all\')">すべて</div>';
   Object.keys(industries).forEach(function(ind){
     html += '<div class="filter-chip'+(allFilterState.industry===ind?' active':'')+'" onclick="toggleAllFilter(\''+ind+'\')">'+ind+'（'+industries[ind]+'）</div>';
@@ -1728,7 +1553,7 @@ function renderAllCompanies() {
   var html = '';
   if (filtered.length === 0) {
     html = '<div style="text-align:center;padding:40px;color:var(--text-sub);">'
-      + (allFilterState.planned ? 'いく予定の企業がありません。おすすめタブから追加しよう！' : '該当する企業がありません')
+      + (allFilterState.planned ? '興味ありの企業がありません。おすすめタブから追加しよう！' : '該当する企業がありません')
       + '</div>';
   } else {
     html += '<div class="all-company-count">' + filtered.length + '社 表示中</div>';
@@ -1787,7 +1612,7 @@ function renderVisitList(){
       html += '<div class="visit-header">';
       html += '<div class="visit-check '+(checked?'checked':'')+'" onclick="toggleVisit('+c.id+')">'+(checked?'<i data-lucide="check" style="width:18px;height:18px;"></i>':'')+'</div>';
       html += '<div style="flex:1;">';
-      html += '<div class="visit-name"><span class="booth-badge" style="margin-right:6px;">'+(c.booth||'')+'</span>'+c.name+(isPlanned?' <span style="font-size:10px;color:var(--accent);"><i data-lucide="bookmark" style="width:10px;height:10px;vertical-align:-1px;"></i>予定</span>':'')+'</div>';
+      html += '<div class="visit-name">'+c.name+(isPlanned?' <span style="font-size:10px;color:var(--accent);"><i data-lucide="bookmark" style="width:10px;height:10px;vertical-align:-1px;"></i>予定</span>':'')+'</div>';
       html += '<div class="visit-reason">'+c.jobs.slice(0,2).join('、')+'</div>';
       html += '</div></div>';
       html += '<textarea class="visit-memo" placeholder="感想メモ（例：雰囲気が良かった）" onchange="saveMemo('+c.id+',this.value)">'+memo+'</textarea>';
@@ -1799,150 +1624,10 @@ function renderVisitList(){
   document.getElementById('visitListContainer').innerHTML=html;
 }
 
-function toggleVisit(id){
-  visitStatus[id] = !visitStatus[id];
-  saveActualVisit(id, visitStatus[id], visitStatus[id+'_memo'] || '');
-}
 
-function mapCellTap(id) {
-  var c = COMPANIES.find(function(co){ return co.id === id; });
-  if (!c) return;
-  var isVisited = visitStatus[c.id];
-  var matchedValues = [];
-  topBranches.forEach(function(val){ if(c.valueTags.indexOf(val)!==-1) matchedValues.push(val); });
-  var connectionLine = '';
-  if (matchedValues.length > 0) {
-    connectionLine = c.matchTexts[matchedValues[0]] || c.pr;
-  }
-
-  var html = '';
-
-  // 画像
-  if (c.image) {
-    html += '<div style="width:100%;height:140px;border-radius:var(--radius-sm);overflow:hidden;margin-bottom:14px;position:relative;">';
-    html += '<img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;">';
-    html += '<span style="position:absolute;top:8px;left:8px;background:rgba(13,148,136,0.9);color:#fff;font-size:13px;font-weight:900;padding:4px 10px;border-radius:var(--radius-sm);backdrop-filter:blur(4px);">No.'+(c.booth||c.id)+'</span>';
-    html += '</div>';
-  }
-
-  // 企業名 + 仕事内容
-  html += '<div style="margin-bottom:12px;">';
-  html += '<div style="font-size:17px;font-weight:800;margin-bottom:4px;">'+c.name+'</div>';
-  if (c.work) html += '<div style="font-size:14px;font-weight:800;color:var(--primary);margin-bottom:6px;">'+c.work+'</div>';
-  html += '</div>';
-
-  // PR
-  if (c.pr) html += '<div style="font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:12px;">'+c.pr+'</div>';
-
-  // タグ
-  html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">';
-  html += '<span class="sc-tag sc-tag-industry">'+c.industry+'</span>';
-  if (matchedValues.length > 0) {
-    matchedValues.slice(0,2).forEach(function(val) {
-      var b = BRANCHES[val];
-      if (b) html += '<span class="sc-tag sc-tag-type">'+branchIcon(b.icon,10)+b.label+'</span>';
-    });
-  }
-  if (LOCAL_FLAG && c.localTag) html += '<span class="sc-tag sc-tag-local"><i data-lucide="map-pin" style="width:10px;height:10px;vertical-align:-1px;margin-right:1px;"></i> 地元</span>';
-  html += '</div>';
-
-  // ボタン（縦並び、同じ幅）
-  html += '<div style="display:flex;flex-direction:column;gap:10px;">';
-  if (isVisited) {
-    html += '<button class="btn btn-primary" style="opacity:0.7;" onclick="toggleMapVisit('+c.id+')"><i data-lucide="check" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i>訪問済み（タップで取消）</button>';
-  } else {
-    html += '<button class="btn btn-accent" onclick="toggleMapVisit('+c.id+')">訪問済みにする</button>';
-  }
-  html += '<button class="btn btn-outline" onclick="showCompanyDetail('+c.id+');closeMapPopup();">詳しく見る</button>';
-  html += '</div>';
-
-  document.getElementById('mapPopupContent').innerHTML = html;
-  document.getElementById('mapPopup').classList.add('active');
-  setTimeout(initIcons, 50);
-}
-
-function toggleMapVisit(id) {
-  // 既に訪問済み → 取り消し
-  if (visitStatus[id]) {
-    visitStatus[id] = false;
-    saveActualVisit(id, false, '');
-    closeMapPopup();
-    renderBoothMap();
-    return;
-  }
-  // 未訪問 → フォーム表示
-  showVisitForm(id);
-}
-
-function showVisitForm(id) {
-  var c = COMPANIES.find(function(co){ return co.id === id; });
-  if (!c) return;
-
-  var html = '';
-  html += '<div style="font-size:18px;font-weight:800;margin-bottom:6px;">'+c.name+'</div>';
-  html += '<div style="font-size:13px;color:var(--text-sub);margin-bottom:18px;">訪問お疲れさま！どうだった？</div>';
-
-  // 興味度（三択）
-  html += '<div class="visit-form-label">興味を持った？</div>';
-  html += '<div class="interest-row">';
-  html += '<button class="interest-btn" data-interest="high" onclick="selectInterest(this,\'high\')"><i data-lucide="star" style="width:26px;height:26px;color:var(--teal);"></i><div class="ib-label">すごく</div></button>';
-  html += '<button class="interest-btn" data-interest="mid" onclick="selectInterest(this,\'mid\')"><i data-lucide="thumbs-up" style="width:26px;height:26px;color:var(--blue);"></i><div class="ib-label">まあまあ</div></button>';
-  html += '<button class="interest-btn" data-interest="low" onclick="selectInterest(this,\'low\')"><i data-lucide="minus-circle" style="width:26px;height:26px;color:var(--text-sub);"></i><div class="ib-label">あんまり</div></button>';
-  html += '</div>';
-
-  // 感想メモ
-  html += '<div class="visit-form-label">感想（任意）</div>';
-  html += '<textarea class="visit-memo-input" id="visitMemoInput" placeholder="例：雰囲気が良かった、もっと知りたい…"></textarea>';
-
-  // ボタン
-  html += '<div style="display:flex;flex-direction:column;gap:10px;">';
-  html += '<button class="btn btn-accent" id="visitSubmitBtn" onclick="submitVisit('+c.id+')" disabled style="opacity:0.5;">訪問済みにする</button>';
-  html += '<button class="btn btn-outline" onclick="closeMapPopup()">キャンセル</button>';
-  html += '</div>';
-
-  document.getElementById('mapPopupContent').innerHTML = html;
-  document.getElementById('mapPopup').classList.add('active');
-  setTimeout(initIcons, 50);
-}
-
-var _selectedInterest = '';
-function selectInterest(btn, level) {
-  _selectedInterest = level;
-  document.querySelectorAll('.interest-btn').forEach(function(b){ b.classList.remove('selected'); });
-  btn.classList.add('selected');
-  var submit = document.getElementById('visitSubmitBtn');
-  submit.disabled = false;
-  submit.style.opacity = '1';
-}
-
-function submitVisit(id) {
-  if (!_selectedInterest) return;
-  var memo = document.getElementById('visitMemoInput').value || '';
-  visitStatus[id] = true;
-  visitStatus[id+'_memo'] = memo;
-  visitStatus[id+'_interest'] = _selectedInterest;
-  saveActualVisit(id, true, memo, _selectedInterest);
-  _selectedInterest = '';
-  closeMapPopup();
-  renderBoothMap();
-}
-
-function closeMapPopup(e) {
-  if (e && e.target !== document.getElementById('mapPopup')) return;
-  document.getElementById('mapPopup').classList.remove('active');
-}
-function saveMemo(id,val){
-  visitStatus[id+'_memo']=val;
-  if (visitStatus[id]) saveActualVisit(id, true, val);
-}
-function getVisitedCount(){
-  var count=0;
-  COMPANIES.forEach(function(c){ if(visitStatus[c.id]) count++; });
-  return count;
-}
 
 function restartAnalysis() {
-  if (!confirm('自己分析を最初からやり直しますか？\n（いく予定や訪問記録はそのまま残ります）')) return;
+  if (!confirm('自己分析を最初からやり直しますか？\n（興味ありはそのまま残ります）')) return;
   answers = [];
   branchCounts = { team:0, support:0, growth:0, stable:0, craft:0, analyze:0 };
   topBranches = [];
@@ -1966,69 +1651,6 @@ function restartAnalysis() {
   document.getElementById('progressBar').style.width = '0%';
   showScreen('screenQuestions');
   renderQuestion(0);
-}
-
-// ===== Visit Report =====
-var INTEREST_CONF = {
-  high: { icon: 'star', label: 'すごく', color: 'var(--teal)' },
-  mid:  { icon: 'thumbs-up', label: 'まあまあ', color: 'var(--blue)' },
-  low:  { icon: 'minus-circle', label: 'あんまり', color: 'var(--text-sub)' }
-};
-
-function showVisitReport() {
-  var visitedIds = [];
-  COMPANIES.forEach(function(c){ if (visitStatus[c.id]) visitedIds.push(c.id); });
-
-  var counts = { high: 0, mid: 0, low: 0 };
-  visitedIds.forEach(function(id) {
-    var lv = visitStatus[id+'_interest'] || 'mid';
-    if (counts[lv] !== undefined) counts[lv]++;
-  });
-
-  var html = '<div class="section-title" style="margin-bottom:16px;">訪問レポート</div>';
-
-  // サマリ
-  html += '<div class="report-summary">';
-  html += '<div class="report-summary-num">'+visitedIds.length+'</div>';
-  html += '<div class="report-summary-label">社 訪問しました</div>';
-  html += '</div>';
-
-  if (visitedIds.length === 0) {
-    html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">まだ訪問記録がありません</div>';
-  } else {
-    var order = { high: 0, mid: 1, low: 2 };
-    visitedIds.sort(function(a, b){
-      var la = visitStatus[a+'_interest'] || 'mid';
-      var lb = visitStatus[b+'_interest'] || 'mid';
-      return order[la] - order[lb];
-    });
-
-    visitedIds.forEach(function(id) {
-      var c = COMPANIES.find(function(co){ return co.id === id; });
-      if (!c) return;
-      var interest = visitStatus[id+'_interest'] || 'mid';
-      var memo = visitStatus[id+'_memo'] || '';
-      var conf = INTEREST_CONF[interest];
-
-      html += '<div class="report-card" onclick="showCompanyDetail('+c.id+')">';
-      html += '<div class="report-row">';
-      html += '<i data-lucide="'+conf.icon+'" style="width:20px;height:20px;color:'+conf.color+';flex-shrink:0;"></i>';
-      html += '<div class="report-name">'+c.name+'</div>';
-      html += '</div>';
-      if (memo) html += '<div class="report-memo">'+memo+'</div>';
-      html += '</div>';
-    });
-  }
-
-  document.getElementById('visitReportContainer').innerHTML = html;
-  hideAllScreens();
-  showScreen('screenVisitReport');
-}
-
-function goBackToProfile() {
-  hideAllScreens();
-  document.getElementById('topTabs').classList.add('hidden');
-  showScreen('screenProfile');
 }
 
 // Lucide icons init - call after any DOM update that adds lucide icons
