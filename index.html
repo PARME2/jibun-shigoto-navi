@@ -977,25 +977,17 @@ function getEvidenceForBranch(branchKey) {
       }
     });
   }
-  // それでもない場合、回答全体の傾向から根拠テキストを生成
+  // それでもない場合、回答の傾向から根拠を生成
   if (ev.length === 0) {
-    var b = BRANCHES[branchKey];
-    // sceneとactionの回答から最も近いエピソードを1つ選ぶ
     var bestTriple = null;
     triples.forEach(function(t) {
-      var sceneA = answers[t[0]];
-      var diffA = answers[t[1]];
-      var actionA = answers[t[2]];
-      if (sceneA && actionA && !bestTriple) bestTriple = t;
+      if (answers[t[0]] && answers[t[2]] && !bestTriple) bestTriple = t;
     });
     if (bestTriple) {
-      var sceneA = answers[bestTriple[0]];
-      var diffA = answers[bestTriple[1]];
       ev.push({
-        scene: sceneA ? sceneA.short : '',
-        difficulty: diffA ? diffA.short : '',
-        action: '「'+branchLabel+'」の素質あり',
-        combined: branchLabel
+        scene: answers[bestTriple[0]] ? answers[bestTriple[0]].short : '',
+        difficulty: answers[bestTriple[1]] ? answers[bestTriple[1]].short : '',
+        action: '「'+branchLabel+'」の素質がある行動'
       });
     }
   }
