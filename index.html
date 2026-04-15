@@ -152,7 +152,8 @@ body {
 .profile-hero { text-align: center; padding: 24px 0 16px; }
 .profile-hero-title { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
 .profile-hero-sub { font-size: 13px; color: var(--text-sub); }
-.profile-type-cards { display: flex; gap: 10px; margin-bottom: 20px; align-items: stretch; }
+.profile-type-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; align-items: stretch; }
+@media (min-width: 768px) { .profile-type-cards { flex-direction: row; } }
 .profile-type-card { border-radius: var(--radius); overflow: hidden; flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .ptc-header { padding: 12px; color: #fff; display: flex; align-items: center; gap: 8px; }
 .ptc-rank { font-size: 12px; font-weight: 800; opacity: 0.7; }
