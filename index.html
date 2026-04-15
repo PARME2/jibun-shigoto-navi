@@ -985,31 +985,56 @@ function showValueCards() {
   document.getElementById('progressWrap').style.display='none';
   showScreen('screenValues');
 
-  var html='';
-  topBranches.forEach(function(key,idx){
+  var colors = [
+    { bg: 'linear-gradient(135deg, #0D9488, #14b8a6)', light: 'var(--teal-light)', accent: 'var(--teal)' },
+    { bg: 'linear-gradient(135deg, #2563eb, #30b6fe)', light: 'var(--blue-light)', accent: 'var(--blue)' },
+    { bg: 'linear-gradient(135deg, #ea580c, #fdb12e)', light: 'var(--orange-light)', accent: 'var(--orange)' }
+  ];
+
+  var html = '';
+  html += '<div class="profile-type-cards">';
+  topBranches.forEach(function(key, idx) {
     var b = BRANCHES[key];
-    var ax = AXES[b.axis];
+    var c = colors[idx] || colors[0];
     var evidences = getEvidenceForBranch(key);
-    html+='<div class="value-card">';
-    html+='<div class="vc-header">';
-    html+='<div class="vc-rank">#'+(idx+1)+'</div>';
-    html+='<div class="vc-title-row">';
-    html+='<div class="vc-icon"><i data-lucide="'+b.icon+'"></i></div>';
-    html+='<div class="title">'+b.label+'</div>';
-    html+='</div>';
-    html+='</div>';
-    html+='<div class="vc-body">';
-    html+='<div class="reason">'+b.desc+'</div>';
-    if(idx===0 && subtypeText) html+='<div class="subtype">'+subtypeText+'</div>';
-    if(evidences.length>0){
-      html+='<div class="evidence"><div class="evidence-label">あなたの行動から</div>';
-      evidences.slice(0,2).forEach(function(e){ html+='「'+e.combined+'」<br>'; });
-      html+='</div>';
+
+    html += '<div class="profile-type-card" style="animation: slideUp 0.5s ease '+(idx*0.2)+'s forwards; opacity:0;">';
+    html += '<div class="ptc-header" style="background:'+c.bg+';">';
+    html += '<div class="ptc-rank">#'+(idx+1)+'</div>';
+    html += '<div class="ptc-icon"><i data-lucide="'+b.icon+'"></i></div>';
+    html += '<div class="ptc-name">'+b.label+'</div>';
+    html += '</div>';
+    html += '<div class="ptc-body">';
+    html += '<div class="ptc-label">どんな人？</div>';
+    html += '<div class="ptc-desc">'+b.desc+'人</div>';
+    if (idx === 0 && subtypeText) {
+      html += '<div class="ptc-subtype" style="background:'+c.light+';color:'+c.accent+';">'+subtypeText+'</div>';
     }
-    html+='</div></div>';
+    if (evidences.length > 0) {
+      var e = evidences[0];
+      html += '<div class="ptc-evidence">';
+      html += '<div class="ptc-ev-title">あなたの回答から</div>';
+      if (e.scene) html += '<div class="ptc-ev-line">「'+e.scene+'」の場面で</div>';
+      if (e.difficulty) html += '<div class="ptc-ev-line">「'+e.difficulty+'」ことが大変だったとき</div>';
+      if (e.action) html += '<div class="ptc-ev-line">'+e.action+'を選びました</div>';
+      html += '</div>';
+    }
+    html += '</div></div>';
   });
-  document.getElementById('valueCardsContainer').innerHTML=html;
-  document.getElementById('confirmActions').style.display='block';
+  html += '</div>';
+
+  // 働き方の特徴
+  html += '<div class="profile-section" style="animation: slideUp 0.5s ease 0.6s forwards; opacity:0;">';
+  html += '<div class="profile-section-title">こんな働き方があなたに合うかも</div>';
+  topBranches.forEach(function(key) {
+    if (WORKSTYLE_MAP[key]) WORKSTYLE_MAP[key].forEach(function(ws) {
+      html += '<span class="work-style-tag">'+ws+'</span>';
+    });
+  });
+  html += '</div>';
+
+  document.getElementById('valueCardsContainer').innerHTML = html;
+  document.getElementById('confirmActions').style.display = 'block';
 }
 
 function renderProfileContent() {
