@@ -53,13 +53,25 @@ GitHub `main` ブランチへの push で以下が自動反映される。
 
 ---
 
-## Supabase スキーマ
+## Supabase 構成
 
-`db/supabase_setup.sql` と `db/supabase_add_interest.sql` を順に Supabase SQL Editor で実行する。
-テーブル: `users` / `answers` / `results` / `planned_visits` / `actual_visits`
+匿名認証 (`auth.signInAnonymously`) で取得した `auth.uid()` を `users.id` に紐付け、
+RLS ポリシーで「自分のレコードのみ操作可」を強制している。anon key が公開されても
+他ユーザーのデータは触れない。
 
-### ⚠ セキュリティ上の既知課題
+### 新規プロジェクトのセットアップ手順
 
-現状の RLS ポリシーはすべて `using (true)` で実質「全許可」状態。
-anon key を持つ任意のクライアントから他ユーザーのデータが SELECT / UPDATE 可能。
-匿名認証 (`auth.signInAnonymously`) 導入と RLS ポリシー書き直しが今後の課題。
+1. Supabase Dashboard で新プロジェクト作成（リージョンは Tokyo 推奨）
+2. **Authentication > Providers > Anonymous Sign-Ins を有効化**（必須）
+3. SQL Editor で `db/supabase_setup.sql` を実行
+4. Settings > API から `Project URL` と `anon public key` を取得
+5. `index.html` の `SUPABASE_URL` / `SUPABASE_KEY` を新値に置換 → push
+
+### テーブル
+
+`users` / `answers` / `results` / `planned_visits`
+
+### dev / prod 分離
+
+無料枠で2プロジェクトまで作成可。本番ドメインから参照するキーは prod プロジェクトのもの、
+ローカル動作確認・スキーマ実験は dev プロジェクトで行う。

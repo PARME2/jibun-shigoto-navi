@@ -376,9 +376,9 @@ body {
 
 <script>
 // ===== Supabase 初期化 =====
-// anon key は設計上クライアント公開可。実セキュリティはSupabase側のRLSで担保すること。
-var SUPABASE_URL = 'https://nivvfuobqzqusvtrrmhm.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pdnZmdW9icXpxdXN2dHJybWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NjQ0ODksImV4cCI6MjA5MTA0MDQ4OX0.COP0rSDRPwa3L2WwPe-CiLcQpSJ5lnDQbUcguM9b6WM';
+// anon key は設計上クライアント公開可。実セキュリティはRLS（auth.uid()ベース）で担保。
+var SUPABASE_URL = 'https://qhxxapidbkelmirmsggg.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeHhhcGlkYmtlbG1pcm1zZ2dnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyOTU5NTAsImV4cCI6MjA5Mjg3MTk1MH0.eGKPwBEuesShM0zTr8E11HEe8TZa8ICqDtsPXzkFTHQ';
 var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 var currentUserId = null;
 var currentSchool = null;
@@ -399,26 +399,9 @@ function getSchoolCode() {
   return params.get('s') || null;
 }
 
-// Cookie helpers
-function setCookie(name, value, days) {
-  var d = new Date();
-  d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-  document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
-}
-function getCookie(name) {
-  var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? match[2] : null;
-}
-
-// ユーザーID管理（LocalStorage + Cookie + Supabase）
-function saveUserId(id) {
-  localStorage.setItem('jibun_navi_user_id', id);
-  setCookie('jibun_navi_user_id', id, 365);
-}
-function loadUserId() {
-  return localStorage.getItem('jibun_navi_user_id') || getCookie('jibun_navi_user_id') || null;
-}
-
+// ユーザー初期化
+// Supabase Auth の匿名サインインで auth.uid() を取得し、それを users.id として使う。
+// セッションは Supabase JS が localStorage で永続化するので、再訪時は同じ user に紐付く。
 async function initUser() {
   var school = getSchoolCode();
   // 学校コードをlocalStorageにも保存（再訪時パラメータなしでも使えるように）
@@ -429,27 +412,33 @@ async function initUser() {
   }
   currentSchool = school;
 
-  var storedId = loadUserId();
-  if (storedId) {
-    var { data } = await sb.from('users').select('*').eq('id', storedId).single();
-    if (data) {
-      currentUserId = data.id;
-      saveUserId(data.id);
-      // 学校コードが未設定 or 変更された場合は更新
-      if (school && data.school !== school) {
-        await sb.from('users').update({ school: school }).eq('id', data.id);
-      }
-      return data;
-    }
+  // セッションが無ければ匿名サインイン
+  var sessionRes = await sb.auth.getSession();
+  var session = sessionRes.data && sessionRes.data.session;
+  if (!session) {
+    var signInRes = await sb.auth.signInAnonymously();
+    if (signInRes.error) { console.error('Anonymous sign-in error:', signInRes.error); return null; }
+    session = signInRes.data && signInRes.data.session;
   }
-  // 新規ユーザー作成
-  var insertData = {};
+  if (!session || !session.user) { console.error('No session after sign-in'); return null; }
+  currentUserId = session.user.id;
+
+  // users テーブルのレコードを取得 or 作成
+  var existing = await sb.from('users').select('*').eq('id', currentUserId).maybeSingle();
+  if (existing.data) {
+    // 学校コードが未設定 or 変更された場合は更新
+    if (school && existing.data.school !== school) {
+      await sb.from('users').update({ school: school }).eq('id', currentUserId);
+      existing.data.school = school;
+    }
+    return existing.data;
+  }
+  // 新規作成（id = auth.uid() を明示的に指定）
+  var insertData = { id: currentUserId };
   if (school) insertData.school = school;
-  var { data, error } = await sb.from('users').insert(insertData).select().single();
-  if (error) { console.error('User create error:', error); return null; }
-  currentUserId = data.id;
-  saveUserId(data.id);
-  return data;
+  var created = await sb.from('users').insert(insertData).select().single();
+  if (created.error) { console.error('User create error:', created.error); return null; }
+  return created.data;
 }
 
 // 回答を保存
