@@ -1,3 +1,5 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "buildCommand": "bash build.sh",
+  "outputDirectory": "dist"
 }

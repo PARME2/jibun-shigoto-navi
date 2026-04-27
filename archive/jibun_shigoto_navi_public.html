@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ジブン×シゴト ナビ（デモ版）</title>
+<style>
+:root {
+  --primary: #0D9488;
+  --primary-light: #ccfbf1;
+  --primary-dark: #0f766e;
+  --accent: #f59e0b;
+  --accent-light: #fef3c7;
+  --teal: #5cdccf;
+  --teal-light: #e8faf8;
+  --blue: #30b6fe;
+  --blue-light: #eaf6ff;
+  --orange: #fdb12e;
+  --orange-light: #fff8eb;
+  --yellow: #f0ff00;
+  --purple: #c65de3;
+  --success: #5cdccf;
+  --success-light: #e8faf8;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --bg: #f6f5f2;
+  --card: #ffffff;
+  --text: #0f172a;
+  --text-mid: #575554;
+  --text-sub: #968c87;
+  --border: #e0dfd3;
+  --radius: 20px;
+  --radius-sm: 10px;
+  --radius-pill: 30px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+  background: #efefe9; color: var(--text);
+  min-height: 100vh; display: flex; justify-content: center;
+  font-size: 16px;
+}
+.app { width: 100%; max-width: 430px; min-height: 100vh; background: var(--bg); position: relative; overflow-x: hidden; }
+.header { background: var(--bg); color: var(--text); padding: 14px 20px; position: sticky; top: 0; z-index: 100; }
+.header h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: var(--primary); }
+.header .subtitle { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+/* ===== Progress ===== */
+.progress-wrap { background: var(--border); height: 6px; border-radius: 3px; margin-top: 12px; overflow: hidden; }
+.progress-bar { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s ease; }
+
+/* ===== Screens ===== */
+.screen { display: none; padding: 24px 20px 40px; animation: screenIn 0.3s ease; }
+.screen.active { display: block; }
+@keyframes screenIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== Welcome ===== */
+.welcome-hero { text-align: center; padding: 40px 16px 32px; }
+.welcome-hero .icon { font-size: 56px; margin-bottom: 14px; }
+.welcome-hero h2 { font-size: 24px; font-weight: 800; margin-bottom: 10px; line-height: 1.4; }
+.welcome-hero p { font-size: 15px; color: var(--text-mid); line-height: 1.7; }
+.step-list { background: var(--card); border-radius: var(--radius); padding: 20px; margin: 0 0 24px; border: 2px solid var(--border); }
+.step-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; }
+.step-item + .step-item { border-top: 1px solid var(--border); }
+.step-num { width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; flex-shrink: 0; }
+.step-item .label { font-size: 16px; font-weight: 800; }
+.step-item .desc { font-size: 13px; color: var(--text-sub); margin-top: 3px; line-height: 1.5; }
+.info-note { background: var(--orange-light); border-radius: var(--radius-sm); padding: 14px 16px; margin: 0 0 24px; font-size: 14px; color: #92400e; line-height: 1.6; font-weight: 600; border-left: 4px solid var(--orange); }
+
+/* ===== Buttons ===== */
+.btn { display: block; width: 100%; padding: 17px; border: none; border-radius: var(--radius-pill); font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-align: center; position: relative; overflow: hidden; }
+.btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0); transition: background 0.2s; }
+.btn:active::after { background: rgba(255,255,255,0.2); }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: linear-gradient(135deg, var(--primary), #30b6fe); color: #fff; }
+.btn-accent { background: linear-gradient(135deg, var(--accent), #fdb12e); color: #fff; }
+.btn-outline { background: var(--card); color: var(--primary); border: 2.5px solid var(--primary); }
+.btn-outline:active { background: var(--primary-light); }
+.btn + .btn { margin-top: 12px; }
+
+/* ===== Questions ===== */
+.episode-label { text-align: center; padding: 12px 16px; font-size: 14px; color: var(--text); font-weight: 800; background: var(--card); border-radius: var(--radius-pill); margin-bottom: 20px; border: 2px solid var(--border); }
+.question-card { background: var(--card); border-radius: var(--radius); padding: 24px 20px; margin-bottom: 16px; border: 2px solid var(--border); }
+.q-number { font-size: 13px; color: var(--teal); font-weight: 800; margin-bottom: 10px; }
+.q-context { font-size: 13px; color: var(--text-mid); background: var(--primary-light); padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 14px; line-height: 1.6; }
+.q-text { font-size: 18px; font-weight: 800; line-height: 1.5; margin-bottom: 20px; }
+.choices { display: flex; flex-direction: column; gap: 12px; }
+.choice { padding: 16px 18px; border: 2.5px solid var(--border); border-radius: var(--radius); font-size: 15px; line-height: 1.5; cursor: pointer; transition: all 0.2s; background: var(--card); text-align: left; font-weight: 500; min-height: 54px; display: flex; align-items: center; }
+.choice:active { transform: scale(0.97); box-shadow: 0 0 0 4px rgba(93,220,207,0.2); }
+.choice.selected { border-color: var(--teal); background: var(--teal-light); font-weight: 700; }
+
+/* ===== Value Cards ===== */
+.value-cards-section { text-align: center; padding-top: 20px; }
+.value-cards-section h2 { font-size: 22px; font-weight: 800; margin-bottom: 24px; }
+.value-card { border-radius: var(--radius); padding: 0; margin-bottom: 20px; text-align: left; overflow: hidden; animation: slideUp 0.5s ease forwards; opacity: 0; }
+.value-card:nth-child(2) { animation-delay: 0.2s; }
+.value-card:nth-child(3) { animation-delay: 0.4s; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.vc-header { padding: 20px 20px 16px; color: #fff; position: relative; overflow: hidden; }
+.vc-header::before { content: ''; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.vc-header::after { content: ''; position: absolute; bottom: -20px; left: -20px; width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+.value-card:nth-child(1) .vc-header { background: linear-gradient(135deg, #0D9488, #14b8a6); }
+.value-card:nth-child(2) .vc-header { background: linear-gradient(135deg, #2563eb, #30b6fe); }
+.value-card:nth-child(3) .vc-header { background: linear-gradient(135deg, #ea580c, #fdb12e); }
+.vc-rank { font-size: 13px; font-weight: 800; opacity: 0.8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.vc-title-row { display: flex; align-items: center; gap: 12px; }
+.vc-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.vc-icon i { width: 26px; height: 26px; color: #fff; }
+.value-card .title { font-size: 24px; font-weight: 900; color: #fff; line-height: 1.2; }
+.vc-body { padding: 16px 20px 20px; background: var(--card); border: 2px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); }
+.value-card .reason { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 8px; }
+.value-card .subtype { font-size: 13px; font-weight: 800; margin-bottom: 10px; padding: 8px 14px; border-radius: var(--radius-sm); display: inline-block; }
+.value-card:nth-child(1) .subtype { background: var(--teal-light); color: var(--teal); }
+.value-card:nth-child(2) .subtype { background: var(--blue-light); color: var(--blue); }
+.value-card:nth-child(3) .subtype { background: var(--orange-light); color: var(--orange); }
+.value-card .evidence { font-size: 13px; line-height: 1.6; background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; border: 1px solid var(--border); }
+.value-card .evidence-label { font-size: 11px; font-weight: 800; color: var(--text-sub); margin-bottom: 6px; letter-spacing: 0.5px; }
+
+/* ===== Profile ===== */
+.profile-hero { text-align: center; padding: 24px 0 16px; }
+.profile-hero-title { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+.profile-hero-sub { font-size: 13px; color: var(--text-sub); }
+.profile-type-cards { margin-bottom: 20px; }
+.profile-type-card { border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; }
+.ptc-header { padding: 16px; color: #fff; display: flex; align-items: center; gap: 12px; position: relative; overflow: hidden; }
+.ptc-header::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.ptc-rank { font-size: 12px; font-weight: 800; opacity: 0.8; position: absolute; top: 10px; right: 14px; }
+.ptc-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ptc-icon i { width: 22px; height: 22px; color: #fff; }
+.ptc-name { font-size: 18px; font-weight: 900; }
+.ptc-body { padding: 14px 16px; background: var(--card); border: 2px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); }
+.ptc-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 8px; }
+.ptc-subtype { font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: var(--radius-pill); display: inline-block; margin-bottom: 8px; }
+.ptc-evidence { font-size: 12px; color: var(--text-sub); line-height: 1.5; background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; }
+.ptc-evidence strong { color: var(--text); font-weight: 700; }
+.profile-section { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 2px solid var(--border); }
+.profile-section-title { font-size: 14px; font-weight: 800; margin-bottom: 10px; color: var(--text); }
+.profile-stats { display: flex; gap: 10px; margin-bottom: 14px; }
+.profile-stat { flex: 1; background: var(--card); border: 2px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
+.profile-stat-num { font-size: 28px; font-weight: 900; color: var(--primary); line-height: 1; }
+.profile-stat-label { font-size: 11px; color: var(--text-sub); margin-top: 4px; font-weight: 700; }
+.work-style-tag { display: inline-block; padding: 8px 14px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 800; margin: 0 6px 8px 0; background: var(--primary-light); color: var(--primary); }
+
+/* ===== Booth cards (all companies / challenge) ===== */
+.booth-card { background: var(--card); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; transition: all 0.3s; border: 2px solid var(--border); }
+.booth-card:active { border-color: var(--teal); }
+.booth-header { padding: 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; }
+.booth-info { flex: 1; min-width: 0; }
+.booth-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.booth-industry { font-size: 11px; color: #fff; display: inline-block; padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 6px; font-weight: 700; background: var(--teal); }
+.booth-connection { font-size: 13px; color: var(--text-mid); font-weight: 600; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.booth-right { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+.booth-arrow { color: var(--text-sub); transition: transform 0.3s; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
+.booth-card.open .booth-arrow { transform: rotate(180deg); }
+.booth-detail { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.booth-card.open .booth-detail { max-height: none; }
+.booth-detail-inner { padding: 4px 16px 16px; border-top: 2px solid var(--border); }
+.detail-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.detail-item:last-child { border-bottom: none; }
+.detail-label { font-size: 11px; color: var(--text-sub); font-weight: 800; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+.detail-text { font-size: 14px; line-height: 1.7; color: var(--text-mid); }
+.detail-evidence { background: var(--teal-light); border-radius: var(--radius-sm); padding: 10px 14px; margin-top: 8px; font-size: 13px; line-height: 1.6; }
+.detail-evidence-user { color: var(--text-sub); }
+.detail-evidence-company { color: var(--primary); font-weight: 700; }
+.value-match-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.value-match-tag { font-size: 11px; padding: 4px 12px; border-radius: var(--radius-pill); font-weight: 800; color: #fff; }
+.vt-1 { background: var(--teal); }
+.vt-2 { background: var(--blue); }
+.vt-3 { background: var(--orange); }
+
+/* ===== Visit / Challenge ===== */
+.visit-goal { background: var(--primary-light); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; text-align: center; }
+.visit-goal .goal-text { font-size: 17px; font-weight: 800; margin-bottom: 12px; color: var(--text); }
+.visit-progress-bar { background: var(--border); height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+.visit-progress-fill { height: 100%; background: var(--teal); border-radius: 6px; transition: width 0.4s ease; }
+.visit-progress-text { font-size: 14px; color: var(--text-sub); font-weight: 600; }
+.visit-progress-text strong { color: var(--primary); font-size: 16px; }
+.visit-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; border: 2px solid var(--border); transition: border-color 0.2s; }
+.visit-card.visited { border-color: var(--teal); }
+.visit-header { display: flex; align-items: center; gap: 12px; }
+.visit-check { width: 36px; height: 36px; border: 2.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; font-size: 20px; }
+.visit-check.checked { background: var(--teal); border-color: var(--teal); color: #fff; }
+.visit-check:active { transform: scale(0.85); }
+.visit-name { font-size: 15px; font-weight: 800; flex: 1; }
+.visit-reason { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+.visit-memo { width: 100%; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; resize: none; height: 56px; font-family: inherit; margin-top: 10px; display: none; transition: border-color 0.2s; }
+.visit-card.visited .visit-memo { display: block; }
+.visit-memo:focus { outline: none; border-color: var(--teal); }
+
+/* ===== Profile icon ===== */
+.profile-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+.profile-icon:active { opacity: 0.7; transform: scale(0.9); }
+.profile-icon svg { width: 22px; height: 22px; fill: var(--primary); }
+.profile-icon.hidden { display: none; }
+
+/* ===== Top tabs ===== */
+.top-tabs { display: flex; background: var(--bg); position: sticky; top: 49px; z-index: 99; padding: 0 4px; border-bottom: 1px solid var(--border); }
+.top-tabs.hidden { display: none; }
+.tab-item { flex: 1; padding: 12px 4px 10px; text-align: center; cursor: pointer; font-size: 12px; font-weight: 800; color: var(--text-sub); border: none; background: none; font-family: inherit; border-bottom: 3px solid transparent; transition: all 0.2s; }
+.tab-item.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-item svg, .tab-item i { width: 15px; height: 15px; vertical-align: -3px; margin-right: 3px; }
+
+/* ===== Horizontal scroll / Summary cards ===== */
+.hscroll-row { display: flex; overflow-x: auto; gap: 16px; padding: 12px 4px 16px; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+.hscroll-row::-webkit-scrollbar { display: none; }
+.summary-card { width: 80vw; max-width: 320px; background: var(--card); border-radius: var(--radius); border: 2px solid var(--border); padding: 0; cursor: pointer; transition: all 0.2s; scroll-snap-align: center; flex-shrink: 0; display: flex; flex-direction: column; overflow: hidden; }
+.summary-card:active { transform: scale(0.97); border-color: var(--teal); }
+.sc-img { width: 100%; height: 140px; background: linear-gradient(135deg, #e0dfd3, #ccc); display: flex; align-items: center; justify-content: center; color: var(--text-sub); font-size: 40px; position: relative; }
+.sc-img img { width: 100%; height: 100%; object-fit: cover; }
+.sc-img .sc-booth-float { position: absolute; top: 10px; left: 10px; background: rgba(13,148,136,0.9); color: #fff; font-size: 13px; font-weight: 900; padding: 4px 10px; border-radius: var(--radius-sm); backdrop-filter: blur(4px); }
+.sc-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.sc-name { font-size: 16px; font-weight: 800; line-height: 1.3; }
+.sc-work { font-size: 14px; font-weight: 800; color: var(--primary); line-height: 1.4; }
+.sc-pr { font-size: 13px; line-height: 1.6; color: var(--text-mid); }
+.sc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+.sc-tag { font-size: 10px; padding: 4px 10px; border-radius: var(--radius-pill); font-weight: 800; color: #fff; }
+.sc-tag-industry { background: var(--teal); }
+.sc-tag-type { background: var(--blue); }
+.sc-tag-local { background: var(--orange); }
+.sc-footer { padding: 12px 16px; border-top: 2px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.sc-detail-hint { font-size: 12px; color: var(--text-sub); font-weight: 600; }
+.sc-plan-btn { padding: 8px 16px; border: 2px solid var(--primary); border-radius: var(--radius-pill); font-size: 13px; font-weight: 800; cursor: pointer; background: transparent; color: var(--primary); transition: all 0.2s; white-space: nowrap; font-family: inherit; }
+.sc-plan-btn:active { background: var(--primary); color: #fff; }
+.sc-plan-btn.done { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ===== Back button ===== */
+.back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border: none; background: none; font-size: 15px; font-weight: 800; color: var(--primary); cursor: pointer; font-family: inherit; margin-bottom: 8px; }
+.back-btn:active { opacity: 0.6; }
+
+/* ===== Filter chips ===== */
+.filter-row { display: flex; overflow-x: auto; gap: 8px; margin-bottom: 20px; padding: 4px 0; -webkit-overflow-scrolling: touch; }
+.filter-row::-webkit-scrollbar { display: none; }
+.filter-chip { padding: 8px 16px; border: 2px solid var(--border); border-radius: var(--radius-pill); font-size: 13px; font-weight: 800; cursor: pointer; background: var(--card); color: var(--text-sub); transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+.filter-chip.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+.filter-chip.planned-filter { border-color: var(--accent); color: var(--accent); }
+.filter-chip.planned-filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filter-chip:active { transform: scale(0.95); }
+.all-company-count { font-size: 13px; color: var(--text-sub); margin-bottom: 12px; font-weight: 600; }
+
+/* ===== Booth badge ===== */
+.booth-badge { display: inline-block; padding: 3px 8px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 900; background: var(--primary); color: #fff; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0; }
+
+/* ===== Section titles ===== */
+.section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.section-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 20px; }
+.industry-section { margin-bottom: 24px; }
+.industry-section-label { font-size: 15px; font-weight: 800; color: var(--text); padding: 10px 0 4px; border-bottom: 2px solid var(--teal); margin-bottom: 4px; display: inline-block; }
+/* Booth map */
+.map-container { background: #1a1a2e; border-radius: var(--radius); padding: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.map-title { color: #e0e0e0; font-size: 11px; font-weight: 600; text-align: center; margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; }
+.map-legend { display: flex; gap: 14px; margin-bottom: 16px; font-size: 12px; font-weight: 600; justify-content: center; }
+.legend-item { display: flex; align-items: center; gap: 5px; color: var(--text-sub); }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+.legend-dot.planned { background: var(--blue); }
+.legend-dot.visited { background: var(--teal); }
+.legend-dot.default { background: #334155; }
+.map-area { margin-bottom: 16px; position: relative; }
+.map-area-label { font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; padding-left: 2px; letter-spacing: 1px; }
+.map-grid { display: grid; gap: 4px; min-width: fit-content; }
+.map-grid.main { grid-template-columns: repeat(7, 52px); }
+.map-grid.sub { grid-template-columns: repeat(5, 52px); }
+.map-cell { width: 52px; min-height: 52px; border-radius: 6px; padding: 4px 2px; text-align: center; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 2px solid transparent; position: relative; }
+.map-cell.empty { visibility: hidden; }
+.map-cell.default { background: #1e293b; border-color: #334155; }
+.map-cell.planned { background: #172554; border-color: var(--blue); box-shadow: 0 0 8px rgba(48,182,254,0.3); }
+.map-cell.visited { background: #134e4a; border-color: var(--teal); box-shadow: 0 0 8px rgba(93,220,207,0.3); }
+.map-cell:active { transform: scale(0.92); }
+.map-cell .mc-num { font-size: 14px; font-weight: 800; }
+.map-cell.default .mc-num { color: #64748b; }
+.map-cell.planned .mc-num { color: var(--blue); }
+.map-cell.visited .mc-num { color: var(--teal); }
+.map-cell .mc-name { font-size: 7px; line-height: 1.1; color: #94a3b8; word-break: break-all; max-height: 16px; overflow: hidden; }
+.map-cell.planned .mc-name { color: #93c5fd; font-weight: 700; }
+.map-cell.visited .mc-name { color: #99f6e4; font-weight: 700; }
+.map-aisle { height: 8px; background: repeating-linear-gradient(90deg, transparent, transparent 8px, #334155 8px, #334155 10px); margin: 8px 0; border-radius: 2px; opacity: 0.5; }
+.map-entrance { text-align: center; color: #94a3b8; font-size: 10px; font-weight: 700; letter-spacing: 2px; margin-top: 8px; padding: 6px; border-top: 2px dashed #334155; }
+/* Map popup */
+.map-popup-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+.map-popup-overlay.active { display: flex; }
+.map-popup { background: var(--card); border-radius: var(--radius) var(--radius) 0 0; width: 100%; max-width: 430px; padding: 24px 20px 28px; animation: popupIn 0.25s ease; }
+@keyframes popupIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.map-popup-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.map-popup-booth { width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: #fff; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.map-popup-info { flex: 1; }
+.map-popup-name { font-size: 17px; font-weight: 800; line-height: 1.3; }
+.map-popup-work { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 2px; }
+.map-popup-pr { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 16px; }
+.map-popup-actions { display: flex; gap: 10px; }
+.map-popup-actions .btn { flex: 1; padding: 14px; font-size: 14px; }
+.section-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.section-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 16px; }
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.mid-feedback { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 20px; text-align: center; }
+.mid-feedback .mid-icon { font-size: 44px; margin-bottom: 14px; }
+.mid-feedback .mid-text { font-size: 16px; line-height: 1.7; margin-bottom: 20px; color: var(--text); }
+.mid-feedback .mid-highlight { font-weight: 800; color: var(--primary); }
+/* Industry select */
+.industry-chip { display: inline-block; padding: 12px 18px; border: 2.5px solid var(--border); border-radius: 24px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.15s; margin: 0 8px 12px 0; background: var(--card); }
+.industry-chip.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+.industry-chip:active { transform: scale(0.95); }
+/* Industry group toggle */
+.industry-group { margin-bottom: 14px; }
+.industry-group-header { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px 18px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 800; }
+.industry-group-header .ig-count { font-size: 13px; color: var(--text-sub); font-weight: 500; margin-left: 6px; }
+.industry-group-header .ig-arrow { font-size: 14px; color: var(--text-sub); transition: transform 0.3s; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: var(--bg); border-radius: 50%; }
+.industry-group.open .ig-arrow { transform: rotate(180deg); }
+.industry-group-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.industry-group.open .industry-group-body { max-height: 5000px; padding-top: 8px; }
+/* Plan button */
+.plan-btn { display: inline-block; padding: 8px 14px; border: 2px solid var(--accent); border-radius: 20px; font-size: 12px; font-weight: 800; cursor: pointer; background: transparent; color: var(--accent); transition: all 0.15s; white-space: nowrap; }
+.plan-btn:active { background: var(--accent); color: #fff; transform: scale(0.95); }
+/* Planned section */
+.planned-toggle { background: var(--accent-light); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+.planned-toggle .pt-title { font-size: 16px; font-weight: 800; color: #9a3412; }
+.planned-toggle .pt-count { font-size: 15px; color: #c2410c; font-weight: 700; }
+.planned-toggle .pt-arrow { font-size: 14px; color: #c2410c; transition: transform 0.3s; }
+.planned-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; margin-bottom: 12px; }
+.planned-body.open { max-height: 5000px; }
+/* Ask suggestions */
+.ask-suggestions { background: var(--success-light); border-radius: 12px; padding: 14px 16px; margin-top: 10px; }
+.ask-suggestions .ask-label { font-size: 13px; font-weight: 800; color: #15803d; margin-bottom: 8px; }
+.ask-suggestions .ask-item { font-size: 14px; line-height: 1.7; color: var(--text); padding: 3px 0; }
+.ask-suggestions .ask-item::before { content: ''; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="header" id="header">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <h1>ジブン×シゴト ナビ</h1>
+        <div class="subtitle">〇〇市 企業合同就職説明会</div>
+      </div>
+      <div class="profile-icon hidden" id="profileIcon" onclick="switchTab('profile')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+    </div>
+    <div class="progress-wrap" id="progressWrap" style="display:none;">
+      <div class="progress-bar" id="progressBar" style="width:0%"></div>
+    </div>
+  </div>
+  <!-- Top tabs (hidden until results) -->
+  <div class="top-tabs hidden" id="topTabs">
+    <button class="tab-item active" onclick="switchTab('booth')" id="navBooth"><i data-lucide="sparkles" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>おすすめ</button>
+    <button class="tab-item" onclick="switchTab('map')" id="navMap"><i data-lucide="map" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>マップ</button>
+    <button class="tab-item" onclick="switchTab('all')" id="navAll"><i data-lucide="building-2" style="width:15px;height:15px;vertical-align:-3px;margin-right:3px;"></i>全企業</button>
+  </div>
+
+  <!-- Welcome -->
+  <div class="screen" id="screenWelcome">
+    <div class="welcome-hero">
+      <div class="icon"><i data-lucide="compass" style="width:56px;height:56px;"></i></div>
+      <h2>自分を知って、<br>ブースを回ろう</h2>
+      <p>7つの質問に答えるだけ（約3分）</p>
+    </div>
+    <button class="btn btn-primary" onclick="startWork()">はじめる</button>
+  </div>
+
+  <!-- Questions -->
+  <div class="screen" id="screenQuestions">
+    <div id="questionContainer"></div>
+  </div>
+
+  <!-- Value Cards -->
+  <div class="screen" id="screenValues">
+    <div class="value-cards-section">
+      <h2>あなたのタイプ</h2>
+      <div id="valueCardsContainer"></div>
+    </div>
+    <div id="confirmActions" style="margin-top:24px; display:none;">
+      <button class="btn btn-accent" onclick="goToIndustrySelect()">業種を選ぶ</button>
+    </div>
+  </div>
+
+  <!-- Industry Select -->
+  <div class="screen" id="screenIndustry">
+    <div class="section-title">興味のある業種</div>
+    <div id="industryList"></div>
+    <button class="btn btn-accent" id="industryNextBtn" onclick="goToBoothFromIndustry()" style="margin-top:20px;opacity:0.5;pointer-events:none;">おすすめを見る</button>
+  </div>
+
+  <!-- Profile -->
+  <div class="screen" id="screenProfile">
+    <div id="profileContainer"></div>
+  </div>
+
+  <!-- Booth -->
+  <div class="screen" id="screenBooth">
+    <div class="section-title">おすすめ</div>
+    <div id="boothListContainer"></div>
+  </div>
+
+  <!-- All Companies -->
+  <div class="screen" id="screenAllCompanies">
+    <div class="section-title">全企業</div>
+    <div id="allFilterContainer"></div>
+    <div id="allCompaniesContainer"></div>
+  </div>
+
+  <!-- Booth Map -->
+  <div class="screen" id="screenMap">
+    <div id="mapGoalContainer"></div>
+    <div class="map-legend">
+      <span class="legend-item"><span class="legend-dot planned"></span>いく予定</span>
+      <span class="legend-item"><span class="legend-dot visited"></span>訪問済</span>
+    </div>
+    <div id="boothMapContainer"></div>
+  </div>
+
+  <!-- Map Popup -->
+  <div class="map-popup-overlay" id="mapPopup" onclick="closeMapPopup(event)">
+    <div class="map-popup" id="mapPopupContent"></div>
+  </div>
+
+  <!-- Company Detail -->
+  <div class="screen" id="screenCompanyDetail">
+    <button class="back-btn" onclick="goBackFromDetail()"><i data-lucide="arrow-left" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i> 戻る</button>
+    <div id="companyDetailContainer"></div>
+  </div>
+
+  <!-- Visit -->
+</div>
+
+<script>
+// ===== Supabase 初期化 =====
+var SUPABASE_URL = 'https://your-project.supabase.co';
+var SUPABASE_KEY = 'your-anon-key';
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var currentUserId = null;
+
+// ユーザーID管理（LocalStorage + Supabase）
+async function initUser() {
+  var storedId = localStorage.getItem('jibun_navi_user_id');
+  if (storedId) {
+    // 既存ユーザーの確認
+    var { data } = await sb.from('users').select('*').eq('id', storedId).single();
+    if (data) {
+      currentUserId = data.id;
+      return data;
+    }
+  }
+  // 新規ユーザー作成
+  var { data, error } = await sb.from('users').insert({}).select().single();
+  if (error) { console.error('User create error:', error); return null; }
+  currentUserId = data.id;
+  localStorage.setItem('jibun_navi_user_id', data.id);
+  return data;
+}
+
+// 回答を保存
+async function saveAnswer(questionNum, choiceData) {
+  if (!currentUserId) return;
+  await sb.from('answers').upsert({
+    user_id: currentUserId,
+    question_num: questionNum,
+    choice_index: choiceData.choiceIndex,
+    choice_short: choiceData.short,
+    tags: choiceData.tags || [],
+    axis: choiceData.axis || null,
+    branch: choiceData.branch || null,
+    subtype: choiceData.subtype || null,
+    role: choiceData.role || null
+  }, { onConflict: 'user_id,question_num' });
+  // 進捗更新
+  await sb.from('users').update({ current_question: questionNum + 1 }).eq('id', currentUserId);
+}
+
+// 結果を保存
+async function saveResults() {
+  if (!currentUserId) return;
+  await sb.from('results').upsert({
+    user_id: currentUserId,
+    top_branches: topBranches,
+    subtype_text: subtypeText,
+    local_flag: LOCAL_FLAG,
+    branch_counts: branchCounts
+  }, { onConflict: 'user_id' });
+  await sb.from('users').update({ completed: true }).eq('id', currentUserId);
+}
+
+// いく予定を保存
+async function savePlannedVisit(companyId) {
+  if (!currentUserId) return;
+  await sb.from('planned_visits').upsert({
+    user_id: currentUserId,
+    company_id: companyId
+  }, { onConflict: 'user_id,company_id' });
+}
+
+// いく予定を削除
+async function removePlannedVisit(companyId) {
+  if (!currentUserId) return;
+  await sb.from('planned_visits').delete()
+    .eq('user_id', currentUserId).eq('company_id', companyId);
+}
+
+// 実訪問を保存
+async function saveActualVisit(companyId, visited, memo) {
+  if (!currentUserId) return;
+  if (visited) {
+    await sb.from('actual_visits').upsert({
+      user_id: currentUserId,
+      company_id: companyId,
+      memo: memo || ''
+    }, { onConflict: 'user_id,company_id' });
+  } else {
+    await sb.from('actual_visits').delete()
+      .eq('user_id', currentUserId).eq('company_id', companyId);
+  }
+}
+
+// 業種選択を保存（LocalStorageのみ）
+function saveIndustrySelection() {
+  localStorage.setItem('jibun_navi_industries', JSON.stringify(selectedIndustries));
+}
+function loadIndustrySelection() {
+  var stored = localStorage.getItem('jibun_navi_industries');
+  if (stored) { try { selectedIndustries = JSON.parse(stored); } catch(e){} }
+}
+
+// 中断データの復元
+async function restoreSession() {
+  if (!currentUserId) return false;
+
+  // 回答を復元
+  var { data: savedAnswers } = await sb.from('answers')
+    .select('*').eq('user_id', currentUserId).order('question_num');
+  if (!savedAnswers || savedAnswers.length === 0) return false;
+
+  // answersとスコアを再構築
+  savedAnswers.forEach(function(sa) {
+    var idx = sa.question_num;
+    answers[idx] = {
+      text: '', short: sa.choice_short || '',
+      tags: sa.tags || [], axis: sa.axis || null,
+      branch: sa.branch || null, subtype: sa.subtype || null,
+      role: sa.role || null, choiceIndex: sa.choice_index
+    };
+    // スコア再計算: actionのみ+1
+    if (sa.role === 'action') {
+      (sa.tags || []).forEach(function(t) {
+        if (branchCounts.hasOwnProperty(t)) branchCounts[t] = (branchCounts[t] || 0) + 1;
+      });
+    }
+    if (sa.role === 'scene' && sa.tags && sa.tags.indexOf('local') !== -1) LOCAL_FLAG = true;
+  });
+
+  // 結果を復元
+  var { data: savedResult } = await sb.from('results')
+    .select('*').eq('user_id', currentUserId).single();
+  if (savedResult) {
+    topBranches = savedResult.top_branches || [];
+    subtypeText = savedResult.subtype_text || '';
+    LOCAL_FLAG = savedResult.local_flag || false;
+    if (savedResult.branch_counts) branchCounts = savedResult.branch_counts;
+  }
+
+  // いく予定を復元
+  var { data: savedPlanned } = await sb.from('planned_visits')
+    .select('company_id').eq('user_id', currentUserId);
+  if (savedPlanned) {
+    savedPlanned.forEach(function(p) { plannedCompanies[p.company_id] = true; });
+  }
+
+  // 実訪問を復元
+  var { data: savedVisits } = await sb.from('actual_visits')
+    .select('*').eq('user_id', currentUserId);
+  if (savedVisits) {
+    savedVisits.forEach(function(v) {
+      visitStatus[v.company_id] = true;
+      if (v.memo) visitStatus[v.company_id + '_memo'] = v.memo;
+    });
+  }
+
+  // 業種選択を復元
+  loadIndustrySelection();
+
+  return true;
+}
+
+// 起動時の復元処理
+// ページ読み込み時に起動（パブリック版: Supabase不使用）
+showScreen('screenWelcome');
+
+// ===== 3軸 + 枝構造（音声対話プロダクト準拠） =====
+var AXES = {
+  relationship: { label: '他者関係', icon: 'users', desc: '人と関わりながら物事を進める力' },
+  self_mgmt:    { label: '自己管理', icon: 'trending-up', desc: '自分で考え、続け、調整する力' },
+  problem_solving: { label: '課題解決', icon: 'wrench', desc: '問題を見つけ、やり方を工夫する力' }
+};
+
+var BRANCHES = {
+  team:    { axis: 'relationship', label: 'チームで動く',     icon: 'users', desc: '仲間と協力して成果を出すことが自然にできる' },
+  support: { axis: 'relationship', label: '人を支える',       icon: 'heart-handshake', desc: '誰かの困りごとに気づき、手を差し伸べることが自然にできる' },
+  growth:  { axis: 'self_mgmt',    label: '成長し続ける',     icon: 'trending-up', desc: '新しいことを覚えて自分を変えていくことが自然にできる' },
+  stable:  { axis: 'self_mgmt',    label: '安定して続ける',   icon: 'shield', desc: '決めたことをコツコツ継続することが自然にできる' },
+  craft:   { axis: 'problem_solving', label: '手で形にする', icon: 'hammer', desc: '問題を見つけて、自分の手で解決策を形にすることが自然にできる' },
+  analyze: { axis: 'problem_solving', label: '分析して解く', icon: 'search', desc: '情報を集めて整理し、筋道を立てて問題を解決することが自然にできる' }
+};
+
+function branchIcon(name, size) {
+  size = size || 14;
+  return '<i data-lucide="'+name+'" style="width:'+size+'px;height:'+size+'px;vertical-align:-2px;margin-right:2px;"></i>';
+}
+
+var LOCAL_FLAG = false;
+
+// ===== 質問設計：場面＋困難＋行動 × 2エピソード + 深掘り（全7問） =====
+var EPISODE_1 = [
+  {
+    id: 1, role: 'scene',
+    context: '学校生活で印象に残っていることを1つ思い出そう',
+    text: '部活・委員会・行事・授業で、自分が何かをやった場面はどれ？',
+    choices: [
+      { text: '部活の大会や練習で、チームで取り組んだ場面', short: '部活でチームに取り組んだ', tags: ['team'], localFlag: false },
+      { text: '文化祭・体育祭などの行事で、準備や運営をやった場面', short: '行事の準備・運営をやった', tags: ['team', 'craft'], localFlag: false },
+      { text: '授業やテストで、自分なりに工夫して取り組んだ場面', short: '授業で工夫して取り組んだ', tags: ['growth'], localFlag: false },
+      { text: '地域のボランティアや校外活動で、自分が動いた場面', short: '地域活動で自分が動いた', tags: ['support'], localFlag: true }
+    ]
+  },
+  {
+    id: 2, role: 'difficulty',
+    context: 'その場面を思い出して。大変だったことは？',
+    text: 'そのとき、何が一番大変だった？',
+    choices: [
+      { text: '周りの人と意見が合わなかったり、まとまらなかった', short: '意見がまとまらなかった', tags: [] },
+      { text: '自分のやる気が続かなかったり、ペースが崩れた', short: 'やる気やペースが崩れた', tags: [] },
+      { text: 'やり方がわからなかったり、うまくいかなかった', short: 'やり方がわからなかった', tags: [] },
+      { text: '時間が足りなかったり、やることが多すぎた', short: '時間や量が足りなかった', tags: [] }
+    ]
+  },
+  {
+    id: 3, role: 'action',
+    context: '大変だったとき、自分は実際に何をした？事実だけでOK',
+    text: 'そのとき、自分がやったことに一番近いのは？',
+    choices: [
+      { text: '周りの人に声をかけたり、相談したりした', short: '人に声をかけ・相談した', tags: ['team'] },
+      { text: '困っている人を手伝ったり、フォローした', short: '困っている人をフォローした', tags: ['support'] },
+      { text: 'やり方を変えたり、手を動かして試してみた', short: 'やり方を変えて手を動かした', tags: ['craft'] },
+      { text: '情報を調べたり、原因を整理してから動いた', short: '情報を整理してから動いた', tags: ['analyze'] },
+      { text: '毎日少しずつ続けたり、スケジュールを立て直した', short: '毎日続けて立て直した', tags: ['growth', 'stable'] }
+    ]
+  }
+];
+
+var EPISODE_2 = [
+  {
+    id: 4, role: 'scene',
+    context: 'もう1つ別の場面を思い出そう。さっきと違う場面だとベスト',
+    text: '別の場面で、自分が何かをやった場面はどれ？',
+    choices: [
+      { text: '委員会や生徒会で、みんなをまとめたりルールを決めた場面', short: '委員会でまとめ役をした', tags: ['team'], localFlag: false },
+      { text: 'アルバイトや家の手伝いで、任された仕事をやった場面', short: 'バイト・手伝いで任された', tags: ['stable'], localFlag: false },
+      { text: '自主的に何かを調べたり、作ったりした場面', short: '自分で調べたり作ったりした', tags: ['craft', 'growth'], localFlag: false },
+      { text: '友達や後輩が困っていて、自分が何かをしてあげた場面', short: '困っている人を助けた', tags: ['support'], localFlag: false },
+      { text: '地域の行事やボランティアで、自分が動いた場面', short: '地域活動で自分が動いた', tags: ['support'], localFlag: true }
+    ]
+  },
+  {
+    id: 5, role: 'difficulty',
+    context: 'その場面で、大変だったことは？',
+    text: 'そのとき、何が一番大変だった？',
+    choices: [
+      { text: '相手の気持ちや状況がわからなくて困った', short: '相手の状況がわからなかった', tags: [] },
+      { text: '自分だけではどうしていいかわからなかった', short: '自分だけでは解決できなかった', tags: [] },
+      { text: '飽きそうになったり、やめたくなったりした', short: '飽きそう・やめたくなった', tags: [] },
+      { text: 'やるべきことが多くて、優先順位に迷った', short: '優先順位に迷った', tags: [] }
+    ]
+  },
+  {
+    id: 6, role: 'action',
+    context: 'そのとき、自分は実際に何をした？',
+    text: '自分がやったことに一番近いのは？',
+    choices: [
+      { text: '相手の話をよく聞いて、自分の考えも伝えた', short: '話を聞いて考えを伝えた', tags: ['team', 'support'] },
+      { text: '情報を集めて整理したり、詳しい人に聞いて分析した', short: '情報を集めて分析した', tags: ['analyze'] },
+      { text: '計画を立て直したり、やり方のルールを決めた', short: '計画やルールを立て直した', tags: ['stable'] },
+      { text: 'とにかく手を動かして、実際にやってみた', short: '手を動かしてやってみた', tags: ['craft'] },
+      { text: '新しいやり方を覚えて、できることを増やした', short: '新しいやり方を覚えた', tags: ['growth'] }
+    ]
+  }
+];
+
+var DEEPDIVE = {
+  team: {
+    context: '2つの場面から「人と協力して動く」力が見えました。もう1問だけ！',
+    text: 'チームで動くとき、自分はどっちの動き方が多い？',
+    choices: [
+      { text: 'みんなの意見をまとめて、方向を決める役', short: 'まとめ役', tags: ['team'], subtype: 'リーダー型：チームの方向を決める' },
+      { text: '困っている人をフォローして、全体を支える役', short: 'フォロー役', tags: ['team'], subtype: 'サポート型：チームの土台を支える' }
+    ]
+  },
+  support: {
+    context: '2つの場面から「人を支える」力が見えました。もう1問だけ！',
+    text: '人を支えるとき、自分はどっちのやり方が多い？',
+    choices: [
+      { text: '目の前の人の困りごとを、直接手伝って解決する', short: '直接手伝う', tags: ['support'], subtype: '直接支援型：目の前の人を直接助ける' },
+      { text: 'やり方やルールを整えて、みんなが困らないようにする', short: '仕組みを整える', tags: ['support'], subtype: '仕組みづくり型：環境を整えて支える' }
+    ]
+  },
+  craft: {
+    context: '2つの場面から「やり方を工夫して形にする」力が見えました。もう1問だけ！',
+    text: 'ものごとを形にするとき、自分はどっちのタイプ？',
+    choices: [
+      { text: '細かいところまでこだわって、丁寧に仕上げる', short: '丁寧にこだわる', tags: ['craft'], subtype: '精密追求型：品質にこだわって仕上げる' },
+      { text: 'まずやってみて、試しながら形にしていく', short: '試しながら形にする', tags: ['craft'], subtype: '実行型：まず手を動かして形にする' }
+    ]
+  },
+  growth: {
+    context: '2つの場面から「新しいことを覚えて変わっていく」力が見えました。もう1問だけ！',
+    text: '新しいことを覚えるとき、自分はどっちのタイプ？',
+    choices: [
+      { text: 'ひとつのことを深く掘り下げて、詳しくなる', short: '深く掘り下げる', tags: ['growth'], subtype: '深掘り型：ひとつの分野を極める' },
+      { text: 'いろんなことを広く経験して、できることを増やす', short: '広く経験を積む', tags: ['growth'], subtype: '探索型：幅広い経験で可能性を広げる' }
+    ]
+  },
+  stable: {
+    context: '2つの場面から「決めたことを続けてやり抜く」力が見えました。もう1問だけ！',
+    text: '続けるとき、自分はどっちのやり方が多い？',
+    choices: [
+      { text: 'ルーティンを決めて、毎日同じペースでこなす', short: '毎日のルーティン', tags: ['stable'], subtype: 'ルーティン型：決まった流れで安定して進める' },
+      { text: '状況に合わせて、やり方を少しずつ調整しながら続ける', short: '調整しながら続ける', tags: ['stable'], subtype: '調整型：状況を見て柔軟に対応しながら続ける' }
+    ]
+  },
+  analyze: {
+    context: '2つの場面から「情報を整理して解決する」力が見えました。もう1問だけ！',
+    text: '問題を解くとき、自分はどっちのやり方が多い？',
+    choices: [
+      { text: 'データや事実を集めて、じっくり考えてから結論を出す', short: 'じっくり考えて結論', tags: ['analyze'], subtype: '論理型：データと事実から筋道を立てて解く' },
+      { text: '全体を見渡して、何が一番大事かを見極めてから動く', short: '全体を見て優先判断', tags: ['analyze'], subtype: '俯瞰型：全体を見渡して優先順位を決める' }
+    ]
+  }
+};
+
+// ===== 企業データ（60社）=====
+var COMPANIES = [
+  { id:1, booth:'1', work:'建設機械を点検・整備する仕事', image:'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=200&fit=crop&q=80', name:'株式会社 東建機工リース', industry:'不動産・物品賃貸業', jobs:["整備職（建設機械）"], pr:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！', detail:'パワーショベルやブルドーザーなど、様々な工事現場で必要とされる建設機械のレンタルを通じて、OOを中心としたOOの社会基盤の整備や生産活動に貢献しています。二十歳になったばかりの社員から整備歴30年を超えるベテランまで在籍しており、堅苦しい雰囲気はなく、各営業所が一つの家族のような雰囲気です。', atmosphere:'お客様に貸し出す前や返却された建設機械の点検や整備、修理が主な業務になります。新入社員の方は、研修や座学を通じて建設機械の種類や名称、仕組みの理解を深めつつ、まずは機械の洗車や清掃、点検など比較的簡単', valueTags:["craft", "growth"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'社会人生活を、一歩目から全力で支えます。一緒に建機整備のプロを目指しましょう！！' },
+  { id:2, booth:'2', work:'自動車シートを製造する仕事', image:'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=400&h=200&fit=crop&q=80', name:'豊栄シート工業株式会社', industry:'製造業', jobs:["製造職"], pr:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！', detail:'弊社は、創業20年以上の自動車内装部品製造会社です。 主な事業内容は自動車シートの製造、その他内装部品の製造となります。', atmosphere:'大人気　地元スポーツチームの観戦チケット無料配布（抽選） OOトリニータとOOを応援しています☆', valueTags:["team", "craft", "growth"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'若い世代が大活躍中！明るい職場づくりに取り組んでいます！' },
+  { id:3, booth:'3', work:'自動倉庫のラックを製作する仕事', image:'https://images.unsplash.com/photo-1567789884554-0b844b597180?w=400&h=200&fit=crop&q=80', name:'株式会社 アスカ物流機器', industry:'製造業', jobs:["製造職"], pr:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！', detail:'立体自動倉庫の鋼製ラックを製作、国内全域に納入している会社です。 最新工場やロボット導入で生産性を高め、日本のマテリアルハンドリングを支える高品質なモノづくりを行っています。', atmosphere:'ラックの組立・溶接・塗装を基礎から習得し、設計、生産管理にも挑戦可能です。 最新設備やロボットを活用しながら、技術を段階的に身につけられる環境です。', valueTags:["craft", "analyze", "growth"], localTag:false, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'自動倉庫ラックの製作を専業としている九州地域で唯一の会社です。 省力化が進む未来を共に創りましょう！' },
+  { id:4, booth:'4', work:'道路や橋をつくる土木工事の仕事', image:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop&q=80', name:'明和土木建設株式会社', industry:'建設業', jobs:["土木技術者", "土木技術者", "土木ICTスタッフ"], pr:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。', detail:'OOやOOが名所のOOにあります。「地域と共に、人に貢献」を理念に、公共工事（道路、河川、橋、砂防など）だけでなく、地域の方々の声を聞き、困りごとを解消するために民間工事にも積極的に取り組んでいます。想定を超える災害が起きる時代、地域の方々の暮らしを守るため、日々技術を磨いています。', atmosphere:'入社1年目：見習い（工程や施工方法、専門用語などを実地で学ぶ）　2～3年：現場代理人（主任技術者の指示のもと施工管理を行う）　4～7年：主任技術者（資格を取得し、現場を管理する）　8年目～監理技術者（', valueTags:["team", "craft"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'若手が増えて活気があります。今春、工務部に技術者を目指す女性が入社しました。' },
+  { id:5, booth:'5', work:'自動車部品を運搬・保管する仕事', image:'https://images.unsplash.com/photo-1583912267550-d974311a9a6e?w=400&h=200&fit=crop&q=80', name:'カネヨシ運輸株式会社', industry:'運輸・郵便業', jobs:["技術職"], pr:'OOから地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。', detail:'OO営業所では、自動車関連物流を中心に地域の産業を支える物流業務を展開しています。工場から販売までをつなぐ重要な役割を担い、安全・確実な輸送と保管で社会を支えるインフラとして機能しています。若い社員も多く活躍しており、物流の専門知識と技術を身につけながら成長できる職場です。', atmosphere:'素直に学ぶ姿勢を大切にし、まじめに仕事に向き合いながら、新しいことにも前向きに挑戦できる人を求めています。仲間と協力しながら成長し、地域や社会を支える物流の仕事に取り組める方を歓迎します。', valueTags:["team", "growth"], localTag:true, matchTexts:{team:'仲間と協力して仕事を進める環境', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'OOから地域のものづくりと暮らしを支える物流拠点。社会を動かす大切な仕事です。' },
+  { id:6, booth:'6', work:'自治体のITシステムを開発する仕事', image:'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop&q=80', name:'株式会社 みらいシステムズ', industry:'情報・通信業', jobs:["技術職"], pr:'〇〇市役所内での自治体業務が中心。地域に根差し、若手が多数活躍するIT企業です。', detail:'自治体システムの開発・運用やケーブルテレビ事業を通じ、地域社会を支えるIT企業です。未経験からでも安心の丁寧な実務指導に加え、会社がバックアップする資格取得支援制度により、着実なスキルアップを後押しします。年間休日120日、残業も少なく、地元で公私共に充実しながら成長できる環境です。', atmosphere:'自治体システムの開発・運用保守やサーバ監視、データ集計など、ＩＴで地域社会を支える業務に従事します。ケーブルテレビの番組制作や設備保守、加入者訪問など地域密着の仕事も行います。業務は丁寧に指導され、資', valueTags:["analyze", "growth", "stable"], localTag:true, matchTexts:{analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'〇〇市役所内での自治体業務が中心。地域に根差し、若手が多数活躍するIT企業です。' },
+  { id:7, booth:'7', work:'自動車の内装部品を成形・組立する仕事', image:'https://images.unsplash.com/photo-1562408590-e32931084e23?w=400&h=200&fit=crop&q=80', name:'旭和内装工業株式会社', industry:'製造業', jobs:["製造職"], pr:'様々な環境変化に対応し、従業員、地元地域に明るい未来を創造し続ける会社です。', detail:'インストルメントパネルやドアトリムなどの自動車内装部品の製造・組立を手がけています。樹脂成形から組立、検査までの一貫体制により、高品質な製品を安定供給しています。', atmosphere:'入社後は、成形・組立・検査など、それぞれの工程に配属され、まずは基本的な作業からスタートします。作業手順や安全ルールを一つひとつ覚えながら、できることを少しずつ増やしていきます。先輩社員が丁寧に教える', valueTags:["team", "craft", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'様々な環境変化に対応し、従業員、地元地域に明るい未来を創造し続ける会社です。' },
+  { id:8, booth:'8', work:'自動車用の精密鋼管を加工する仕事', image:'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=400&h=200&fit=crop&q=80', name:'中央精管株式会社', industry:'製造業', jobs:["営業職", "製造職", "品質保証", "生産管理"], pr:'中津で冷間引抜鋼管を作り続けて56年。さらに幅広い分野への展開を目指します。', detail:'弊社は、「冷間引抜鋼管（れいかんひきぬきこうかん）」を主力製品とする金属加工メーカーです。 鋼管をより強く、より高い精度で様々な寸法に加工することが出来ます。 弊社の製品の多くは、安全性が強く求められる自動車の重要部品に採用されており、このことからも技術力の高さを感じ取っていただけるはずです。', atmosphere:'半世紀を超える歴史のなかで着実に成長を遂げ、安定した経営基盤を築き上げています。 冷間引抜鋼管へのニーズは多様で、自動車の他にプラントやビル、船舶など幅広い分野において活用されています。 今後はその安', valueTags:["team", "craft", "stable"], localTag:false, matchTexts:{team:'仲間と協力して仕事を進める環境', craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境'}, connectionText:'中津で冷間引抜鋼管を作り続けて56年。さらに幅広い分野への展開を目指します。' },
+  { id:9, booth:'9', work:'携帯ショップで端末を販売する仕事', image:'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=200&fit=crop&q=80', name:'株式会社 丸辰商事', industry:'卸売・小売業', jobs:["営業職", "営業職", "フィールドサポート"], pr:'未経験でも興味があれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。', detail:'未経験でもやってみたい気持ちがあれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。', atmosphere:'入社後は先輩社員と同行による研修指導をおこない、お客様との会話の仕方や提案の流れを学びながら、少しずつ仕事を覚えていただきます。 お客様のお困りごとを聞き、サービスをご案内します。見積作成や導入までの', valueTags:["support"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'未経験でも興味があれば大歓迎です！ 笑顔で働ける職場づくりを目指しています。' },
+  { id:10, booth:'10', work:'入れ歯やかぶせ物をつくる仕事', image:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=200&fit=crop&q=80', name:'株式会社 クラフトデンタル', industry:'医療・福祉業', jobs:["歯科技工士"], pr:'すべては患者様の健康と笑顔のために', detail:'「歯科技工士」という歯科医療のスペシャリスト集団です。歯科医師の指示により入れ歯・かぶせ物等の人工の歯を製作しています。性別問わず活躍しており、関東を中心に全国レベルの技術を提供しています。', atmosphere:'各部署に配属後、模型処理作業を中心に先輩社員の指導のもと、知識と技術の向上を目指します。入れ歯・マウスピース・前装冠・ハイブリットセラミック・CAD/CAM冠・ジルコニアなど様々な製品を製作しているの', valueTags:["support", "craft", "growth"], localTag:false, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境'}, connectionText:'すべては患者様の健康と笑顔のために' },
+  { id:11, booth:'11', work:'建物の空調・給排水設備を施工する仕事', image:'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&h=200&fit=crop&q=80', name:'空和設備工業株式会社', industry:'建設業', jobs:["技術職"], pr:'弊社は管工事業で建築物に欠かせない空気、水を供給する為の設計施工会社です。', detail:'主な事業内容は、社名でわかるように冷暖房工事ですが様々な工事の設計施工を行っています。 主な顧客は官公庁、大手サブコン、地元工場等ですが一般個人まで気軽に対応しています。 弊社は、昨年創業50年の節目を迎え、新社屋の改装や作業服の変更などを実施しています。', atmosphere:'当社はOO発注の工事において2年連続で優良建設工事表彰を受賞しています。 これは、当社の技術力の高いところを示すものであり社員のモチベーション向上にもつながっています。', valueTags:["craft", "analyze", "growth"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'弊社は管工事業で建築物に欠かせない空気、水を供給する為の設計施工会社です。' },
+  { id:12, booth:'12', work:'木製ドアや家具を製作する仕事', image:'https://images.unsplash.com/photo-1625225233840-695456021cde?w=400&h=200&fit=crop&q=80', name:'株式会社 匠木工所', industry:'製造業', jobs:["製造職"], pr:'『ものづくり』に興味があれば、知識・経験がなくても手に職をつけることができます。', detail:'主に木製の建具(ドア)・家具の製作を行ってます。製作した建具・家具は、こども園や学校、病院、高齢者施設、飲食店等へを取りつけています。私たちと一緒に、お客様に末永く愛用される製品づくりをしませんか？', atmosphere:'まずは先輩社員の作業補助や清掃作業を行いながら、少しずつ仕事を覚えていきます。徐々に工具や機械を使用しながら、作業を任されるようになります。最初から難しい作業や危険な作業をすることはありません。', valueTags:["craft", "stable"], localTag:true, matchTexts:{craft:'自分の手で製品やサービスを形にする仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'『ものづくり』に興味があれば、知識・経験がなくても手に職をつけることができます。' },
+  { id:13, booth:'13', work:'自動車を点検・修理する仕事', image:'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=400&h=200&fit=crop&q=80', name:'株式会社 トラストオート', industry:'サービス業', jobs:["技術職", "営業職"], pr:'１９歳からプロの自動車整備士へ！挑戦できる若手育成企業として成長し続けます。', detail:'1969年創業。〇〇市に根ざした自動車整備工場です。19歳から26歳の若手メカニックが活躍し、先輩がしっかりサポートする育成環境が特長。自社工場で整備・修理を行い、安心・安全な軽自動車を低価格で提供しています。若手がのびのび成長し、地域のカーライフを支え続けています。', atmosphere:'フロントや営業で多くの女性社員が活躍する職場です。お客様と直接関わり、感謝や信頼の言葉をいただくことで大きなやりがいと誇りを感じられます。「もっと頑張ろう」と前向きな気持ちが生まれ、自分らしく成長でき', valueTags:["support", "craft", "growth"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', craft:'自分の手で製品やサービスを形にする仕事', growth:'未経験からスキルアップできる環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'１９歳からプロの自動車整備士へ！挑戦できる若手育成企業として成長し続けます。' },
+  { id:14, booth:'14', work:'結婚式・葬儀の式場を運営する仕事', image:'https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=200&fit=crop&q=80', name:'株式会社 紫苑セレモニー', industry:'生活・娯楽業', jobs:["営業職", "接客職"], pr:'人生の大切な節目に寄り添い、自分自身も成長できる仕事がここにあります。', detail:'創業60年を迎える冠婚葬祭のサンレーは、葬祭会館「紫雲閣」の運営、結婚式場「VILLA LUCE」をはじめとする結婚式場・衣裳店の運営、互助会事業を展開。人生の節目を支える総合儀式サービス企業として、地域に根ざした安心と感動を提供しています。', atmosphere:'人の人生の節目に寄り添う仕事だからこそ、思いやりとチームワークを大切にする温かい職場です。若手からベテランまで互いに支え合いながら学び、成長していける環境があります。', valueTags:["support"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'人生の大切な節目に寄り添い、自分自身も成長できる仕事がここにあります。' },
+  { id:15, booth:'15', work:'市民の暮らしを支える行政の仕事', image:'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=400&h=200&fit=crop&q=80', name:'〇〇市役所', industry:'公務', jobs:[], pr:'暮らし満足No.1のまち「中津」を目指して', detail:'市役所の業務は、市民の生活の基盤である税や介護の福祉部門、水道や道路のなどのインフラ部門のほか、観光・広報、商業、農業、企画、教育行政など、多岐にわたります。近年は、「中津流DX」という独自の取り組みを進め、ますます業務の効率化を図っています。〇〇市役所で一緒に働きませんか？', atmosphere:'〇〇市役所では、下記に当てはまる人物を募集します。 １．中津が好きな人（〇〇市を良くしたいと思える人） ２．コミュニケーションが好きな人 ３．チームワークを大事にする人 ４．何事にもチャレンジする気持', valueTags:["support", "analyze", "stable"], localTag:true, matchTexts:{support:'人の役に立ち「ありがとう」と言われる仕事', analyze:'情報を整理し筋道を立てて課題を解決する仕事', stable:'安定した待遇で長く働ける環境', local:'地元に根ざし地域に貢献する仕事'}, connectionText:'暮らし満足No.1のまち「中津」を目指して' }
+];
+
+var WORKSTYLE_MAP = {
+  team:['チームワーク重視の職場','みんなで協力して成果を出す環境'],
+  support:['人の役に立つ実感がある仕事','「ありがとう」が聞こえる職場'],
+  growth:['スキルアップできる環境','資格取得・研修制度が充実'],
+  stable:['安定した休日・福利厚生','長く腰を据えて働ける環境'],
+  craft:['手を動かすものづくり','技術を磨いて形に残す仕事'],
+  analyze:['情報を整理して判断する仕事','設計・分析・企画で力を発揮できる環境']
+};
+
+var CONFIRM_MESSAGES = {
+  1: '自分のことがわかってきたね。次は企業との接点を見てみよう！',
+  2: 'まだピンと来てなくてもOK！ブースで実際の社員さんと話してみると、もっとはっきりするよ。',
+  3: '大丈夫！当日ブースを回った後に、もう一度見返してみてね。実際に話すと見え方が変わるよ。'
+};
+
+// ===== 「聞いてみよう」テンプレート =====
+var ASK_TEMPLATES = {
+  team: ['チームは何人くらいで動くことが多いですか？', '先輩と後輩の関係はどんな雰囲気ですか？'],
+  support: ['「ありがとう」と言われた印象的なエピソードはありますか？', 'お客様や利用者さんとどんな風に関わりますか？'],
+  craft: ['入社してどのくらいで一人前になれますか？', '一番やりがいを感じるのはどんな瞬間ですか？'],
+  analyze: ['仕事で情報を集めたり分析する場面はありますか？', '問題が起きたとき、どうやって解決策を考えますか？'],
+  growth: ['入社後にどんなスキルが身につきますか？', '資格取得の支援制度はありますか？'],
+  stable: ['お休みの日は何をしている方が多いですか？', '有給休暇は取りやすい雰囲気ですか？'],
+  local: ['地元とのつながりで印象的なことはありますか？', 'この地域で働く魅力は何ですか？']
+};
+
+// ===== State =====
+var answers = [];
+var branchCounts = { team: 0, support: 0, growth: 0, stable: 0, craft: 0, analyze: 0 };
+var topBranches = [];
+var subtypeText = '';
+var displayCompanies = [];
+var selectedIndustries = {};
+var plannedCompanies = {};
+var visitStatus = {};
+var totalQuestions = 7;
+var allQuestions = [];
+var VISIT_GOAL = 5;
+
+function startWork() {
+  allQuestions = EPISODE_1.concat(EPISODE_2);
+  hideAllScreens();
+  document.getElementById('topTabs').classList.add('hidden');
+  showScreen('screenQuestions');
+  document.getElementById('progressWrap').style.display = 'block';
+  renderQuestion(0);
+}
+function hideScreen(id) { document.getElementById(id).classList.remove('active'); }
+function showScreen(id) { document.getElementById(id).classList.add('active','fade-in'); window.scrollTo(0,0); }
+function hideAllScreens() { document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); }); }
+function updateProgress(step) { document.getElementById('progressBar').style.width = (step/totalQuestions*100)+'%'; }
+
+function renderQuestion(idx) {
+  updateProgress(idx);
+  var q = allQuestions[idx];
+
+  // Q2/Q6: contextにQ1/Q5の回答を動的引用
+  var contextText = q.context;
+  if (q.contextTemplate) {
+    var sceneIdx = (idx < 4) ? 0 : 4;
+    if (answers[sceneIdx]) {
+      contextText = q.contextTemplate.replace('{scene}', answers[sceneIdx].short);
+    }
+  }
+
+  var html = '<div class="question-card">';
+  html += '<div class="q-text">'+q.text+'</div>';
+  html += '<div class="choices">';
+  q.choices.forEach(function(c,i){
+    html += '<div class="choice" onclick="selectChoice('+idx+','+i+')" id="choice_'+idx+'_'+i+'">'+c.text+'</div>';
+  });
+  html += '</div></div>';
+  document.getElementById('questionContainer').innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function selectChoice(qIdx, cIdx) {
+  var q = allQuestions[qIdx];
+  var choice = q.choices[cIdx];
+  document.querySelectorAll('.choice').forEach(function(el){ el.classList.remove('selected'); });
+  document.getElementById('choice_'+qIdx+'_'+cIdx).classList.add('selected');
+
+  answers[qIdx] = {
+    text: choice.text, short: choice.short || choice.text,
+    tags: choice.tags, axis: choice.axis || null,
+    branch: choice.branch || null, subtype: choice.subtype || null,
+    role: q.role, choiceIndex: cIdx
+  };
+
+  // Supabaseに保存
+  saveAnswer(qIdx, answers[qIdx]);
+
+  if (choice.localFlag) LOCAL_FLAG = true;
+
+  // スコアリング: actionのみ+1（scene/difficultyはスコアなし）
+  if (q.role === 'action') {
+    (choice.tags || []).forEach(function(t) {
+      if (branchCounts.hasOwnProperty(t)) {
+        branchCounts[t] = (branchCounts[t] || 0) + 1;
+      }
+    });
+  }
+
+  setTimeout(function(){
+    if (qIdx === 2) {
+      // エピソード1完了→そのまま次へ
+      renderQuestion(3);
+    } else if (qIdx === 5) {
+      // エピソード2完了（Q4場面→Q5困難→Q6行動）→ 深掘りQ7を生成
+      generateDeepDive();
+      renderQuestion(6);
+    } else if (qIdx === 6) {
+      // Q7（深掘り）完了 → 判定
+      updateProgress(totalQuestions);
+      calculateFinal();
+    } else {
+      renderQuestion(qIdx + 1);
+    }
+  }, 400);
+}
+
+function showMidFeedback() {
+  hideScreen('screenQuestions');
+  document.getElementById('progressWrap').style.display = 'none';
+  var actionAnswer = answers[2];
+  document.getElementById('midAction').textContent = actionAnswer ? actionAnswer.short : '';
+  showScreen('screenMidFeedback');
+}
+
+function startEpisode2() {
+  hideScreen('screenMidFeedback');
+  showScreen('screenQuestions');
+  document.getElementById('progressWrap').style.display = 'block';
+  renderQuestion(3);
+}
+
+function generateDeepDive() {
+  var sorted = Object.keys(branchCounts).sort(function(a,b){ return branchCounts[b]-branchCounts[a]; });
+  var dd = DEEPDIVE[sorted[0]];
+  allQuestions[6] = { id:7, role:'deepdive', context:dd.context, text:dd.text, choices:dd.choices };
+}
+
+function calculateFinal() {
+  var sorted = Object.keys(branchCounts).sort(function(a,b){ return branchCounts[b]-branchCounts[a]; });
+  topBranches = sorted.slice(0,3);
+  var q7 = answers[6];
+  if (q7 && q7.subtype) subtypeText = q7.subtype;
+  // Supabaseに結果を保存
+  saveResults();
+  showValueCards();
+}
+
+// scene + action の2文セットで引用を構築
+function getEvidenceForBranch(branchKey) {
+  var ev = [];
+  // [action_idx, scene_idx] のペア
+  var pairs = [[2, 0], [5, 3]];
+  pairs.forEach(function(pair) {
+    var actionA = answers[pair[0]];
+    var sceneA = answers[pair[1]];
+    if (!actionA) return;
+    if (actionA.tags && actionA.tags.indexOf(branchKey) !== -1) {
+      ev.push({
+        text: actionA.text, short: actionA.short,
+        sceneShort: sceneA ? sceneA.short : '',
+        combined: (sceneA ? sceneA.short + ' → ' : '') + actionA.short
+      });
+    }
+  });
+  // フォールバック: actionだけでなくscene/difficulty含め全回答からタグ一致を探す
+  if (ev.length === 0) {
+    // まずscene+actionペアでsceneタグから引用
+    var scenePairs = [[0, 2], [3, 5]];
+    scenePairs.forEach(function(pair) {
+      var sceneA = answers[pair[0]];
+      var actionA = answers[pair[1]];
+      if (!sceneA || !sceneA.tags) return;
+      if (sceneA.tags.indexOf(branchKey) !== -1) {
+        ev.push({
+          text: sceneA.text, short: sceneA.short, sceneShort: '',
+          combined: sceneA.short + (actionA ? ' → ' + actionA.short : '')
+        });
+      }
+    });
+  }
+  if (ev.length === 0) {
+    answers.forEach(function(a) {
+      if (!a || !a.tags) return;
+      if (a.tags.indexOf(branchKey) !== -1) {
+        ev.push({ text: a.text, short: a.short, sceneShort: '', combined: a.short });
+      }
+    });
+  }
+  return ev;
+}
+
+function showValueCards() {
+  hideScreen('screenQuestions');
+  document.getElementById('progressWrap').style.display='none';
+  showScreen('screenValues');
+
+  var html='';
+  topBranches.forEach(function(key,idx){
+    var b = BRANCHES[key];
+    var ax = AXES[b.axis];
+    var evidences = getEvidenceForBranch(key);
+    html+='<div class="value-card">';
+    html+='<div class="vc-header">';
+    html+='<div class="vc-rank">#'+(idx+1)+'</div>';
+    html+='<div class="vc-title-row">';
+    html+='<div class="vc-icon"><i data-lucide="'+b.icon+'"></i></div>';
+    html+='<div class="title">'+b.label+'</div>';
+    html+='</div>';
+    html+='</div>';
+    html+='<div class="vc-body">';
+    html+='<div class="reason">'+b.desc+'</div>';
+    if(idx===0 && subtypeText) html+='<div class="subtype">'+subtypeText+'</div>';
+    if(evidences.length>0){
+      html+='<div class="evidence"><div class="evidence-label">あなたの行動から</div>';
+      evidences.slice(0,2).forEach(function(e){ html+='「'+e.combined+'」<br>'; });
+      html+='</div>';
+    }
+    html+='</div></div>';
+  });
+  document.getElementById('valueCardsContainer').innerHTML=html;
+  document.getElementById('confirmActions').style.display='block';
+}
+
+function renderProfileContent() {
+  if (topBranches.length === 0) return;
+
+  var colors = [
+    { bg: 'linear-gradient(135deg, #0D9488, #14b8a6)', light: 'var(--teal-light)', accent: 'var(--teal)' },
+    { bg: 'linear-gradient(135deg, #2563eb, #30b6fe)', light: 'var(--blue-light)', accent: 'var(--blue)' },
+    { bg: 'linear-gradient(135deg, #ea580c, #fdb12e)', light: 'var(--orange-light)', accent: 'var(--orange)' }
+  ];
+
+  var html = '';
+
+  // ヒーロー
+  html += '<div class="profile-hero">';
+  html += '<div class="profile-hero-title">マイプロフィール</div>';
+  html += '</div>';
+
+  // 進捗（いく予定 / 訪問済み）
+  var plannedCount = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length;
+  var visitedCount = getVisitedCount();
+  html += '<div class="profile-stats">';
+  html += '<div class="profile-stat"><div class="profile-stat-num">'+plannedCount+'</div><div class="profile-stat-label">いく予定</div></div>';
+  html += '<div class="profile-stat"><div class="profile-stat-num">'+visitedCount+'</div><div class="profile-stat-label">訪問済み</div></div>';
+  html += '</div>';
+
+  // タイプカード（タイプ結果と同じグラデ形式）
+  html += '<div class="profile-type-cards">';
+  topBranches.forEach(function(key, idx) {
+    var b = BRANCHES[key];
+    var c = colors[idx] || colors[0];
+    var evidences = getEvidenceForBranch(key);
+
+    html += '<div class="profile-type-card">';
+    html += '<div class="ptc-header" style="background:'+c.bg+';">';
+    html += '<div class="ptc-rank">#'+(idx+1)+'</div>';
+    html += '<div class="ptc-icon"><i data-lucide="'+b.icon+'"></i></div>';
+    html += '<div class="ptc-name">'+b.label+'</div>';
+    html += '</div>';
+    html += '<div class="ptc-body">';
+    html += '<div class="ptc-desc">'+b.desc+'</div>';
+    if (idx === 0 && subtypeText) {
+      html += '<div class="ptc-subtype" style="background:'+c.light+';color:'+c.accent+';">'+subtypeText+'</div>';
+    }
+    if (evidences.length > 0) {
+      html += '<div class="ptc-evidence"><strong>あなたの行動：</strong>';
+      evidences.slice(0,2).forEach(function(e, i) {
+        if (i > 0) html += '、';
+        html += '「'+e.combined+'」';
+      });
+      html += '</div>';
+    }
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  // 働き方の特徴
+  html += '<div class="profile-section">';
+  html += '<div class="profile-section-title">あなたに合う働き方</div>';
+  topBranches.forEach(function(key) {
+    if (WORKSTYLE_MAP[key]) WORKSTYLE_MAP[key].forEach(function(ws) {
+      html += '<span class="work-style-tag">'+ws+'</span>';
+    });
+  });
+  if (LOCAL_FLAG) html += '<span class="work-style-tag"><i data-lucide="map-pin" style="width:12px;height:12px;vertical-align:-2px;margin-right:2px;"></i>地元密着</span>';
+  html += '</div>';
+
+  // ナビゲーション
+  html += '<button class="btn btn-accent" onclick="goToBooth()" style="margin-bottom:12px;">おすすめを見る</button>';
+
+  // やり直し
+  html += '<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">';
+  html += '<button class="btn btn-outline" onclick="restartIndustry()" style="font-size:14px;padding:14px;">業種選択をやり直す</button>';
+  html += '<button class="btn btn-outline" onclick="restartAnalysis()" style="font-size:14px;padding:14px;color:var(--danger);border-color:var(--danger);">自己分析をやり直す</button>';
+  html += '</div>';
+
+  document.getElementById('profileContainer').innerHTML = html;
+}
+
+function goToProfile() {
+  calculateAllCompanies();
+  renderProfileContent();
+  hideAllScreens();
+  document.getElementById('topTabs').classList.add('hidden');
+  showScreen('screenProfile');
+}
+
+// ===== 業種選択 =====
+function goToIndustrySelect() {
+  calculateAllCompanies();
+  hideAllScreens(); showScreen('screenIndustry');
+  var industries = {};
+  COMPANIES.forEach(function(c){ industries[c.industry] = (industries[c.industry]||0)+1; });
+  var html = '';
+  Object.keys(industries).forEach(function(ind){
+    html += '<div class="industry-chip" onclick="toggleIndustry(this,\''+ind+'\')" data-industry="'+ind+'">'+ind+'（'+industries[ind]+'社）</div>';
+  });
+  document.getElementById('industryList').innerHTML = html;
+}
+
+function toggleIndustry(el, ind) {
+  if (selectedIndustries[ind]) { delete selectedIndustries[ind]; el.classList.remove('selected'); }
+  else { selectedIndustries[ind] = true; el.classList.add('selected'); }
+  var btn = document.getElementById('industryNextBtn');
+  var count = Object.keys(selectedIndustries).length;
+  if (count > 0) { btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
+  else { btn.style.opacity='0.5'; btn.style.pointerEvents='none'; }
+}
+
+function goToBoothFromIndustry() {
+  saveIndustrySelection();
+  hideAllScreens(); showScreen('screenBooth');
+  showTabs();
+  setActiveTab('booth');
+  renderBoothList();
+}
+
+// 全社に接点情報を付与しスコア順に並べる
+function calculateAllCompanies() {
+  displayCompanies = COMPANIES.map(function(c){
+    var matchedValues = [];
+    var score = 0;
+    topBranches.forEach(function(val, idx){
+      if(c.valueTags.indexOf(val) !== -1){ matchedValues.push(val); score += (3 - idx); }
+    });
+    if(LOCAL_FLAG && c.localTag) score += 1;
+    return { company: c, matchedValues: matchedValues, score: score };
+  });
+}
+
+function goToBooth() {
+  hideAllScreens();
+  showTabs();
+  showScreen('screenBooth');
+  setActiveTab('booth');
+  renderBoothList();
+}
+
+// 業種別おすすめ表示
+function renderBoothList() {
+  var selKeys = Object.keys(selectedIndustries);
+  if (selKeys.length === 0) selKeys = getUniqueIndustries();
+
+  // 業種ごとにグルーピング
+  var groups = {};
+  selKeys.forEach(function(ind) {
+    var items = displayCompanies.filter(function(item){
+      return item.company.industry === ind && !plannedCompanies[item.company.id];
+    });
+    items.sort(function(a,b){ return b.score - a.score; });
+    var top5 = items.slice(0, 5);
+    if (top5.length > 0) groups[ind] = top5;
+  });
+
+  var groupKeys = Object.keys(groups);
+
+  // フィルタチップ（アンカーリンク）
+  var html = '<div class="filter-row" id="boothFilterRow">';
+  groupKeys.forEach(function(ind, i) {
+    html += '<div class="filter-chip" onclick="scrollToIndustry('+i+')">'+ind+'（'+groups[ind].length+'）</div>';
+  });
+  html += '</div>';
+
+  // 業種ごとのセクション + 横スクロール
+  groupKeys.forEach(function(ind, i) {
+    html += '<div class="industry-section" id="ind_'+i+'">';
+    html += '<div class="industry-section-label">'+ind+'</div>';
+    html += '<div class="hscroll-row">';
+    groups[ind].forEach(function(item){ html += renderSummaryCard(item); });
+    html += '</div></div>';
+  });
+
+  if (groupKeys.length === 0) {
+    html += '<div style="text-align:center;padding:40px;color:var(--text-sub);">すべての企業を「いく予定」に追加しました！</div>';
+  }
+
+  document.getElementById('boothListContainer').innerHTML = html;
+}
+
+function scrollToIndustry(idx) {
+  var el = document.getElementById('ind_'+idx);
+  if (!el) return;
+  var headerH = document.querySelector('.header') ? document.querySelector('.header').offsetHeight : 0;
+  var tabsH = document.querySelector('.top-tabs:not(.hidden)') ? document.querySelector('.top-tabs:not(.hidden)').offsetHeight : 0;
+  var offset = headerH + tabsH + 16;
+  var rect = el.getBoundingClientRect();
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  window.scrollTo({ top: rect.top + scrollTop - offset, behavior: 'smooth' });
+}
+
+function getUniqueIndustries() {
+  var seen = {};
+  var result = [];
+  COMPANIES.forEach(function(c){ if(!seen[c.industry]){ seen[c.industry]=true; result.push(c.industry); }});
+  return result;
+}
+
+function toggleIndustryGroup(el) { el.classList.toggle('open'); }
+
+// いく予定セクション（旧版 - renderPlannedHeaderに移行済み）
+function renderPlannedSection() { renderPlannedHeader();
+}
+
+function togglePlannedBody() {
+  document.getElementById('plannedBody').classList.toggle('open');
+  var arrow = document.getElementById('ptArrow');
+  arrow.style.transform = document.getElementById('plannedBody').classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+function addToPlanned(id) {
+  plannedCompanies[id] = true;
+  savePlannedVisit(id);
+  // ボタンだけ差し替え（スクロール位置を保持）
+  var btn = document.querySelector('[data-plan-id="'+id+'"]');
+  if (btn) {
+    btn.className = 'sc-plan-btn done';
+    btn.textContent = '予定済';
+    btn.onclick = function(e){ e.stopPropagation(); };
+  }
+  // planned sectionは上部に別途あるので更新
+  renderPlannedHeader();
+}
+
+function removePlanned(id) {
+  delete plannedCompanies[id];
+  removePlannedVisit(id);
+  renderBoothList();
+}
+
+function renderPlannedHeader() {
+  var ids = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; });
+  var el = document.getElementById('plannedHeaderArea');
+  if (!el) return;
+  if (ids.length === 0) { el.innerHTML = ''; return; }
+  var html = '<div class="planned-toggle" onclick="togglePlannedBody()">';
+  html += '<span class="pt-title"><i data-lucide="clipboard-list" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> いく予定 '+ids.length+'社</span>';
+  html += '<span class="pt-arrow" id="ptArrow"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></span></div>';
+  html += '<div class="planned-body" id="plannedBody"><div class="hscroll-row">';
+  ids.forEach(function(cid){
+    var c = COMPANIES.find(function(co){ return co.id == cid; });
+    if (!c) return;
+    var mv = [];
+    topBranches.forEach(function(v){ if(c.valueTags.indexOf(v)!==-1) mv.push(v); });
+    html += renderSummaryCard({ company: c, matchedValues: mv, score: 0 });
+  });
+  html += '</div></div>';
+  el.innerHTML = html;
+}
+
+// 「聞いてみよう」を生成
+function getAskSuggestions(company) {
+  var asks = [];
+  var tags = company.valueTags.slice();
+  if (company.localTag && LOCAL_FLAG) tags.push('local');
+  // ユーザーのtopBranchesとの共通タグから優先
+  topBranches.forEach(function(tb){
+    if (tags.indexOf(tb) !== -1 && ASK_TEMPLATES[tb]) {
+      ASK_TEMPLATES[tb].forEach(function(q){ if(asks.indexOf(q)===-1) asks.push(q); });
+    }
+  });
+  // localも
+  if (company.localTag && LOCAL_FLAG && ASK_TEMPLATES.local) {
+    ASK_TEMPLATES.local.forEach(function(q){ if(asks.indexOf(q)===-1) asks.push(q); });
+  }
+  // 足りなければ企業のタグから
+  tags.forEach(function(t){
+    if (ASK_TEMPLATES[t]) ASK_TEMPLATES[t].forEach(function(q){ if(asks.indexOf(q)===-1) asks.push(q); });
+  });
+  return asks.slice(0, 3);
+}
+
+// サマリカード（横スクロール用）
+function renderSummaryCard(item) {
+  var c = item.company;
+  var isPlanned = plannedCompanies[c.id];
+
+  var html = '<div class="summary-card" onclick="showCompanyDetail('+c.id+')">';
+
+  // 画像 + ブース番号フロート
+  html += '<div class="sc-img">';
+  html += '<span class="sc-booth-float">No.'+(c.booth||c.id)+'</span>';
+  if (c.image) html += '<img src="'+c.image+'" alt="'+c.name+'">';
+  html += '</div>';
+
+  // Body: 企業名 + 仕事内容 + PR + タグ
+  html += '<div class="sc-body">';
+  html += '<div class="sc-name">'+c.name+'</div>';
+  if (c.work) html += '<div class="sc-work">'+c.work+'</div>';
+  if (c.pr) html += '<div class="sc-pr">'+c.pr+'</div>';
+
+  // カラフルタグ
+  html += '<div class="sc-tags">';
+  if (item.matchedValues.length > 0) {
+    item.matchedValues.slice(0,2).forEach(function(val) {
+      var b = BRANCHES[val];
+      if (b) html += '<span class="sc-tag sc-tag-type">'+branchIcon(b.icon, 10)+b.label+'</span>';
+    });
+  }
+  if (LOCAL_FLAG && c.localTag) html += '<span class="sc-tag sc-tag-local">地元</span>';
+  html += '</div>';
+  html += '</div>';
+
+  // Footer
+  html += '<div class="sc-footer">';
+  html += '<div class="sc-detail-hint">詳しく見る →</div>';
+  if (!isPlanned) {
+    html += '<button class="sc-plan-btn" data-plan-id="'+c.id+'" onclick="event.stopPropagation();addToPlanned('+c.id+')">いく予定</button>';
+  } else {
+    html += '<button class="sc-plan-btn done" data-plan-id="'+c.id+'" onclick="event.stopPropagation();">予定済 <i data-lucide="check" style="width:13px;height:13px;vertical-align:-2px;"></i></button>';
+  }
+  html += '</div>';
+
+  html += '</div>';
+  return html;
+}
+
+// 企業詳細画面を表示
+function showCompanyDetail(companyId) {
+  var c = COMPANIES.find(function(co){ return co.id === companyId; });
+  if (!c) return;
+  var matchedValues = [];
+  topBranches.forEach(function(val){ if(c.valueTags.indexOf(val)!==-1) matchedValues.push(val); });
+  var item = { company: c, matchedValues: matchedValues, score: 0 };
+  var isPlanned = plannedCompanies[c.id];
+
+  var html = '';
+
+  // 画像
+  if (c.image) {
+    html += '<div style="width:100%;height:180px;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;"><img src="'+c.image+'" alt="'+c.name+'" style="width:100%;height:100%;object-fit:cover;"></div>';
+  } else {
+    html += '<div style="width:100%;height:180px;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);display:flex;align-items:center;justify-content:center;color:var(--text-sub);"><i data-lucide="building-2" style="width:48px;height:48px;"></i></div>';
+  }
+
+  html += '<div style="text-align:center;margin-bottom:16px;">';
+  html += '<div style="font-size:22px;font-weight:800;margin-bottom:4px;">'+c.name+'</div>';
+  html += '<span class="booth-badge" style="font-size:14px;padding:6px 14px;margin-bottom:8px;">'+(c.booth||'')+'</span> ';
+  html += '<span class="booth-industry">'+c.industry+'</span>';
+  html += '</div>';
+
+  // いく予定ボタン
+  html += '<div style="text-align:center;margin-bottom:16px;">';
+  if (!isPlanned) {
+    html += '<button class="plan-btn" onclick="addToPlanned('+c.id+');showCompanyDetail('+c.id+');" style="padding:10px 20px;font-size:14px;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;" viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>いく予定に追加</button>';
+  } else {
+    html += '<button class="plan-btn" style="padding:10px 20px;font-size:14px;background:var(--accent);color:#fff;border-color:var(--accent);" onclick="removePlanned('+c.id+');showCompanyDetail('+c.id+');"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>予定済 — 取消</button>';
+  }
+  html += '</div>';
+
+  // 接点
+  if (item.matchedValues.length > 0) {
+    html += '<div class="profile-section"><h3>あなたとの接点</h3>';
+    item.matchedValues.slice(0,2).forEach(function(val){
+      var ev = getEvidenceForBranch(val);
+      var cm = c.matchTexts[val] || c.pr;
+      html += '<div class="detail-evidence">';
+      if (ev.length > 0) html += '<div class="detail-evidence-user">あなた：「'+ev[0].combined+'」</div>';
+      html += '<div class="detail-evidence-company">→ '+cm+'</div></div>';
+    });
+    if (LOCAL_FLAG && c.localTag && c.matchTexts.local) {
+      html += '<div class="detail-evidence"><div class="detail-evidence-user">地元志向</div>';
+      html += '<div class="detail-evidence-company">→ '+c.matchTexts.local+'</div></div>';
+    }
+    html += '</div>';
+  }
+
+  // 企業情報
+  html += '<div class="profile-section"><h3>企業PR</h3><div class="detail-text">'+c.detail+'</div></div>';
+  if (c.atmosphere) html += '<div class="profile-section"><h3>職場の雰囲気</h3><div class="detail-text">'+c.atmosphere+'</div></div>';
+  if (c.jobs.length > 0) html += '<div class="profile-section"><h3>採用職種</h3><div class="detail-text">'+c.jobs.join('、')+'</div></div>';
+
+  // 聞いてみよう
+  var asks = getAskSuggestions(c);
+  if (asks.length > 0) {
+    html += '<div class="profile-section"><div class="ask-suggestions"><div class="ask-label">ブースでこう聞いてみよう！</div>';
+    asks.forEach(function(q){ html += '<div class="ask-item">'+q+'</div>'; });
+    html += '</div></div>';
+  }
+
+  document.getElementById('companyDetailContainer').innerHTML = html;
+  hideAllScreens();
+  showScreen('screenCompanyDetail');
+}
+
+function goBackFromDetail() {
+  hideAllScreens();
+  var screenMap = {booth:'screenBooth', map:'screenMap', all:'screenAllCompanies'};
+  showScreen(screenMap[lastTab] || 'screenBooth');
+}
+
+// 企業カード（全企業・チャレンジ用）
+function renderBoothCard(item) {
+  var c = item.company;
+  var isPlanned = plannedCompanies[c.id];
+  var html = '';
+
+  var connectionLine = '';
+  if (item.matchedValues.length > 0) {
+    var primaryMatch = item.matchedValues[0];
+    connectionLine = c.matchTexts[primaryMatch] || c.pr;
+  } else {
+    connectionLine = c.connectionText || c.pr;
+  }
+
+  html += '<div class="booth-card" id="booth_'+c.id+'">';
+  html += '<div class="booth-header" onclick="toggleBooth('+c.id+')">';
+  html += '<div class="booth-info">';
+  html += '<div class="booth-name"><span class="booth-badge" style="margin-right:6px;">'+(c.booth||'')+'</span>'+c.name+'</div>';
+  html += '<span class="booth-industry">'+c.industry+'</span>';
+  html += '<div class="booth-connection">'+connectionLine+'</div>';
+  html += '</div>';
+  html += '<div class="booth-right">';
+  html += '<div class="booth-arrow"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>';
+  if (!isPlanned) {
+    html += '<button class="plan-btn" onclick="event.stopPropagation();addToPlanned('+c.id+')"><i data-lucide="bookmark" style="width:13px;height:13px;vertical-align:-2px;margin-right:2px;"></i> いく予定</button>';
+  } else {
+    html += '<span style="font-size:11px;color:var(--accent);font-weight:700;"><i data-lucide="check" style="width:11px;height:11px;vertical-align:-1px;"></i> 予定済</span>';
+  }
+  html += '</div></div>';
+
+  html += '<div class="booth-detail"><div class="booth-detail-inner">';
+
+  // あなたとの接点
+  html += '<div class="detail-item"><div class="detail-label"><i data-lucide="link" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;"></i> あなたとの接点</div>';
+  if (item.matchedValues.length > 0) {
+    item.matchedValues.slice(0,2).forEach(function(val){
+      var ev = getEvidenceForBranch(val);
+      var cm = c.matchTexts[val] || c.pr;
+      html += '<div class="detail-evidence">';
+      if (ev.length > 0) html += '<div class="detail-evidence-user">あなたの行動：「'+ev[0].combined+'」</div>';
+      html += '<div class="detail-evidence-company">→ '+cm+'</div></div>';
+    });
+  } else {
+    html += '<div class="detail-evidence"><div class="detail-evidence-company">'+(c.connectionText||c.pr)+'</div></div>';
+  }
+  if (LOCAL_FLAG && c.localTag && c.matchTexts.local) {
+    html += '<div class="detail-evidence"><div class="detail-evidence-user"><i data-lucide="map-pin" style="width:12px;height:12px;vertical-align:-2px;margin-right:2px;"></i> 地元志向</div>';
+    html += '<div class="detail-evidence-company">→ '+c.matchTexts.local+'</div></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="detail-item"><div class="detail-label">企業PR</div><div class="detail-text">'+c.detail+'</div></div>';
+  if (c.atmosphere) html += '<div class="detail-item"><div class="detail-label">職場の雰囲気</div><div class="detail-text">'+c.atmosphere+'</div></div>';
+  if (c.jobs.length > 0) html += '<div class="detail-item"><div class="detail-label">採用職種</div><div class="detail-text">'+c.jobs.join('、')+'</div></div>';
+
+  // 聞いてみよう
+  var asks = getAskSuggestions(c);
+  if (asks.length > 0) {
+    html += '<div class="detail-item"><div class="ask-suggestions"><div class="ask-label">ブースでこう聞いてみよう！</div>';
+    asks.forEach(function(q){ html += '<div class="ask-item">'+q+'</div>'; });
+    html += '</div></div>';
+  }
+
+  // タグ表示
+  if (item.matchedValues.length > 0) {
+    html += '<div class="detail-item"><div class="value-match-tags">';
+    item.matchedValues.forEach(function(val){
+      var b = BRANCHES[val];
+      var ci = topBranches.indexOf(val)+1;
+      html += '<span class="value-match-tag vt-'+ci+'">'+branchIcon(b.icon)+b.label+'</span>';
+    });
+    if (LOCAL_FLAG && c.localTag) html += '<span class="value-match-tag" style="background:#d1fae5;color:#047857;"><i data-lucide="map-pin" style="width:10px;height:10px;vertical-align:-1px;margin-right:1px;"></i> 地元</span>';
+    html += '</div></div>';
+  }
+
+  html += '</div></div></div>';
+  return html;
+}
+
+function toggleBooth(id){ document.getElementById('booth_'+id).classList.toggle('open'); }
+
+var lastTab = 'booth';
+function switchTab(tab){
+  hideAllScreens();
+  if(tab==='profile'){ renderProfileContent(); document.getElementById('topTabs').classList.add('hidden'); showScreen('screenProfile'); }
+  else {
+    showTabs();
+    if(tab==='booth'){ showScreen('screenBooth'); renderBoothList(); lastTab='booth'; }
+    else if(tab==='map'){ showScreen('screenMap'); renderBoothMap(); lastTab='map'; }
+    else if(tab==='all'){ showScreen('screenAllCompanies'); renderAllCompanies(); lastTab='all'; }
+    setActiveTab(tab);
+  }
+}
+function setActiveTab(tab){
+  document.querySelectorAll('.tab-item').forEach(function(el){el.classList.remove('active');});
+  var map = {booth:'navBooth', map:'navMap', all:'navAll'};
+  var el = document.getElementById(map[tab]);
+  if(el) el.classList.add('active');
+}
+function showTabs(){
+  document.getElementById('topTabs').classList.remove('hidden');
+  document.getElementById('profileIcon').classList.remove('hidden');
+}
+
+function renderBoothMap() {
+  // 進捗バー
+  var visitedCount = getVisitedCount();
+  var target = Math.max(VISIT_GOAL, Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length);
+  var pct = target > 0 ? Math.round((visitedCount / target) * 100) : 0;
+  if (pct > 100) pct = 100;
+  var goalHtml = '<div class="visit-goal">';
+  goalHtml += '<div class="goal-text"><i data-lucide="target" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> 目標：'+target+'社のブースを回ろう！</div>';
+  goalHtml += '<div class="visit-progress-text" style="margin-bottom:8px;"><strong>'+visitedCount+'</strong> / '+target+'社 訪問済';
+  if (visitedCount >= target) goalHtml += ' <i data-lucide="party-popper" style="width:16px;height:16px;vertical-align:-3px;"></i> 達成！';
+  goalHtml += '</div>';
+  goalHtml += '<div class="visit-progress-bar"><div class="visit-progress-fill" style="width:'+pct+'%"></div></div>';
+  goalHtml += '</div>';
+  document.getElementById('mapGoalContainer').innerHTML = goalHtml;
+
+  // 会社をID→objectでルックアップ
+  var byId = {};
+  COMPANIES.forEach(function(c){ byId[c.id] = c; });
+
+  function cell(id) {
+    var c = byId[id];
+    if (!c) return '<div class="map-cell empty"></div>';
+    var isPlanned = plannedCompanies[c.id];
+    var isVisited = visitStatus[c.id];
+    var state = isVisited ? 'visited' : isPlanned ? 'planned' : 'default';
+    var shortName = c.name.replace(/株式会社|有限会社|（株）|㈱|株式|会社| |　/g, '').substring(0, 5);
+    var showName = (isPlanned || isVisited);
+    return '<div class="map-cell '+state+'" onclick="mapCellTap('+c.id+')">'
+      + '<div class="mc-num">'+c.id+'</div>'
+      + (showName ? '<div class="mc-name">'+shortName+'</div>' : '')
+      + '</div>';
+  }
+
+  // メインエリア: 7列 × 7行 = 49ブース (1〜47 + 空き)
+  // 画像のように左上から番号を配置
+  var mainRows = [
+    [8, 0, 7, 0, 6, 0, 5],
+    [9, 0, 0, 0, 0, 0, 4],
+    [10, 0, 0, 0, 0, 0, 3],
+    [11, 0, 0, 0, 0, 0, 2],
+    [12, 0, 15, 0, 14, 0, 1],
+    [13, 0, 0, 0, 0, 0, 0],
+  ];
+
+  var subRows = [
+  ];
+
+  var html = '<div class="map-container">';
+  html += '<div class="map-title">FLOOR MAP</div>';
+
+  // メインエリア
+  html += '<div class="map-area">';
+  html += '<div class="map-grid" style="grid-template-columns:repeat(7,52px);">';
+  mainRows.forEach(function(row) {
+    row.forEach(function(id) {
+      if (id === 0) html += '<div class="map-cell empty"></div>';
+      else html += cell(id);
+    });
+  });
+  html += '</div></div>';
+
+  // 通路
+  html += '<div class="map-aisle"></div>';
+
+  // サブエリア
+  html += '<div class="map-area">';
+  html += '<div class="map-grid" style="grid-template-columns:repeat(5,52px);">';
+  subRows.forEach(function(row) {
+    row.forEach(function(id) {
+      if (id === 0) html += '<div class="map-cell empty"></div>';
+      else html += cell(id);
+    });
+  });
+  html += '</div></div>';
+
+  html += '<div class="map-entrance">▲ 入口 ENTRANCE</div>';
+  html += '</div>';
+
+  document.getElementById('boothMapContainer').innerHTML = html;
+}
+
+var allFilterState = { planned: true, industry: '' };
+
+function renderAllFilters() {
+  var industries = {};
+  COMPANIES.forEach(function(c){ industries[c.industry] = (industries[c.industry]||0)+1; });
+
+  var plannedCount = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length;
+
+  var html = '<div class="filter-row">';
+  html += '<div class="filter-chip planned-filter'+(allFilterState.planned?' active':'')+'" onclick="toggleAllFilter(\'planned\')"><i data-lucide="bookmark" style="width:13px;height:13px;vertical-align:-2px;margin-right:2px;"></i> いく予定（'+plannedCount+'）</div>';
+  html += '<div class="filter-chip'+(allFilterState.industry===''&&!allFilterState.planned?' active':'')+'" onclick="toggleAllFilter(\'all\')">すべて</div>';
+  Object.keys(industries).forEach(function(ind){
+    html += '<div class="filter-chip'+(allFilterState.industry===ind?' active':'')+'" onclick="toggleAllFilter(\''+ind+'\')">'+ind+'（'+industries[ind]+'）</div>';
+  });
+  html += '</div>';
+  document.getElementById('allFilterContainer').innerHTML = html;
+}
+
+function toggleAllFilter(val) {
+  if (val === 'planned') {
+    allFilterState.planned = !allFilterState.planned;
+    if (allFilterState.planned) allFilterState.industry = '';
+  } else if (val === 'all') {
+    allFilterState.planned = false;
+    allFilterState.industry = '';
+  } else {
+    allFilterState.planned = false;
+    allFilterState.industry = (allFilterState.industry === val) ? '' : val;
+  }
+  renderAllCompanies();
+}
+
+function renderAllCompanies() {
+  renderAllFilters();
+
+  var filtered = COMPANIES.filter(function(c) {
+    if (allFilterState.planned) return plannedCompanies[c.id];
+    if (allFilterState.industry) return c.industry === allFilterState.industry;
+    return true;
+  });
+
+  var html = '';
+  if (filtered.length === 0) {
+    html = '<div style="text-align:center;padding:40px;color:var(--text-sub);">'
+      + (allFilterState.planned ? 'いく予定の企業がありません。おすすめタブから追加しよう！' : '該当する企業がありません')
+      + '</div>';
+  } else {
+    html += '<div class="all-company-count">' + filtered.length + '社 表示中</div>';
+    filtered.forEach(function(c) {
+      var matchedValues = [];
+      if (topBranches.length > 0) {
+        topBranches.forEach(function(val){ if(c.valueTags.indexOf(val)!==-1) matchedValues.push(val); });
+      }
+      html += renderBoothCard({ company: c, matchedValues: matchedValues, score: 0 });
+    });
+  }
+  document.getElementById('allCompaniesContainer').innerHTML = html;
+}
+
+function renderVisitList(){
+  var visitedCount = getVisitedCount();
+  var totalPlanned = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length;
+  var target = Math.max(VISIT_GOAL, totalPlanned);
+  var pct = target > 0 ? Math.round((visitedCount / target) * 100) : 0;
+  if (pct > 100) pct = 100;
+
+  var goalHtml = '<div class="visit-goal">';
+  goalHtml += '<div class="goal-text"><i data-lucide="target" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> 目標：'+target+'社のブースを回ろう！</div>';
+  goalHtml += '<div class="visit-progress-bar"><div class="visit-progress-fill" style="width:'+pct+'%"></div></div>';
+  goalHtml += '<div class="visit-progress-text"><strong>'+visitedCount+'社</strong> / '+target+'社';
+  if (visitedCount >= target) goalHtml += ' <i data-lucide="party-popper" style="width:16px;height:16px;vertical-align:-3px;"></i> 達成！すごい！';
+  else goalHtml += ' — あと'+(target - visitedCount)+'社！';
+  goalHtml += '</div></div>';
+  document.getElementById('visitGoalContainer').innerHTML = goalHtml;
+
+  // 業種別にグルーピング
+  var industries = {};
+  COMPANIES.forEach(function(c){
+    if (!industries[c.industry]) industries[c.industry] = [];
+    industries[c.industry].push(c);
+  });
+
+  var html = '';
+  Object.keys(industries).forEach(function(ind){
+    var companies = industries[ind];
+    var visitedInGroup = companies.filter(function(c){ return visitStatus[c.id]; }).length;
+    var label = ind + '（' + visitedInGroup + ' / ' + companies.length + '社 訪問済）';
+
+    html += '<div class="industry-group">';
+    html += '<div class="industry-group-header" onclick="toggleIndustryGroup(this.parentElement)">';
+    html += '<span>' + ind + '<span class="ig-count">　' + visitedInGroup + ' / ' + companies.length + '社</span></span>';
+    html += '<span class="ig-arrow"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></span></div>';
+    html += '<div class="industry-group-body">';
+
+    companies.forEach(function(c){
+      var checked = visitStatus[c.id] || false;
+      var memo = visitStatus[c.id+'_memo'] || '';
+      var isPlanned = plannedCompanies[c.id];
+
+      html += '<div class="visit-card'+(checked?' visited':'')+'" style="margin:6px 8px;">';
+      html += '<div class="visit-header">';
+      html += '<div class="visit-check '+(checked?'checked':'')+'" onclick="toggleVisit('+c.id+')">'+(checked?'<i data-lucide="check" style="width:18px;height:18px;"></i>':'')+'</div>';
+      html += '<div style="flex:1;">';
+      html += '<div class="visit-name"><span class="booth-badge" style="margin-right:6px;">'+(c.booth||'')+'</span>'+c.name+(isPlanned?' <span style="font-size:10px;color:var(--accent);"><i data-lucide="bookmark" style="width:10px;height:10px;vertical-align:-1px;"></i>予定</span>':'')+'</div>';
+      html += '<div class="visit-reason">'+c.jobs.slice(0,2).join('、')+'</div>';
+      html += '</div></div>';
+      html += '<textarea class="visit-memo" placeholder="感想メモ（例：雰囲気が良かった）" onchange="saveMemo('+c.id+',this.value)">'+memo+'</textarea>';
+      html += '</div>';
+    });
+
+    html += '</div></div>';
+  });
+  document.getElementById('visitListContainer').innerHTML=html;
+}
+
+function toggleVisit(id){
+  visitStatus[id] = !visitStatus[id];
+  saveActualVisit(id, visitStatus[id], visitStatus[id+'_memo'] || '');
+}
+
+function mapCellTap(id) {
+  var c = COMPANIES.find(function(co){ return co.id === id; });
+  if (!c) return;
+  var isVisited = visitStatus[c.id];
+  var matchedValues = [];
+  topBranches.forEach(function(val){ if(c.valueTags.indexOf(val)!==-1) matchedValues.push(val); });
+  var connectionLine = '';
+  if (matchedValues.length > 0) {
+    connectionLine = c.matchTexts[matchedValues[0]] || c.pr;
+  }
+
+  var html = '';
+
+  // 画像
+  if (c.image) {
+    html += '<div style="width:100%;height:140px;border-radius:var(--radius-sm);overflow:hidden;margin-bottom:14px;position:relative;">';
+    html += '<img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;">';
+    html += '<span style="position:absolute;top:8px;left:8px;background:rgba(13,148,136,0.9);color:#fff;font-size:13px;font-weight:900;padding:4px 10px;border-radius:var(--radius-sm);backdrop-filter:blur(4px);">No.'+(c.booth||c.id)+'</span>';
+    html += '</div>';
+  }
+
+  // 企業名 + 仕事内容
+  html += '<div style="margin-bottom:12px;">';
+  html += '<div style="font-size:17px;font-weight:800;margin-bottom:4px;">'+c.name+'</div>';
+  if (c.work) html += '<div style="font-size:14px;font-weight:800;color:var(--primary);margin-bottom:6px;">'+c.work+'</div>';
+  html += '</div>';
+
+  // PR
+  if (c.pr) html += '<div style="font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:12px;">'+c.pr+'</div>';
+
+  // タグ
+  html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">';
+  html += '<span class="sc-tag sc-tag-industry">'+c.industry+'</span>';
+  if (matchedValues.length > 0) {
+    matchedValues.slice(0,2).forEach(function(val) {
+      var b = BRANCHES[val];
+      if (b) html += '<span class="sc-tag sc-tag-type">'+branchIcon(b.icon,10)+b.label+'</span>';
+    });
+  }
+  if (LOCAL_FLAG && c.localTag) html += '<span class="sc-tag sc-tag-local"><i data-lucide="map-pin" style="width:10px;height:10px;vertical-align:-1px;margin-right:1px;"></i> 地元</span>';
+  html += '</div>';
+
+  // ボタン（縦並び、同じ幅）
+  html += '<div style="display:flex;flex-direction:column;gap:10px;">';
+  if (isVisited) {
+    html += '<button class="btn btn-primary" style="opacity:0.7;" onclick="toggleMapVisit('+c.id+')"><i data-lucide="check" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"></i>訪問済み（タップで取消）</button>';
+  } else {
+    html += '<button class="btn btn-accent" onclick="toggleMapVisit('+c.id+')">訪問済みにする</button>';
+  }
+  html += '<button class="btn btn-outline" onclick="showCompanyDetail('+c.id+');closeMapPopup();">詳しく見る</button>';
+  html += '</div>';
+
+  document.getElementById('mapPopupContent').innerHTML = html;
+  document.getElementById('mapPopup').classList.add('active');
+  setTimeout(initIcons, 50);
+}
+
+function toggleMapVisit(id) {
+  visitStatus[id] = !visitStatus[id];
+  saveActualVisit(id, visitStatus[id], visitStatus[id+'_memo'] || '');
+  closeMapPopup();
+  renderBoothMap();
+}
+
+function closeMapPopup(e) {
+  if (e && e.target !== document.getElementById('mapPopup')) return;
+  document.getElementById('mapPopup').classList.remove('active');
+}
+function saveMemo(id,val){
+  visitStatus[id+'_memo']=val;
+  if (visitStatus[id]) saveActualVisit(id, true, val);
+}
+function getVisitedCount(){
+  var count=0;
+  COMPANIES.forEach(function(c){ if(visitStatus[c.id]) count++; });
+  return count;
+}
+
+function restartIndustry() {
+  if (!confirm('業種選択をやり直しますか？\n（自己分析の結果やいく予定はそのまま残ります）')) return;
+  selectedIndustries = {};
+  localStorage.removeItem('jibun_navi_industries');
+  hideAllScreens();
+  goToIndustrySelect();
+}
+
+function restartAnalysis() {
+  if (!confirm('自己分析を最初からやり直しますか？\n（いく予定や訪問記録はそのまま残ります）')) return;
+  answers = [];
+  branchCounts = { team:0, support:0, growth:0, stable:0, craft:0, analyze:0 };
+  topBranches = [];
+  subtypeText = '';
+  LOCAL_FLAG = false;
+  selectedIndustries = {};
+  displayCompanies = [];
+  localStorage.removeItem('jibun_navi_industries');
+  // Supabase上のデータもクリア（user_idは保持）
+  if (currentUserId) {
+    sb.from('answers').delete().eq('user_id', currentUserId);
+    sb.from('results').delete().eq('user_id', currentUserId);
+    sb.from('users').update({ completed: false, current_question: 0 }).eq('id', currentUserId);
+  }
+  allQuestions = EPISODE_1.concat(EPISODE_2);
+  hideAllScreens();
+  document.getElementById('topTabs').classList.add('hidden');
+  document.getElementById('profileIcon').classList.add('hidden');
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('progressBar').style.width = '0%';
+  showScreen('screenQuestions');
+  renderQuestion(0);
+}
+
+// Lucide icons init - call after any DOM update that adds lucide icons
+function initIcons() { if(window.lucide) lucide.createIcons(); }
+document.addEventListener('DOMContentLoaded', initIcons);
+// Re-init after screen transitions
+var _origShowScreen = showScreen;
+showScreen = function(id) { _origShowScreen(id); setTimeout(initIcons, 50); };
+</script>
+</body>
+</html>
