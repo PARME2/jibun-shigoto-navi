@@ -376,9 +376,9 @@ body {
 
 <script>
 // ===== Supabase 初期化 =====
-// 値はビルド時に build.sh が環境変数から置換します。詳細は README を参照。
-var SUPABASE_URL = '__SUPABASE_URL__';
-var SUPABASE_KEY = '__SUPABASE_KEY__';
+// anon key は設計上クライアント公開可。実セキュリティはSupabase側のRLSで担保すること。
+var SUPABASE_URL = 'https://nivvfuobqzqusvtrrmhm.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pdnZmdW9icXpxdXN2dHJybWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NjQ0ODksImV4cCI6MjA5MTA0MDQ4OX0.COP0rSDRPwa3L2WwPe-CiLcQpSJ5lnDQbUcguM9b6WM';
 var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 var currentUserId = null;
 var currentSchool = null;

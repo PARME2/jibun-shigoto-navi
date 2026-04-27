@@ -29,55 +29,37 @@
 
 ```
 .
-├── index.html          メインアプリ（プレースホルダー入り）
+├── index.html          メインアプリ
 ├── images/             企業画像 60枚
 ├── archive/            別用途で作成した派生版を保管
 ├── db/                 Supabase スキーマ
 │   ├── supabase_setup.sql
 │   └── supabase_add_interest.sql
-├── build.sh            ビルドスクリプト（プレースホルダー置換）
-├── vercel.json         Vercel 設定
-├── .env.local.example  ローカル開発用テンプレート
+├── package.json
+├── vercel.json
 └── .gitignore
-```
-
----
-
-## 環境変数
-
-`index.html` 内の Supabase 接続情報はビルド時に環境変数から注入する。
-
-| 変数名 | 用途 |
-|---|---|
-| `SUPABASE_URL` | Supabase プロジェクトURL |
-| `SUPABASE_KEY` | Supabase anon key（クライアント公開キー） |
-
-### Vercel での設定
-Project Settings > Environment Variables で上記2つを Production / Preview / Development すべてに設定する。
-
-### ローカルビルド
-```bash
-cp .env.local.example .env.local
-# .env.local を編集して実値を入れる
-
-set -a
-source .env.local
-set +a
-
-bash build.sh
-# dist/index.html にプレースホルダー置換済みのHTMLが出力される
 ```
 
 ---
 
 ## デプロイ
 
-GitHub `main` ブランチへの push で Vercel が自動デプロイする。
-ビルドコマンド `bash build.sh` がプレースホルダーを置換し、`dist/` 配下を公開する。
+GitHub `main` ブランチへの push で以下が自動反映される。
+
+- **Vercel**: `https://jibun-shigoto-navi.vercel.app/`
+- **GitHub Pages**: `https://parme2.github.io/jibun-shigoto-navi/`
+
+純粋な静的サイト構成のためビルドステップは無い。`vercel.json` は `cleanUrls: true` のみ。
 
 ---
 
 ## Supabase スキーマ
 
 `db/supabase_setup.sql` と `db/supabase_add_interest.sql` を順に Supabase SQL Editor で実行する。
-テーブル: `users` / `answers` / `results` / `planned_visits`
+テーブル: `users` / `answers` / `results` / `planned_visits` / `actual_visits`
+
+### ⚠ セキュリティ上の既知課題
+
+現状の RLS ポリシーはすべて `using (true)` で実質「全許可」状態。
+anon key を持つ任意のクライアントから他ユーザーのデータが SELECT / UPDATE 可能。
+匿名認証 (`auth.signInAnonymously`) 導入と RLS ポリシー書き直しが今後の課題。
