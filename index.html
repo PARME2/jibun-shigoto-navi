@@ -295,7 +295,6 @@ body {
 .ask-suggestions .ask-item { font-size: 14px; line-height: 1.7; color: var(--text); padding: 3px 0; }
 .ask-suggestions .ask-item::before { content: ''; }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -375,11 +374,110 @@ body {
 </div>
 
 <script>
-// ===== Supabase 初期化 =====
-// anon key は設計上クライアント公開可。実セキュリティはRLS（auth.uid()ベース）で担保。
-var SUPABASE_URL = 'https://qhxxapidbkelmirmsggg.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeHhhcGlkYmtlbG1pcm1zZ2dnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyOTU5NTAsImV4cCI6MjA5Mjg3MTk1MH0.eGKPwBEuesShM0zTr8E11HEe8TZa8ICqDtsPXzkFTHQ';
-var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ===== データストア（バックエンド差し替え可能な永続化層） =====
+// アプリ本体は下の Store インターフェース越しにのみデータを読み書きする。
+// 別シーン／別DBで使う場合は、同じメソッド群を実装した別オブジェクトを作り
+//   var Store = new XxxStore(...);
+// に差し替えるだけでよい（アプリ本体・呼び出し側は無改修）。
+//
+// 【インターフェース契約】すべて Promise を返す（同期実装でも await 可）
+//   getUser(school)          -> { id, school, currentQuestion, completed }
+//   saveAnswer(qNum, ans)    -> void   ans:{choiceIndex, short, tags, axis, branch, subtype, role}
+//   saveResults(res)         -> void   res:{topBranches, subtypeText, branchCounts}
+//   savePlanned(companyId)   -> void
+//   removePlanned(companyId) -> void
+//   loadSession()            -> { answers:[ans...], results:res|null, planned:[companyId...] }
+//   clearAnalysis()          -> void   回答・結果のみ消す（ユーザー・興味ありは保持）
+
+// --- localStorage 実装（デモ既定。バックエンド不要でブラウザ単体で完結する） ---
+// 旧 Supabase 構成では匿名認証の user 単位＝ブラウザ単位だったため、単一端末での
+// 体験は等価。失われるのは主催者側での全回答の中央集計のみ。
+function LocalStore(namespace) {
+  this.key = namespace || 'jibun_navi_state';
+}
+LocalStore.prototype._read = function() {
+  try { return JSON.parse(localStorage.getItem(this.key)) || {}; }
+  catch (e) { return {}; }
+};
+LocalStore.prototype._write = function(state) {
+  localStorage.setItem(this.key, JSON.stringify(state));
+};
+LocalStore.prototype._genId = function() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'u-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+};
+LocalStore.prototype.getUser = function(school) {
+  var s = this._read();
+  if (!s.user) {
+    s.user = { id: this._genId(), school: school || null, currentQuestion: 0, completed: false };
+  } else if (school && s.user.school !== school) {
+    s.user.school = school;
+  }
+  this._write(s);
+  return Promise.resolve(s.user);
+};
+LocalStore.prototype.saveAnswer = function(qNum, ans) {
+  var s = this._read();
+  s.answers = s.answers || {};
+  s.answers[qNum] = {
+    questionNum: qNum,
+    choiceIndex: ans.choiceIndex,
+    short: ans.short || '',
+    tags: ans.tags || [],
+    axis: ans.axis || null,
+    branch: ans.branch || null,
+    subtype: ans.subtype || null,
+    role: ans.role || null
+  };
+  if (s.user) s.user.currentQuestion = qNum + 1;
+  this._write(s);
+  return Promise.resolve();
+};
+LocalStore.prototype.saveResults = function(res) {
+  var s = this._read();
+  s.results = {
+    topBranches: res.topBranches || [],
+    subtypeText: res.subtypeText || '',
+    branchCounts: res.branchCounts || {}
+  };
+  if (s.user) s.user.completed = true;
+  this._write(s);
+  return Promise.resolve();
+};
+LocalStore.prototype.savePlanned = function(companyId) {
+  var s = this._read();
+  s.planned = s.planned || [];
+  if (s.planned.indexOf(companyId) === -1) s.planned.push(companyId);
+  this._write(s);
+  return Promise.resolve();
+};
+LocalStore.prototype.removePlanned = function(companyId) {
+  var s = this._read();
+  s.planned = (s.planned || []).filter(function(id){ return id !== companyId; });
+  this._write(s);
+  return Promise.resolve();
+};
+LocalStore.prototype.loadSession = function() {
+  var s = this._read();
+  var answers = [];
+  if (s.answers) {
+    Object.keys(s.answers).forEach(function(k){ answers.push(s.answers[k]); });
+    answers.sort(function(a, b){ return a.questionNum - b.questionNum; });
+  }
+  return Promise.resolve({ answers: answers, results: s.results || null, planned: s.planned || [] });
+};
+LocalStore.prototype.clearAnalysis = function() {
+  var s = this._read();
+  s.answers = {};
+  s.results = null;
+  if (s.user) { s.user.completed = false; s.user.currentQuestion = 0; }
+  this._write(s);
+  return Promise.resolve();
+};
+
+// アクティブなストア。別DB／別シーンへ移行する際はこの1行だけ差し替える。
+var Store = new LocalStore('jibun_navi_state');
+
 var currentUserId = null;
 var currentSchool = null;
 
@@ -400,8 +498,7 @@ function getSchoolCode() {
 }
 
 // ユーザー初期化
-// Supabase Auth の匿名サインインで auth.uid() を取得し、それを users.id として使う。
-// セッションは Supabase JS が localStorage で永続化するので、再訪時は同じ user に紐付く。
+// Store からユーザーを取得（無ければ生成）。ID と学校コードをアプリ全体で共有する。
 async function initUser() {
   var school = getSchoolCode();
   // 学校コードをlocalStorageにも保存（再訪時パラメータなしでも使えるように）
@@ -412,79 +509,34 @@ async function initUser() {
   }
   currentSchool = school;
 
-  // セッションが無ければ匿名サインイン
-  var sessionRes = await sb.auth.getSession();
-  var session = sessionRes.data && sessionRes.data.session;
-  if (!session) {
-    var signInRes = await sb.auth.signInAnonymously();
-    if (signInRes.error) { console.error('Anonymous sign-in error:', signInRes.error); return null; }
-    session = signInRes.data && signInRes.data.session;
-  }
-  if (!session || !session.user) { console.error('No session after sign-in'); return null; }
-  currentUserId = session.user.id;
-
-  // users テーブルのレコードを取得 or 作成
-  var existing = await sb.from('users').select('*').eq('id', currentUserId).maybeSingle();
-  if (existing.data) {
-    // 学校コードが未設定 or 変更された場合は更新
-    if (school && existing.data.school !== school) {
-      await sb.from('users').update({ school: school }).eq('id', currentUserId);
-      existing.data.school = school;
-    }
-    return existing.data;
-  }
-  // 新規作成（id = auth.uid() を明示的に指定）
-  var insertData = { id: currentUserId };
-  if (school) insertData.school = school;
-  var created = await sb.from('users').insert(insertData).select().single();
-  if (created.error) { console.error('User create error:', created.error); return null; }
-  return created.data;
+  var user = await Store.getUser(school);
+  if (!user) { console.error('User init failed'); return null; }
+  currentUserId = user.id;
+  return user;
 }
 
 // 回答を保存
 async function saveAnswer(questionNum, choiceData) {
   if (!currentUserId) return;
-  await sb.from('answers').upsert({
-    user_id: currentUserId,
-    question_num: questionNum,
-    choice_index: choiceData.choiceIndex,
-    choice_short: choiceData.short,
-    tags: choiceData.tags || [],
-    axis: choiceData.axis || null,
-    branch: choiceData.branch || null,
-    subtype: choiceData.subtype || null,
-    role: choiceData.role || null
-  }, { onConflict: 'user_id,question_num' });
-  // 進捗更新
-  await sb.from('users').update({ current_question: questionNum + 1 }).eq('id', currentUserId);
+  await Store.saveAnswer(questionNum, choiceData);
 }
 
 // 結果を保存
 async function saveResults() {
   if (!currentUserId) return;
-  await sb.from('results').upsert({
-    user_id: currentUserId,
-    top_branches: topBranches,
-    subtype_text: subtypeText,
-    branch_counts: branchCounts
-  }, { onConflict: 'user_id' });
-  await sb.from('users').update({ completed: true }).eq('id', currentUserId);
+  await Store.saveResults({ topBranches: topBranches, subtypeText: subtypeText, branchCounts: branchCounts });
 }
 
 // 興味ありを保存
 async function savePlannedVisit(companyId) {
   if (!currentUserId) return;
-  await sb.from('planned_visits').upsert({
-    user_id: currentUserId,
-    company_id: companyId
-  }, { onConflict: 'user_id,company_id' });
+  await Store.savePlanned(companyId);
 }
 
 // 興味ありを削除
 async function removePlannedVisit(companyId) {
   if (!currentUserId) return;
-  await sb.from('planned_visits').delete()
-    .eq('user_id', currentUserId).eq('company_id', companyId);
+  await Store.removePlanned(companyId);
 }
 
 
@@ -501,19 +553,17 @@ function loadIndustrySelection() {
 async function restoreSession() {
   if (!currentUserId) return false;
 
-  // 回答を復元
-  var { data: savedAnswers } = await sb.from('answers')
-    .select('*').eq('user_id', currentUserId).order('question_num');
-  if (!savedAnswers || savedAnswers.length === 0) return false;
+  var session = await Store.loadSession();
+  if (!session.answers || session.answers.length === 0) return false;
 
   // answersとスコアを再構築
-  savedAnswers.forEach(function(sa) {
-    var idx = sa.question_num;
+  session.answers.forEach(function(sa) {
+    var idx = sa.questionNum;
     answers[idx] = {
-      text: '', short: sa.choice_short || '',
+      text: '', short: sa.short || '',
       tags: sa.tags || [], axis: sa.axis || null,
       branch: sa.branch || null, subtype: sa.subtype || null,
-      role: sa.role || null, choiceIndex: sa.choice_index
+      role: sa.role || null, choiceIndex: sa.choiceIndex
     };
     // スコア再計算: actionのみ+1
     if (sa.role === 'action') {
@@ -524,21 +574,14 @@ async function restoreSession() {
   });
 
   // 結果を復元
-  var { data: savedResult } = await sb.from('results')
-    .select('*').eq('user_id', currentUserId).single();
-  if (savedResult) {
-    topBranches = savedResult.top_branches || [];
-    subtypeText = savedResult.subtype_text || '';
-    if (savedResult.branch_counts) branchCounts = savedResult.branch_counts;
+  if (session.results) {
+    topBranches = session.results.topBranches || [];
+    subtypeText = session.results.subtypeText || '';
+    if (session.results.branchCounts) branchCounts = session.results.branchCounts;
   }
 
   // 興味ありを復元
-  var { data: savedPlanned } = await sb.from('planned_visits')
-    .select('company_id').eq('user_id', currentUserId);
-  if (savedPlanned) {
-    savedPlanned.forEach(function(p) { plannedCompanies[p.company_id] = true; });
-  }
-
+  (session.planned || []).forEach(function(cid) { plannedCompanies[cid] = true; });
 
   // 業種選択を復元
   loadIndustrySelection();
@@ -894,7 +937,7 @@ function selectChoice(qIdx, cIdx) {
     role: q.role, choiceIndex: cIdx
   };
 
-  // Supabaseに保存
+  // Store に保存
   saveAnswer(qIdx, answers[qIdx]);
 
 
@@ -1576,61 +1619,10 @@ function renderAllCompanies() {
   document.getElementById('allCompaniesContainer').innerHTML = html;
 }
 
-function renderVisitList(){
-  var visitedCount = getVisitedCount();
-  var totalPlanned = Object.keys(plannedCompanies).filter(function(k){ return plannedCompanies[k]; }).length;
-  var target = Math.max(VISIT_GOAL, totalPlanned);
-  var pct = target > 0 ? Math.round((visitedCount / target) * 100) : 0;
-  if (pct > 100) pct = 100;
-
-  var goalHtml = '<div class="visit-goal">';
-  goalHtml += '<div class="goal-text"><i data-lucide="target" style="width:16px;height:16px;vertical-align:-3px;margin-right:3px;"></i> 目標：'+target+'社のブースを回ろう！</div>';
-  goalHtml += '<div class="visit-progress-bar"><div class="visit-progress-fill" style="width:'+pct+'%"></div></div>';
-  goalHtml += '<div class="visit-progress-text"><strong>'+visitedCount+'社</strong> / '+target+'社';
-  if (visitedCount >= target) goalHtml += ' <i data-lucide="party-popper" style="width:16px;height:16px;vertical-align:-3px;"></i> 達成！すごい！';
-  else goalHtml += ' — あと'+(target - visitedCount)+'社！';
-  goalHtml += '</div></div>';
-  document.getElementById('visitGoalContainer').innerHTML = goalHtml;
-
-  // 業種別にグルーピング
-  var industries = {};
-  COMPANIES.forEach(function(c){
-    if (!industries[c.industry]) industries[c.industry] = [];
-    industries[c.industry].push(c);
-  });
-
-  var html = '';
-  Object.keys(industries).forEach(function(ind){
-    var companies = industries[ind];
-    var visitedInGroup = companies.filter(function(c){ return visitStatus[c.id]; }).length;
-    var label = ind + '（' + visitedInGroup + ' / ' + companies.length + '社 訪問済）';
-
-    html += '<div class="industry-group">';
-    html += '<div class="industry-group-header" onclick="toggleIndustryGroup(this.parentElement)">';
-    html += '<span>' + ind + '<span class="ig-count">　' + visitedInGroup + ' / ' + companies.length + '社</span></span>';
-    html += '<span class="ig-arrow"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></span></div>';
-    html += '<div class="industry-group-body">';
-
-    companies.forEach(function(c){
-      var checked = visitStatus[c.id] || false;
-      var memo = visitStatus[c.id+'_memo'] || '';
-      var isPlanned = plannedCompanies[c.id];
-
-      html += '<div class="visit-card'+(checked?' visited':'')+'" style="margin:6px 8px;">';
-      html += '<div class="visit-header">';
-      html += '<div class="visit-check '+(checked?'checked':'')+'" onclick="toggleVisit('+c.id+')">'+(checked?'<i data-lucide="check" style="width:18px;height:18px;"></i>':'')+'</div>';
-      html += '<div style="flex:1;">';
-      html += '<div class="visit-name">'+c.name+(isPlanned?' <span style="font-size:10px;color:var(--accent);"><i data-lucide="bookmark" style="width:10px;height:10px;vertical-align:-1px;"></i>予定</span>':'')+'</div>';
-      html += '<div class="visit-reason">'+c.jobs.slice(0,2).join('、')+'</div>';
-      html += '</div></div>';
-      html += '<textarea class="visit-memo" placeholder="感想メモ（例：雰囲気が良かった）" onchange="saveMemo('+c.id+',this.value)">'+memo+'</textarea>';
-      html += '</div>';
-    });
-
-    html += '</div></div>';
-  });
-  document.getElementById('visitListContainer').innerHTML=html;
-}
+// （訪問記録機能 renderVisitList は対応する画面・ナビが存在しない死にコードのため削除。
+//   未定義の saveMemo / toggleVisit / getVisitedCount / VISIT_GOAL / visitStatus への
+//   ダングリング参照もこれで解消。再導入する場合は専用画面・ナビとともに、
+//   メモ保存用メソッドを Store インターフェースに追加して各ストア実装に実装すること。）
 
 
 
@@ -1643,12 +1635,8 @@ function restartAnalysis() {
   selectedIndustries = {};
   displayCompanies = [];
   localStorage.removeItem('jibun_navi_industries');
-  // Supabase上のデータもクリア（user_idは保持）
-  if (currentUserId) {
-    sb.from('answers').delete().eq('user_id', currentUserId);
-    sb.from('results').delete().eq('user_id', currentUserId);
-    sb.from('users').update({ completed: false, current_question: 0 }).eq('id', currentUserId);
-  }
+  // 分析データをクリア（user・興味あり等は保持）
+  if (currentUserId) Store.clearAnalysis();
   careerPath = '';
   allQuestions = INTRO_Q.concat(EPISODE_1).concat(EPISODE_2);
   hideAllScreens();
